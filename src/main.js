@@ -1,11 +1,11 @@
 "use strict";
 
 (function () {
-  const HEADER_WRAPPER = document.querySelector(`.trip-main`);
-  const MAIN_TEMPLATE = document.querySelector(`.page-main`);
-  const FILTER_WRAPPER = HEADER_WRAPPER.querySelector(`.trip-main__trip-controls`);
-  const FILTER_WRAPPER_HEADING = FILTER_WRAPPER.querySelector(`.trip-main__trip-controls h2`);
-  const SORT_FILTER_TEMPLATE = MAIN_TEMPLATE.querySelector(`.trip-events`);
+  const headerWrapper = document.querySelector(`.trip-main`);
+  const mainWrapper = document.querySelector(`.page-main`);
+  const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
+  const filterWrapperHeading = filterWrapper.querySelector(`.trip-main__trip-controls h2`);
+  const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 
   const createSiteMenuTemplate = () =>
     `<section class="trip-main__trip-info  trip-info">
@@ -578,16 +578,16 @@
                 </div>
               </section>`;
 
-  const render = (wrapper, template, mode) => {
+  const render = (wrapper, template, mode = `beforeend`) => {
     wrapper.insertAdjacentHTML(mode, template);
   };
 
-  render(HEADER_WRAPPER, createSiteMenuTemplate(), `afterbegin`);
-  render(FILTER_WRAPPER_HEADING, createSiteFilterHeaderTemplate(), `afterend`);
-  render(FILTER_WRAPPER, createSiteFilterTemplate(), `beforeend`);
-  render(SORT_FILTER_TEMPLATE, createSiteSortFilterTemplate(), `beforeend`);
-  render(SORT_FILTER_TEMPLATE, createSiteWaypointTemplate(), `beforeend`);
-  render(MAIN_TEMPLATE.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(), `beforeend`);
-  render(MAIN_TEMPLATE.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(), `beforeend`);
-  render(SORT_FILTER_TEMPLATE, createSiteDayListTemplate(), `beforeend`);
+  render(headerWrapper, createSiteMenuTemplate(), `afterbegin`);
+  render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
+  render(filterWrapper, createSiteFilterTemplate());
+  render(sortFilterWrapper, createSiteSortFilterTemplate());
+  render(sortFilterWrapper, createSiteWaypointTemplate());
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate());
+  render(sortFilterWrapper, createSiteDayListTemplate());
 })();
