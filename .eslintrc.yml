@@ -3,4 +3,8 @@ env:
   browser: true
   commonjs: true
 
+parserOptions:
+  ecmaVersion: 2015
+  sourceType: 'module'
+
 extends: 'htmlacademy/es6'
