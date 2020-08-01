@@ -1,6 +1,12 @@
-import {createSiteMenuTemplate, createSiteFilterHeaderTemplate, createSiteFilterTemplate, createSiteSortFilterTemplate,
-  createSiteWaypointTemplate, createSiteWaypointPriceTemplate, createSiteWaypointDestinationTemplate,
-  createSiteDayListTemplate} from './index.js';
+import {createSiteDayListTemplate} from './view/siteDayList';
+import {createSiteFilterTemplate} from './view/siteFilter';
+import {createSiteFilterHeaderTemplate} from './view/siteFilterHeader';
+import {createSiteMenuTemplate} from './view/siteMenu';
+import {createSiteSortFilterTemplate} from './view/siteSortFilter';
+import {createSiteWaypointTemplate} from './view/siteWaypoint';
+import {createSiteWaypointDestinationTemplate} from './view/siteWaypointDestination';
+import {createSiteWaypointPriceTemplate} from './view/siteWaypointPrice';
+
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
 const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
