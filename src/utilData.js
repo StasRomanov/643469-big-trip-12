@@ -48,33 +48,33 @@ const travel = {
       `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat.`,
       `Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus.`],
   },
-  bonusOption: {
-    addLuggage: {
+  bonusOption: [
+    {
       name: `Add luggage`,
       price: 30,
       used: getRandomBoolean(),
     },
-    switchToComfortClass: {
+    {
       name: `Switch to comfort class`,
       price: 100,
       used: getRandomBoolean(),
     },
-    addMeal: {
+    {
       name: `Add meal`,
       price: 15,
       used: getRandomBoolean(),
     },
-    chooseSeats: {
+    {
       name: `Choose seats`,
       price: 5,
       used: getRandomBoolean(),
     },
-    travelByTrain: {
+    {
       name: `Travel by train`,
       price: 40,
       used: getRandomBoolean(),
     },
-  },
+  ]
 };
 
 const createTravelInfo = (array, mock, count = 8) => {

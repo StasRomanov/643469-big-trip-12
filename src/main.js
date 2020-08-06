@@ -6,6 +6,7 @@ import {createSiteSortFilterTemplate} from './view/siteSortFilter';
 import {createSiteWaypointTemplate} from './view/siteWaypoint';
 import {createSiteWaypointDestinationTemplate} from './view/siteWaypointDestination';
 import {createSiteWaypointPriceTemplate} from './view/siteWaypointPrice';
+import {createSiteEventTemplate} from "./view/siteEvent";
 import {waypoints} from "./utilData";
 
 const headerWrapper = document.querySelector(`.trip-main`);
@@ -18,13 +19,14 @@ const render = (wrapper, template, mode = `beforeend`) => {
   wrapper.insertAdjacentHTML(mode, template);
 };
 
-console.log(waypoints);
-
 render(headerWrapper, createSiteMenuTemplate(), `afterbegin`);
 render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
 render(filterWrapper, createSiteFilterTemplate());
 render(sortFilterWrapper, createSiteSortFilterTemplate());
 render(sortFilterWrapper, createSiteWaypointTemplate(waypoints, 0));
-render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
+render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(waypoints, 0));
+for (let i = 0; i < waypoints[0].bonusOption.length; i++) {
+  render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(waypoints[0].bonusOption[i]));
+}
 render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate());
 render(sortFilterWrapper, createSiteDayListTemplate());
