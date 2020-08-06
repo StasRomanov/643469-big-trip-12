@@ -24,7 +24,7 @@ render(headerWrapper, createSiteMenuTemplate(), `afterbegin`);
 render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
 render(filterWrapper, createSiteFilterTemplate());
 render(sortFilterWrapper, createSiteSortFilterTemplate());
-render(sortFilterWrapper, createSiteWaypointTemplate());
+render(sortFilterWrapper, createSiteWaypointTemplate(waypoints, 0));
 render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
 render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate());
 render(sortFilterWrapper, createSiteDayListTemplate());

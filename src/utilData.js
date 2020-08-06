@@ -32,7 +32,7 @@ const shuffle = (arr) => {
 const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
 const travel = {
-  type: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check`,
+  type: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`,
     `Sightseeing`, `Restaurant`],
   town: [`Amsterdam`, `Chamonix`, `Geneva`],
   startTime: [getRandomTime(), getRandomTime(), getRandomTime(), getRandomTime()],
