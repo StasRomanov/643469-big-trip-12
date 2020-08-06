@@ -7,6 +7,7 @@ import {createSiteWaypointTemplate} from './view/siteWaypoint';
 import {createSiteWaypointDestinationTemplate} from './view/siteWaypointDestination';
 import {createSiteWaypointPriceTemplate} from './view/siteWaypointPrice';
 import {createSiteEventTemplate} from "./view/siteEvent";
+import {createEventPhotoTemplate} from "./view/siteEventPhoto";
 import {waypoints} from "./utilData";
 
 const headerWrapper = document.querySelector(`.trip-main`);
@@ -28,5 +29,8 @@ render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceT
 for (let i = 0; i < waypoints[0].bonusOption.length; i++) {
   render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(waypoints[0].bonusOption[i]));
 }
-render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate());
+render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(waypoints[0].location.description));
+for (let photo of waypoints[0].location.photo) {
+  render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
+}
 render(sortFilterWrapper, createSiteDayListTemplate());
