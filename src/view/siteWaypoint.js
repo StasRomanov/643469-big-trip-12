@@ -1,5 +1,5 @@
-export const createSiteWaypointTemplate = (waypoint, index) => {
-  const type = waypoint[index].type;
+export const createSiteWaypointTemplate = (days, index) => {
+  const type = days[0].waypoints[index].type;
   const checkbox = {
     bus: type === `Bus`,
     taxi: type === `Taxi`,
