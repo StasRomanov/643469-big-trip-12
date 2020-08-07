@@ -8,7 +8,11 @@ import {createSiteWaypointDestinationTemplate} from './view/siteWaypointDestinat
 import {createSiteWaypointPriceTemplate} from './view/siteWaypointPrice';
 import {createSiteEventTemplate} from "./view/siteEvent";
 import {createEventPhotoTemplate} from "./view/siteEventPhoto";
-import {waypoints} from "./utilData";
+import {createSiteDayItem} from "./view/siteDayItem";
+import {createSiteTripEvent} from "./view/siteTripEvent";
+import {createSiteEventTitleTemplate} from "./view/siteEventTitle";
+import {days} from "./utilData";
+console.log(days);
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
@@ -24,13 +28,28 @@ render(headerWrapper, createSiteMenuTemplate(), `afterbegin`);
 render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
 render(filterWrapper, createSiteFilterTemplate());
 render(sortFilterWrapper, createSiteSortFilterTemplate());
-render(sortFilterWrapper, createSiteWaypointTemplate(waypoints, 0));
-render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(waypoints, 0));
-for (let i = 0; i < waypoints[0].bonusOption.length; i++) {
-  render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(waypoints[0].bonusOption[i]));
+render(sortFilterWrapper, createSiteWaypointTemplate(days, 0));
+render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(days, 0));
+for (let bonusOption of days[0].waypoints[0].bonusOption) {
+  render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
 }
-render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(waypoints[0].location.description));
-for (let photo of waypoints[0].location.photo) {
+render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(days[0].waypoints[0].description));
+for (let photo of days[0].waypoints[0].photo) {
   render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
 }
 render(sortFilterWrapper, createSiteDayListTemplate());
+for (let j = 0; j < days.length; j++) {
+  render(sortFilterWrapper.querySelector(`.trip-days`), createSiteDayItem(days[j]));
+  for (let i = 0; i < days[j].waypoints.length; i++) {
+    let trimEventItem = sortFilterWrapper.querySelectorAll(`.trip-events__list`);
+    trimEventItem = trimEventItem[trimEventItem.length - 1];
+    render(trimEventItem, createSiteTripEvent(days[j].waypoints[i]));
+    let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
+    let lastEventOffer = eventOffer[eventOffer.length - 1];
+    for (let k = 0; k < days[j].waypoints[i].bonusOption.length; k++) {
+      if (days[j].waypoints[i].bonusOption[k].used) {
+        render(lastEventOffer, createSiteEventTitleTemplate(days[j].waypoints[i].bonusOption[k]));
+      }
+    }
+  }
+}
