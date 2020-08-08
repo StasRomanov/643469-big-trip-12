@@ -5,9 +5,9 @@ const getRandomInteger = (min, max) => {
   return Math.floor(rand);
 };
 
-const getRandomTime = () => {
-  let hours = getRandomInteger(0, 23);
-  let min = getRandomInteger(0, 59);
+const getRandomTime = (minMinute = 0, MaxMinute = 60, minHours = 0, maxHours = 23) => {
+  let hours = getRandomInteger(minHours, maxHours);
+  let min = getRandomInteger(minMinute, MaxMinute);
   if (String(min).length === 1) {
     min = `0` + min;
   }
@@ -69,8 +69,6 @@ const travel = {
   type: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`,
     `Sightseeing`, `Restaurant`],
   town: [`Amsterdam`, `Chamonix`, `Geneva`],
-  startTime: [getRandomTime(), getRandomTime(), getRandomTime(), getRandomTime()],
-  endTime: [getRandomTime(), getRandomTime(), getRandomTime(), getRandomTime()],
   photo: [`http://picsum.photos/248/152?r=${Math.random()}`, `http://picsum.photos/248/152?r=${Math.random()}`,
     `http://picsum.photos/248/152?r=${Math.random()}`, `http://picsum.photos/248/152?r=${Math.random()}`],
   description: [`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
@@ -84,27 +82,22 @@ const travel = {
     {
       name: `Add luggage`,
       price: 30,
-      // used: getRandomBoolean(),
     },
     {
       name: `Switch to comfort class`,
       price: 100,
-      // used: getRandomBoolean(),
     },
     {
       name: `Add meal`,
       price: 15,
-      // used: getRandomBoolean(),
     },
     {
       name: `Choose seats`,
       price: 5,
-      // used: getRandomBoolean(),
     },
     {
       name: `Travel by train`,
       price: 40,
-      // used: getRandomBoolean(),
     },
   ]
 };
@@ -120,15 +113,14 @@ const createTravelInfo = (array, mock, count = 4) => {
       let waypoint = {
         type: mock.type[getRandomInteger(0, mock.type.length - 1)],
         town: mock.town[getRandomInteger(0, mock.town.length - 1)],
-        startTime: mock.startTime[getRandomInteger(0, mock.startTime.length - 1)],
-        endTime: mock.endTime[getRandomInteger(0, mock.endTime.length - 1)],
+        startTime: getRandomTime(),
+        endTime: getRandomTime(),
         photo: shuffle(mock.photo).slice(0, getRandomInteger(1, mock.photo.length)),
         description: shuffle(mock.description).slice(0, 5),
-        bonusOption: shuffle(mock.bonusOption),
+        bonusOption: shuffle(mock.bonusOption).map((o) => {
+          return {name: o.name, price: o.price, used: getRandomBoolean()};
+        })
       };
-      for (let option of waypoint.bonusOption) {
-        option.used = getRandomBoolean();
-      }
       waypoint.differenceTime = getTimeDifference(waypoint.startTime, waypoint.endTime).toUpperCase();
       travelInfo.waypoints.push(waypoint);
     }

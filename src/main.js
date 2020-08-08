@@ -12,7 +12,6 @@ import {createSiteDayItem} from "./view/siteDayItem";
 import {createSiteTripEvent} from "./view/siteTripEvent";
 import {createSiteEventTitleTemplate} from "./view/siteEventTitle";
 import {days} from "./utilData";
-console.log(days);
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
@@ -47,7 +46,8 @@ for (let j = 0; j < days.length; j++) {
     let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
     let lastEventOffer = eventOffer[eventOffer.length - 1];
     for (let k = 0; k < days[j].waypoints[i].bonusOption.length; k++) {
-      if (days[j].waypoints[i].bonusOption[k].used) {
+      let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
+      if (days[j].waypoints[i].bonusOption[k].used && optionCount < 3) {
         render(lastEventOffer, createSiteEventTitleTemplate(days[j].waypoints[i].bonusOption[k]));
       }
     }
