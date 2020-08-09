@@ -29,11 +29,11 @@ render(filterWrapper, createSiteFilterTemplate());
 render(sortFilterWrapper, createSiteSortFilterTemplate());
 render(sortFilterWrapper, createSiteWaypointTemplate(days, 0));
 render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(days, 0));
-for (let bonusOption of days[0].waypoints[0].bonusOption) {
+for (let bonusOption of days[0].waypoints[0].bonusOptions) {
   render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
 }
 render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(days[0].waypoints[0].description));
-for (let photo of days[0].waypoints[0].photo) {
+for (let photo of days[0].waypoints[0].photos) {
   render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
 }
 render(sortFilterWrapper, createSiteDayListTemplate());
@@ -45,10 +45,10 @@ for (let j = 0; j < days.length; j++) {
     render(trimEventItem, createSiteTripEvent(days[j].waypoints[i]));
     let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
     let lastEventOffer = eventOffer[eventOffer.length - 1];
-    for (let k = 0; k < days[j].waypoints[i].bonusOption.length; k++) {
+    for (let k = 0; k < days[j].waypoints[i].bonusOptions.length; k++) {
       let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
-      if (days[j].waypoints[i].bonusOption[k].used && optionCount < 3) {
-        render(lastEventOffer, createSiteEventTitleTemplate(days[j].waypoints[i].bonusOption[k]));
+      if (days[j].waypoints[i].bonusOptions[k].used && optionCount < 3) {
+        render(lastEventOffer, createSiteEventTitleTemplate(days[j].waypoints[i].bonusOptions[k]));
       }
     }
   }

@@ -1,10 +1,4 @@
 export const createSiteTripEvent = (waypoint) => {
-  let allMoney = 0;
-  for (let option of waypoint.bonusOption) {
-    if (option.used) {
-      allMoney += option.price;
-    }
-  }
   return `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
@@ -22,7 +16,7 @@ export const createSiteTripEvent = (waypoint) => {
       </div>
 
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${allMoney}</span>
+        &euro;&nbsp;<span class="event__price-value">${waypoint.price}</span>
       </p>
 
       <h4 class="visually-hidden">Offers:</h4>

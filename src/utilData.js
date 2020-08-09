@@ -69,8 +69,7 @@ const shuffle = (arr) => {
 const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
 const travel = {
-  price: Math.round(Math.random() * 100),
-  dates: [`mar 18`, `mar 21`, `mar 27`, `mar 30`],
+  dates: [`mar 18`, `mar 19`, `mar 20`, `mar 21`],
   type: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`,
     `Sightseeing`, `Restaurant`],
   town: [`Amsterdam`, `Chamonix`, `Geneva`],
@@ -116,13 +115,13 @@ const createTravelInfo = (array, mock, count = 5) => {
     };
     for (let i = 0; i < count; i++) {
       let waypoint = {
-        price: mock.price,
+        price: Math.round(Math.random() * 300),
         type: mock.type[getRandomInteger(0, mock.type.length - 1)],
         town: mock.town[getRandomInteger(0, mock.town.length - 1)],
         startTime: getRandomTime(),
-        photo: shuffle(mock.photo).slice(0, getRandomInteger(1, mock.photo.length)),
+        photos: shuffle(mock.photo).slice(0, getRandomInteger(1, mock.photo.length)),
         description: shuffle(mock.description).slice(0, 5),
-        bonusOption: shuffle(mock.bonusOption).map((o) => {
+        bonusOptions: shuffle(mock.bonusOption).map((o) => {
           return {name: o.name, price: o.price, used: getRandomBoolean()};
         })
       };
@@ -152,17 +151,35 @@ const createTravelInfo = (array, mock, count = 5) => {
     for (let i = 0; i <= travelInfo.waypoints.length; i++) {
       if (i > 0 || i === travelInfo.waypoints.length) {
         if (i > 0 && i !== travelInfo.waypoints.length) {
+          let endMin = 0;
+          let endHours = 0;
           let startTimeA = travelInfo.waypoints[i - 1].startTime;
           let startTimeB = travelInfo.waypoints[i].startTime;
-          let endMinMin = Number(startTimeA.split(`:`)[1]);
-          let endMinMax = Number(startTimeB.split(`:`)[1]);
-          let endHoursMin = Number(startTimeA.split(`:`)[0]);
-          let endHoursMax = Number(startTimeB.split(`:`)[0]);
-          // if (endHoursMin === endHoursMax) {
-          //
-          // }
-          console.log(startTimeA, startTimeB);
-          travelInfo.waypoints[i - 1].endTime = getRandomTime(endMinMin, endMinMax, endHoursMin, endHoursMax);
+          let endMinA = Number(startTimeA.split(`:`)[1]);
+          let endMinB = Number(startTimeB.split(`:`)[1]);
+          let endHoursA = Number(startTimeA.split(`:`)[0]);
+          let endHoursB = Number(startTimeB.split(`:`)[0]);
+          if (endHoursA === endHoursB && endMinA === endMinB) {
+            endHours = endHoursA;
+            endMin = endMinA;
+          } else if (endHoursA === endHoursB) {
+            endHours = endHoursA;
+            endMin = getRandomInteger(endMinA + 1, endMinB);
+          } else {
+            endHours = getRandomInteger(endHoursA + 1, endHoursB);
+            if (endHoursA + 1 === endHoursB) {
+              endMin = getRandomInteger(0, endMinB - 1);
+            } else {
+              endMin = getRandomInteger(0, endMinB - 1);
+            }
+          }
+          if (String(endMin).length === 1) {
+            endMin = `0` + endMin;
+          }
+          if (String(endHours).length === 1) {
+            endHours = `0` + endHours;
+          }
+          travelInfo.waypoints[i - 1].endTime = `${endHours}:${endMin}`;
           travelInfo.waypoints[i - 1].differenceTime = getTimeDifference(travelInfo.waypoints[i - 1].startTime, travelInfo.waypoints[i - 1].endTime).toUpperCase();
         } else {
           travelInfo.waypoints[i - 1].endTime = getRandomTime(Number(travelInfo.waypoints[i - 1].startTime.split(`:`)[1]),
