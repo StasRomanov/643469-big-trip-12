@@ -23,7 +23,7 @@ const render = (wrapper, template, mode = `beforeend`) => {
   wrapper.insertAdjacentHTML(mode, template);
 };
 
-render(headerWrapper, createSiteMenuTemplate(), `afterbegin`);
+render(headerWrapper, createSiteMenuTemplate(days), `afterbegin`);
 render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
 render(filterWrapper, createSiteFilterTemplate());
 render(sortFilterWrapper, createSiteSortFilterTemplate());
