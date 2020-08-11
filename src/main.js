@@ -24,8 +24,8 @@ const render = (wrapper, template, mode = `beforeend`) => {
 };
 
 const renderNewWaypoint = () => {
-  render(sortFilterWrapper, createSiteWaypointTemplate(travelDays, 0));
-  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(travelDays, 0));
+  render(sortFilterWrapper, createSiteWaypointTemplate(travelDays[0].waypoints[0]));
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
   for (let bonusOption of travelDays[0].waypoints[0].bonusOptions) {
     render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
   }
