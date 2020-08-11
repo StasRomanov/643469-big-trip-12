@@ -1,19 +1,12 @@
 let days = [];
 
-const getRandomInteger = (min, max) => {
-  let rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-};
+const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 const getRandomTime = (minMinute = 0, maxMinute = 60, minHours = 0, maxHours = 23) => {
   let hours = getRandomInteger(minHours, maxHours);
   let min = getRandomInteger(minMinute, maxMinute);
-  if (String(min).length === 1) {
-    min = `0` + min;
-  }
-  if (String(hours).length === 1) {
-    hours = `0` + hours;
-  }
+  min = min > 9 ? min : `0` + min;
+  hours = hours > 9 ? hours : `0` + hours;
   return `${hours}:${min}`;
 };
 
@@ -111,6 +104,7 @@ const createTravelInfo = (array, mock, count = 5) => {
     let travelInfo = {
       day: j,
       data: mock.dates[j].toUpperCase(),
+      date: new Date(2020, 2, 18 + j),
       waypoints: [],
     };
     for (let i = 0; i < count; i++) {
@@ -195,4 +189,5 @@ const createTravelInfo = (array, mock, count = 5) => {
 };
 
 days = createTravelInfo(days, travel);
+console.log(days[0].date);
 export {days};

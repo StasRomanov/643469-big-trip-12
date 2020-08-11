@@ -23,33 +23,49 @@ const render = (wrapper, template, mode = `beforeend`) => {
   wrapper.insertAdjacentHTML(mode, template);
 };
 
-render(headerWrapper, createSiteMenuTemplate(days), `afterbegin`);
-render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
-render(filterWrapper, createSiteFilterTemplate());
-render(sortFilterWrapper, createSiteSortFilterTemplate());
-render(sortFilterWrapper, createSiteWaypointTemplate(days, 0));
-render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(days, 0));
-for (let bonusOption of days[0].waypoints[0].bonusOptions) {
-  render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
-}
-render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(days[0].waypoints[0].description));
-for (let photo of days[0].waypoints[0].photos) {
-  render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
-}
-render(sortFilterWrapper, createSiteDayListTemplate());
-for (let j = 0; j < days.length; j++) {
-  render(sortFilterWrapper.querySelector(`.trip-days`), createSiteDayItem(days[j]));
-  for (let i = 0; i < days[j].waypoints.length; i++) {
-    let trimEventItem = sortFilterWrapper.querySelectorAll(`.trip-events__list`);
-    trimEventItem = trimEventItem[trimEventItem.length - 1];
-    render(trimEventItem, createSiteTripEvent(days[j].waypoints[i]));
-    let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
-    let lastEventOffer = eventOffer[eventOffer.length - 1];
-    for (let k = 0; k < days[j].waypoints[i].bonusOptions.length; k++) {
-      let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
-      if (days[j].waypoints[i].bonusOptions[k].used && optionCount < 3) {
-        render(lastEventOffer, createSiteEventTitleTemplate(days[j].waypoints[i].bonusOptions[k]));
-      }
+const renderNewWaypoint = () => {
+  render(sortFilterWrapper, createSiteWaypointTemplate(days, 0));
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate(days, 0));
+  for (let bonusOption of days[0].waypoints[0].bonusOptions) {
+    render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
+  }
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(days[0].waypoints[0].description));
+  for (let photo of days[0].waypoints[0].photos) {
+    render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
+  }
+};
+
+const renderFilter = () => {
+  render(headerWrapper, createSiteMenuTemplate(days), `afterbegin`);
+  render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
+  render(filterWrapper, createSiteFilterTemplate());
+  render(sortFilterWrapper, createSiteSortFilterTemplate());
+};
+
+const renderWaypoint = (dayCount, waypointCount) => {
+  let trimEventItem = sortFilterWrapper.querySelectorAll(`.trip-events__list`);
+  trimEventItem = trimEventItem[trimEventItem.length - 1];
+  render(trimEventItem, createSiteTripEvent(days[dayCount].waypoints[waypointCount]));
+  let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
+  let lastEventOffer = eventOffer[eventOffer.length - 1];
+  for (let k = 0; k < days[dayCount].waypoints[waypointCount].bonusOptions.length; k++) {
+    let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
+    if (days[dayCount].waypoints[waypointCount].bonusOptions[k].used && optionCount < 3) {
+      render(lastEventOffer, createSiteEventTitleTemplate(days[dayCount].waypoints[waypointCount].bonusOptions[k]));
     }
   }
-}
+};
+
+const renderDays = () => {
+  render(sortFilterWrapper, createSiteDayListTemplate());
+  for (let j = 0; j < days.length; j++) {
+    render(sortFilterWrapper.querySelector(`.trip-days`), createSiteDayItem(days[j]));
+    for (let i = 0; i < days[j].waypoints.length; i++) {
+      renderWaypoint(j, i);
+    }
+  }
+};
+
+renderFilter();
+renderNewWaypoint();
+renderDays();
