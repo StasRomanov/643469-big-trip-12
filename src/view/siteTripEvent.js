@@ -1,4 +1,9 @@
 export const createSiteTripEvent = (waypoint) => {
+  const options = {
+    hour: `numeric`,
+    minute: `numeric`,
+  };
+
   return `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
@@ -8,9 +13,9 @@ export const createSiteTripEvent = (waypoint) => {
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${waypoint.startTime}</time>
+          <time class="event__start-time" datetime="${waypoint.startTime}">${waypoint.startTime.toLocaleString(`ru`, options)}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${waypoint.endTime}</time>
+          <time class="event__end-time" datetime="${waypoint.startTime}">${waypoint.endTime.toLocaleString(`ru`, options)}</time>
         </p>
         <p class="event__duration">${waypoint.differenceTime}</p>
       </div>
