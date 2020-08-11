@@ -28,13 +28,18 @@ const getTimeDifference = (startTime, endTime) => {
   return msToTime(timeDifference);
 };
 
-function shuffle(array) {
-  const arr = array.slice();
-  arr.sort(() => {
-    return Math.random() - 0.5;
+const shuffle = (arr) => {
+  let j;
+  let temp;
+  let array = arr.slice();
+  array.forEach(function (item, index) {
+    j = Math.floor(Math.random() * (index + 1));
+    temp = array[j];
+    array[j] = item;
+    array[index] = temp;
   });
-  return arr;
-}
+  return array;
+};
 
 const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
@@ -77,11 +82,11 @@ const travel = {
 };
 
 const createTravelInfo = (array, mock, count = 5) => {
-  for (let j = 0; j < mock.dates.length; j++) {
+  mock.dates.forEach(function (item, index) {
     const travelInfo = {
-      day: j,
-      data: mock.dates[j].toUpperCase(),
-      date: new Date(2020, 2, 18 + j),
+      day: index,
+      data: mock.dates[index].toUpperCase(),
+      date: new Date(2020, 2, 18 + index),
       waypoints: [],
     };
     const dateIndexStart = [];
@@ -98,13 +103,13 @@ const createTravelInfo = (array, mock, count = 5) => {
       }
       return 0;
     });
-    for (let i = 0; i < dateArray.length; i++) {
-      if (i % 2 === 0) {
-        dateIndexStart.push(i);
+    dateArray.forEach(function (dateItem, dateIndex) {
+      if (dateIndex % 2 === 0) {
+        dateIndexStart.push(dateIndex);
       } else {
-        dateIndexEnd.push(i);
+        dateIndexEnd.push(dateIndex);
       }
-    }
+    });
     for (let i = 0; i < count; i++) {
       const waypoint = {
         price: Math.round(Math.random() * 300),
@@ -122,7 +127,7 @@ const createTravelInfo = (array, mock, count = 5) => {
       travelInfo.waypoints.push(waypoint);
     }
     array.push(travelInfo);
-  }
+  });
   return array;
 };
 

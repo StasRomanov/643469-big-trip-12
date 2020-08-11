@@ -48,22 +48,22 @@ const renderWaypoint = (dayCount, waypointCount) => {
   render(trimEventItem, createSiteTripEvent(travelDays[dayCount].waypoints[waypointCount]));
   let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
   let lastEventOffer = eventOffer[eventOffer.length - 1];
-  for (let k = 0; k < travelDays[dayCount].waypoints[waypointCount].bonusOptions.length; k++) {
+  travelDays[dayCount].waypoints[waypointCount].bonusOptions.forEach(function (item, index) {
     let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
-    if (travelDays[dayCount].waypoints[waypointCount].bonusOptions[k].used && optionCount < 3) {
-      render(lastEventOffer, createSiteEventTitleTemplate(travelDays[dayCount].waypoints[waypointCount].bonusOptions[k]));
+    if (travelDays[dayCount].waypoints[waypointCount].bonusOptions[index].used && optionCount < 3) {
+      render(lastEventOffer, createSiteEventTitleTemplate(travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
     }
-  }
+  });
 };
 
 const renderDays = () => {
   render(sortFilterWrapper, createSiteDayListTemplate());
-  for (let j = 0; j < travelDays.length; j++) {
-    render(sortFilterWrapper.querySelector(`.trip-days`), createSiteDayItem(travelDays[j]));
-    for (let i = 0; i < travelDays[j].waypoints.length; i++) {
-      renderWaypoint(j, i);
-    }
-  }
+  travelDays.forEach(function (item, travelDaysIndex) {
+    render(sortFilterWrapper.querySelector(`.trip-days`), createSiteDayItem(item));
+    item.waypoints.forEach(function (value, waypointsIndex) {
+      renderWaypoint(travelDaysIndex, waypointsIndex);
+    });
+  });
 };
 
 renderFilter();
