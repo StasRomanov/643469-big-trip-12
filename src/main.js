@@ -23,23 +23,24 @@ const render = (wrapper, template, mode = `beforeend`) => {
   wrapper.insertAdjacentHTML(mode, template);
 };
 
-const renderNewWaypoint = () => {
-  render(sortFilterWrapper, createSiteWaypointTemplate(travelDays[0].waypoints[0]));
-  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
-  for (let bonusOption of travelDays[0].waypoints[0].bonusOptions) {
-    render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
-  }
-  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(travelDays[0].waypoints[0].description));
-  for (let photo of travelDays[0].waypoints[0].photos) {
-    render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
-  }
-};
-
 const renderFilter = () => {
   render(headerWrapper, createSiteMenuTemplate(travelDays), `afterbegin`);
   render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
   render(filterWrapper, createSiteFilterTemplate());
   render(sortFilterWrapper, createSiteSortFilterTemplate());
+};
+
+const renderNewWaypoint = (waypoint) => {
+  const {bonusOptions, photos, description} = waypoint;
+  render(sortFilterWrapper, createSiteWaypointTemplate(waypoint));
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
+  for (let bonusOption of bonusOptions) {
+    render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
+  }
+  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(description));
+  for (let photo of photos) {
+    render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
+  }
 };
 
 const renderWaypoint = (dayCount, waypointCount) => {
@@ -67,5 +68,5 @@ const renderDays = () => {
 };
 
 renderFilter();
-renderNewWaypoint();
+renderNewWaypoint(travelDays[0].waypoints[0]);
 renderDays();
