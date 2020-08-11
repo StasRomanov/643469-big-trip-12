@@ -3,9 +3,9 @@ let travelDays = [];
 const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 const getRandomDate = (count = 10) => {
-  let dateArr = [];
+  const dateArr = [];
   for (let i = 0; i < count * 2; i++) {
-    let currentDate = new Date();
+    const currentDate = new Date();
     currentDate.setHours(getRandomInteger(0, 23));
     currentDate.setMinutes(getRandomInteger(0, 60));
     dateArr.push(currentDate);
@@ -22,14 +22,14 @@ const msToTime = (timeInMs) => {
 };
 
 const getTimeDifference = (startTime, endTime) => {
-  let dateInMsA = Date.parse(startTime);
-  let dateInMsB = Date.parse(endTime);
-  let timeDifference = dateInMsB - dateInMsA;
+  const dateInMsA = Date.parse(startTime);
+  const dateInMsB = Date.parse(endTime);
+  const timeDifference = dateInMsB - dateInMsA;
   return msToTime(timeDifference);
 };
 
 function shuffle(array) {
-  let arr = array.slice();
+  const arr = array.slice();
   arr.sort(() => {
     return Math.random() - 0.5;
   });
@@ -78,18 +78,18 @@ const travel = {
 
 const createTravelInfo = (array, mock, count = 5) => {
   for (let j = 0; j < mock.dates.length; j++) {
-    let travelInfo = {
+    const travelInfo = {
       day: j,
       data: mock.dates[j].toUpperCase(),
       date: new Date(2020, 2, 18 + j),
       waypoints: [],
     };
-    let dateIndexStart = [];
-    let dateIndexEnd = [];
-    let dateArray = getRandomDate(count);
+    const dateIndexStart = [];
+    const dateIndexEnd = [];
+    const dateArray = getRandomDate(count);
     dateArray.sort(function (a, b) {
-      let dateInMsA = Date.parse(a);
-      let dateInMsB = Date.parse(b);
+      const dateInMsA = Date.parse(a);
+      const dateInMsB = Date.parse(b);
       if (dateInMsA > dateInMsB) {
         return 1;
       }
@@ -106,7 +106,7 @@ const createTravelInfo = (array, mock, count = 5) => {
       }
     }
     for (let i = 0; i < count; i++) {
-      let waypoint = {
+      const waypoint = {
         price: Math.round(Math.random() * 300),
         type: mock.type[getRandomInteger(0, mock.type.length - 1)],
         town: mock.town[getRandomInteger(0, mock.town.length - 1)],
