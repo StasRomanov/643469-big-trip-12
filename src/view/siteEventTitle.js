@@ -1,3 +1,5 @@
+import {createElement} from "../utilFunction";
+
 export const createSiteEventTitleTemplate = (option) => {
   const {name, price} = option;
   return `<li class="event__offer">
@@ -6,3 +8,26 @@ export const createSiteEventTitleTemplate = (option) => {
     &euro;&nbsp;<span class="event__offer-price">${price}</span>
  </li>`;
 };
+
+export default class SiteEventTitleTemplate {
+  constructor(option) {
+    this._element = null;
+    this._option = option;
+  }
+
+  getTemplate() {
+    return createSiteEventTitleTemplate(this._option);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

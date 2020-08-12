@@ -1,3 +1,5 @@
+import {createElement} from "../utilFunction";
+
 export const createSiteDayItem = (waypoint) => {
   const {day, date} = waypoint;
   const options = {
@@ -12,3 +14,26 @@ export const createSiteDayItem = (waypoint) => {
       <ul class="trip-events__list"></ul>
     </li>`;
 };
+
+export default class SiteDayItem {
+  constructor(waypoint) {
+    this._element = null;
+    this._waypoint = waypoint;
+  }
+
+  getTemplate() {
+    return createSiteDayItem(this._waypoint);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

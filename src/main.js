@@ -1,66 +1,62 @@
-import {createSiteDayListTemplate} from './view/siteDayList';
-import {createSiteFilterTemplate} from './view/siteFilter';
-import {createSiteFilterHeaderTemplate} from './view/siteFilterHeader';
-import {createSiteMenuTemplate} from './view/siteMenu';
-import {createSiteSortFilterTemplate} from './view/siteSortFilter';
-import {createSiteWaypointTemplate} from './view/siteWaypoint';
-import {createSiteWaypointDestinationTemplate} from './view/siteWaypointDestination';
-import {createSiteWaypointPriceTemplate} from './view/siteWaypointPrice';
-import {createSiteEventTemplate} from "./view/siteEvent";
-import {createEventPhotoTemplate} from "./view/siteEventPhoto";
-import {createSiteDayItem} from "./view/siteDayItem";
-import {createSiteTripEvent} from "./view/siteTripEvent";
-import {createSiteEventTitleTemplate} from "./view/siteEventTitle";
+import SiteMenu from "./view/siteMenu";
+import SiteFilterHeaderTemplate from "./view/siteFilterHeader";
+import SiteFilterTemplate from "./view/siteFilter";
+import SiteSortFilterTemplate from "./view/siteSortFilter";
+import SiteWaypointTemplate from "./view/siteWaypoint";
+import SiteWaypointPriceTemplate from "./view/siteWaypointPrice";
+import SiteEventTemplate from "./view/siteEvent";
+import SiteWaypointDestinationTemplate from "./view/siteWaypointDestination";
+import SiteEventPhotoTemplate from "./view/siteEventPhoto";
+import SiteTripEvent from "./view/siteTripEvent";
+import SiteEventTitleTemplate from "./view/siteEventTitle";
+import SiteDayListTemplate from "./view/siteDayList";
+import SiteDayItem from "./view/siteDayItem";
+import {renderElement} from "./utilFunction";
 import {travelDays} from "./utilData";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
 const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
-const filterWrapperHeading = filterWrapper.querySelector(`.trip-main__trip-controls h2`);
 const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 
-const render = (wrapper, template, mode = `beforeend`) => {
-  wrapper.insertAdjacentHTML(mode, template);
-};
-
 const renderFilter = () => {
-  render(headerWrapper, createSiteMenuTemplate(travelDays), `afterbegin`);
-  render(filterWrapperHeading, createSiteFilterHeaderTemplate(), `afterend`);
-  render(filterWrapper, createSiteFilterTemplate());
-  render(sortFilterWrapper, createSiteSortFilterTemplate());
+  renderElement(headerWrapper, new SiteMenu(travelDays).getElement(), `afterbegin`);
+  renderElement(filterWrapper, new SiteFilterHeaderTemplate().getElement());
+  renderElement(filterWrapper, new SiteFilterTemplate().getElement());
+  renderElement(sortFilterWrapper, new SiteSortFilterTemplate().getElement());
 };
 
 const renderNewWaypoint = (waypoint) => {
   const {bonusOptions, photos, description} = waypoint;
-  render(sortFilterWrapper, createSiteWaypointTemplate(waypoint));
-  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointPriceTemplate());
+  renderElement(sortFilterWrapper, new SiteWaypointTemplate(waypoint).getElement());
+  renderElement(mainWrapper.querySelector(`.trip-events__item`), new SiteWaypointPriceTemplate().getElement());
   for (let bonusOption of bonusOptions) {
-    render(mainWrapper.querySelector(`.event__available-offers`), createSiteEventTemplate(bonusOption));
+    renderElement(mainWrapper.querySelector(`.event__available-offers`), new SiteEventTemplate(bonusOption).getElement());
   }
-  render(mainWrapper.querySelector(`.trip-events__item`), createSiteWaypointDestinationTemplate(description));
+  renderElement(mainWrapper.querySelector(`.trip-events__item`), new SiteWaypointDestinationTemplate(description).getElement());
   for (let photo of photos) {
-    render(mainWrapper.querySelector(`.event__photos-tape`), createEventPhotoTemplate(photo));
+    renderElement(mainWrapper.querySelector(`.event__photos-tape`), new SiteEventPhotoTemplate(photo).getElement());
   }
 };
 
 const renderWaypoint = (dayCount, waypointCount) => {
   let trimEventItem = sortFilterWrapper.querySelectorAll(`.trip-events__list`);
   trimEventItem = trimEventItem[trimEventItem.length - 1];
-  render(trimEventItem, createSiteTripEvent(travelDays[dayCount].waypoints[waypointCount]));
+  renderElement(trimEventItem, new SiteTripEvent(travelDays[dayCount].waypoints[waypointCount]).getElement());
   let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
   let lastEventOffer = eventOffer[eventOffer.length - 1];
   travelDays[dayCount].waypoints[waypointCount].bonusOptions.forEach(function (item, index) {
     let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
     if (travelDays[dayCount].waypoints[waypointCount].bonusOptions[index].used && optionCount < 3) {
-      render(lastEventOffer, createSiteEventTitleTemplate(travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
+      renderElement(lastEventOffer, new SiteEventTitleTemplate(travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]).getElement());
     }
   });
 };
 
 const renderDays = () => {
-  render(sortFilterWrapper, createSiteDayListTemplate());
+  renderElement(sortFilterWrapper, new SiteDayListTemplate().getElement());
   travelDays.forEach(function (item, travelDaysIndex) {
-    render(sortFilterWrapper.querySelector(`.trip-days`), createSiteDayItem(item));
+    renderElement(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item).getElement());
     item.waypoints.forEach(function (value, waypointsIndex) {
       renderWaypoint(travelDaysIndex, waypointsIndex);
     });

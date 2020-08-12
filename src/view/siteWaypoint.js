@@ -1,3 +1,5 @@
+import {createElement} from "../utilFunction";
+
 export const createSiteWaypointTemplate = (waypoint) => {
   const {type, price} = waypoint;
   return `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -108,3 +110,26 @@ export const createSiteWaypointTemplate = (waypoint) => {
     </header>
   </form>`;
 };
+
+export default class SiteWaypointTemplate {
+  constructor(waypoint) {
+    this._element = null;
+    this._waypoint = waypoint;
+  }
+
+  getTemplate() {
+    return createSiteWaypointTemplate(this._waypoint);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
