@@ -43,7 +43,8 @@ const renderNewWaypoint = (waypoint) => {
 const renderWaypoint = (dayCount, waypointCount) => {
   let trimEventItem = sortFilterWrapper.querySelectorAll(`.trip-events__list`);
   trimEventItem = trimEventItem[trimEventItem.length - 1];
-  renderElement(trimEventItem, new SiteTripEvent(travelDays[dayCount].waypoints[waypointCount]).getElement());
+  // renderElement(trimEventItem, new SiteTripEvent(travelDays[dayCount].waypoints[waypointCount]).getElement());
+  renderWaypointMode(trimEventItem, travelDays[dayCount].waypoints[waypointCount]);
   let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
   let lastEventOffer = eventOffer[eventOffer.length - 1];
   travelDays[dayCount].waypoints[waypointCount].bonusOptions.forEach(function (item, index) {
@@ -67,13 +68,38 @@ const renderDays = () => {
   travelDays.forEach(function (item, travelDaysIndex) {
     renderElement(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item).getElement());
     item.waypoints.forEach(function (value, waypointsIndex) {
-      if (waypointsIndex === 0 && travelDaysIndex === 0) {
-        renderEditWaypoint(travelDays[travelDaysIndex].waypoints[waypointsIndex]);
-      } else {
+      // if (waypointsIndex === 0 && travelDaysIndex === 0) {
+      //   renderEditWaypoint(travelDays[travelDaysIndex].waypoints[waypointsIndex]);
+      // } else {
         renderWaypoint(travelDaysIndex, waypointsIndex);
-      }
+      // }
+      // renderWaypointMode(travelDaysIndex, waypointsIndex);
     });
   });
+};
+
+const renderWaypointMode = (wrapper, waypoint) => {
+  const waypointElement = new SiteTripEvent(waypoint);
+  const waypointEdit = new SiteEditEventTemplate(waypoint);
+
+  const replaceWaypointMode = (mode = `waypoint`) => {
+    if (mode === `edit`) {
+      wrapper.replaceChild(waypointEdit.getElement(), waypointElement.getElement());
+    }
+    if (mode === `waypoint`) {
+      wrapper.replaceChild(waypointElement.getElement(), waypointEdit.getElement());
+    }
+  };
+
+  waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceWaypointMode(`edit`);
+  });
+
+  waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceWaypointMode(`waypoint`);
+  });
+  console.log(waypointElement.getElement());
+  renderElement(wrapper, waypointElement.getElement());
 };
 
 renderFilter();
