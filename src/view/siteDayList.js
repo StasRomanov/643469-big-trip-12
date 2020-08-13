@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteDayListTemplate = () => `<ul class="trip-days"></ul>`;
+const createSiteDayListTemplate = () => `<ul class="trip-days"></ul>`;
 
 export default class SiteDayListTemplate {
   constructor() {

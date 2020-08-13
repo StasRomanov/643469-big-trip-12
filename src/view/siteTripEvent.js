@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteTripEvent = (waypoint) => {
+const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, price} = waypoint;
   const options = {
     hour: `numeric`,

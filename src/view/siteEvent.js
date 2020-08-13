@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteEventTemplate = (bonusOption) => {
+const createSiteEventTemplate = (bonusOption) => {
   const {name, price, used} = bonusOption;
   return `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${used ? `checked` : ``}>

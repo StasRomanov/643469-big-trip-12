@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteEventPhotoTemplate = (photo) => {
+const createSiteEventPhotoTemplate = (photo) => {
   return `<img class="event__photo" src="${photo}" alt="Event photo">`;
 };
 

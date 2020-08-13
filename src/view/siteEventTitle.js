@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteEventTitleTemplate = (option) => {
+const createSiteEventTitleTemplate = (option) => {
   const {name, price} = option;
   return `<li class="event__offer">
     <span class="event__offer-title">${name}</span>

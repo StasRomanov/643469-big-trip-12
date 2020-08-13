@@ -1,5 +1,6 @@
 import {createElement} from '../utilFunction';
-export const createSiteMenuTemplate = (days) => {
+
+const createSiteMenuTemplate = (days) => {
   let allMoney = 0;
   for (let day of days) {
     for (let waypoint of day.waypoints) {

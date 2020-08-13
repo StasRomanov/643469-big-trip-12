@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteDayItem = (waypoint) => {
+const createSiteDayItem = (waypoint) => {
   const {day, date} = waypoint;
   const options = {
     month: `short`,

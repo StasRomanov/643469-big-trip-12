@@ -1,6 +1,6 @@
 import {createElement} from "../utilFunction";
 
-export const createSiteWaypointTemplate = (waypoint) => {
+const createSiteWaypointTemplate = (waypoint) => {
   const {type, price} = waypoint;
   return `<form class="trip-events__item  event  event--edit" action="#" method="post">
     <header class="event__header">

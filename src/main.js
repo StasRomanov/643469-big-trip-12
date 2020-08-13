@@ -8,8 +8,10 @@ import SiteTripEvent from "./view/siteTripEvent";
 import SiteEventTitleTemplate from "./view/siteEventTitle";
 import SiteDayListTemplate from "./view/siteDayList";
 import SiteDayItem from "./view/siteDayItem";
+import {RenderPosition} from "./const";
 import {render} from "./utilFunction";
 import {travelDays} from "./utilData";
+import {WaypointMode} from "./const";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
@@ -17,7 +19,7 @@ const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
 const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 
 const renderFilter = () => {
-  render(headerWrapper, new SiteMenu(travelDays).getElement(), `afterbegin`);
+  render(headerWrapper, new SiteMenu(travelDays).getElement(), RenderPosition.AFTERBEGIN);
   render(filterWrapper, new SiteFilterHeaderTemplate().getElement());
   render(filterWrapper, new SiteFilterTemplate().getElement());
   render(sortFilterWrapper, new SiteSortFilterTemplate().getElement());
@@ -51,8 +53,8 @@ const renderWaypointMode = (wrapper, waypoint) => {
   const waypointElement = new SiteTripEvent(waypoint);
   const waypointEdit = new SiteEditEventTemplate(waypoint);
 
-  const replaceWaypointMode = (mode = `waypoint`) => {
-    if (mode === `edit`) {
+  const replaceWaypointMode = (mode = WaypointMode.VIEW) => {
+    if (mode === WaypointMode.EDIT) {
       wrapper.replaceChild(waypointEdit.getElement(), waypointElement.getElement());
       const {bonusOptions} = waypoint;
       const bonusOptionWrapper = mainWrapper.querySelector(`.event__available-offers`);
@@ -61,17 +63,17 @@ const renderWaypointMode = (wrapper, waypoint) => {
         render(bonusOptionWrapper, new SiteEventTemplate(bonusOption).getElement());
       }
     }
-    if (mode === `waypoint`) {
+    if (mode === WaypointMode.VIEW) {
       wrapper.replaceChild(waypointElement.getElement(), waypointEdit.getElement());
     }
   };
 
   waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replaceWaypointMode(`edit`);
+    replaceWaypointMode(WaypointMode.EDIT);
   });
 
   waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replaceWaypointMode(`waypoint`);
+    replaceWaypointMode(WaypointMode.VIEW);
   });
   render(wrapper, waypointElement.getElement());
 };
