@@ -1,4 +1,6 @@
-export const createSiteTripEvent = (waypoint) => {
+import {createElement} from "../utilFunction";
+
+const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, price} = waypoint;
   const options = {
     hour: `numeric`,
@@ -34,3 +36,26 @@ export const createSiteTripEvent = (waypoint) => {
     </div>
   </li>`;
 };
+
+export default class SiteTripEvent {
+  constructor(waypoint) {
+    this._element = null;
+    this._waypoint = waypoint;
+  }
+
+  getTemplate() {
+    return createSiteTripEvent(this._waypoint);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

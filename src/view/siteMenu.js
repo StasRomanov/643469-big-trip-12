@@ -1,4 +1,6 @@
-export const createSiteMenuTemplate = (days) => {
+import {createElement} from '../utilFunction';
+
+const createSiteMenuTemplate = (days) => {
   let allMoney = 0;
   for (let day of days) {
     for (let waypoint of day.waypoints) {
@@ -15,3 +17,26 @@ export const createSiteMenuTemplate = (days) => {
       </p>
   </section>`;
 };
+
+export default class SiteMenu {
+  constructor(days) {
+    this._element = null;
+    this._days = days;
+  }
+
+  getTemplate() {
+    return createSiteMenuTemplate(this._days);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -2,10 +2,12 @@ let travelDays = [];
 
 const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
-const getRandomDate = (count = 10) => {
+const getRandomDate = (day, count = 10) => {
   const dateArr = [];
   for (let i = 0; i < count * 2; i++) {
     const currentDate = new Date();
+    currentDate.setMonth(3);
+    currentDate.setDate(18 + day);
     currentDate.setHours(getRandomInteger(0, 23));
     currentDate.setMinutes(getRandomInteger(0, 60));
     dateArr.push(currentDate);
@@ -91,7 +93,7 @@ const createTravelInfo = (array, mock, count = 5) => {
     };
     const dateIndexStart = [];
     const dateIndexEnd = [];
-    const dateArray = getRandomDate(count);
+    const dateArray = getRandomDate(index, count);
     dateArray.sort(function (a, b) {
       const dateInMsA = Date.parse(a);
       const dateInMsB = Date.parse(b);
@@ -112,6 +114,7 @@ const createTravelInfo = (array, mock, count = 5) => {
     });
     for (let i = 0; i < count; i++) {
       const waypoint = {
+        important: getRandomBoolean(),
         price: Math.round(Math.random() * 300),
         type: mock.type[getRandomInteger(0, mock.type.length - 1)],
         town: mock.town[getRandomInteger(0, mock.town.length - 1)],
