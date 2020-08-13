@@ -2,6 +2,7 @@ import SiteMenu from "./view/siteMenu";
 import SiteFilterHeaderTemplate from "./view/siteFilterHeader";
 import SiteFilterTemplate from "./view/siteFilter";
 import SiteSortFilterTemplate from "./view/siteSortFilter";
+import SiteEditEventTemplate from "./view/siteEditEvent";
 import SiteWaypointTemplate from "./view/siteWaypoint";
 import SiteWaypointPriceTemplate from "./view/siteWaypointPrice";
 import SiteEventTemplate from "./view/siteEvent";
@@ -53,16 +54,28 @@ const renderWaypoint = (dayCount, waypointCount) => {
   });
 };
 
+const renderEditWaypoint = (waypoint) => {
+  const {bonusOptions} = waypoint;
+  renderElement(sortFilterWrapper.querySelector(`.trip-events__list`), new SiteEditEventTemplate(waypoint).getElement());
+  for (let bonusOption of bonusOptions) {
+    renderElement(mainWrapper.querySelector(`.event__available-offers`), new SiteEventTemplate(bonusOption).getElement());
+  }
+};
+
 const renderDays = () => {
   renderElement(sortFilterWrapper, new SiteDayListTemplate().getElement());
   travelDays.forEach(function (item, travelDaysIndex) {
     renderElement(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item).getElement());
     item.waypoints.forEach(function (value, waypointsIndex) {
-      renderWaypoint(travelDaysIndex, waypointsIndex);
+      if (waypointsIndex === 0 && travelDaysIndex === 0) {
+        renderEditWaypoint(travelDays[travelDaysIndex].waypoints[waypointsIndex]);
+      } else {
+        renderWaypoint(travelDaysIndex, waypointsIndex);
+      }
     });
   });
 };
 
 renderFilter();
-renderNewWaypoint(travelDays[0].waypoints[0]);
+// renderNewWaypoint(travelDays[0].waypoints[0]);
 renderDays();
