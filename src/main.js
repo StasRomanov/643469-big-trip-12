@@ -12,6 +12,8 @@ import {RenderPosition} from "./const";
 import {render} from "./utilFunction";
 import {travelDays} from "./utilData";
 import {WaypointMode} from "./const";
+import {MouseKey} from "./const";
+import {KeyboardKey} from "./const";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
@@ -68,13 +70,48 @@ const renderWaypointMode = (wrapper, waypoint) => {
     }
   };
 
-  waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replaceWaypointMode(WaypointMode.EDIT);
-  });
+  const editModeListener = () => {
+    waypointElement.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointElementClick);
+    waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointEditClick);
+    waypointEdit.getElement().addEventListener(`submit`, onWaypointEditSubmit);
+    document.addEventListener(`keydown`, onDocumentKeydown);
+  };
 
-  waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  const normalModeListener = () => {
+    waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
+    waypointEdit.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointEditClick);
+    waypointEdit.getElement().removeEventListener(`submit`, onWaypointEditSubmit);
+    document.removeEventListener(`keydown`, onDocumentKeydown);
+  };
+
+  const onWaypointElementClick = function (evt) {
+    if (evt.button === MouseKey.LEFT) {
+      replaceWaypointMode(WaypointMode.EDIT);
+      editModeListener();
+    }
+  };
+
+  const onWaypointEditClick = function (evt) {
+    if (evt.button === MouseKey.LEFT) {
+      replaceWaypointMode(WaypointMode.VIEW);
+      normalModeListener();
+    }
+  };
+
+  const onWaypointEditSubmit = function (evt) {
+    evt.preventDefault();
     replaceWaypointMode(WaypointMode.VIEW);
-  });
+    normalModeListener();
+  };
+
+  const onDocumentKeydown = function (evt) {
+    if (evt.code === KeyboardKey.ESCAPE) {
+      replaceWaypointMode(WaypointMode.VIEW);
+      normalModeListener();
+    }
+  };
+
+  waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
   render(wrapper, waypointElement.getElement());
 };
 
