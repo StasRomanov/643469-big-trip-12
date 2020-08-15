@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteFilterHeaderTemplate = () => {
   return `<nav class="trip-controls__trip-tabs  trip-tabs">
@@ -7,24 +7,8 @@ const createSiteFilterHeaderTemplate = () => {
   </nav>`;
 };
 
-export default class SiteFilterHeaderTemplate {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SiteFilterHeaderTemplate extends Abstract {
   getTemplate() {
     return createSiteFilterHeaderTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

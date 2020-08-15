@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteWaypointPriceTemplate = () =>
   `<section class="event__details">
@@ -9,24 +9,8 @@ const createSiteWaypointPriceTemplate = () =>
     </section>
   </section>`;
 
-export default class SiteWaypointPriceTemplate {
-  constructor() {
-    this._element = null;
-  }
-
+export default class SiteWaypointPriceTemplate extends Abstract {
   getTemplate() {
     return createSiteWaypointPriceTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

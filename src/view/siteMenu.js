@@ -1,4 +1,4 @@
-import {createElement} from '../utilFunction';
+import Abstract from "./abstract";
 
 const createSiteMenuTemplate = (days) => {
   let allMoney = 0;
@@ -18,25 +18,13 @@ const createSiteMenuTemplate = (days) => {
   </section>`;
 };
 
-export default class SiteMenu {
+export default class SiteMenu extends Abstract {
   constructor(days) {
-    this._element = null;
+    super();
     this._days = days;
   }
 
   getTemplate() {
     return createSiteMenuTemplate(this._days);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

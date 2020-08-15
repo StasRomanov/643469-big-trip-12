@@ -9,9 +9,9 @@ import SiteEventTitleTemplate from "./view/siteEventTitle";
 import SiteDayListTemplate from "./view/siteDayList";
 import SiteDayItem from "./view/siteDayItem";
 import SiteNoWaypointMessage from "./view/siteNoWaypointMessage";
-import {render} from "./utilFunction";
-import {travelDays} from "./utilData";
-import {MouseKey, KeyboardKey, WaypointMode, RenderPosition} from "./const";
+import {render} from "./mock/utilFunction";
+import {travelDays} from "./mock/utilData";
+import {KeyboardKey, MouseKey, RenderPosition, WaypointMode} from "./const";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);

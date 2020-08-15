@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteDayItem = (waypoint) => {
   const {day, date} = waypoint;
@@ -15,25 +15,13 @@ const createSiteDayItem = (waypoint) => {
     </li>`;
 };
 
-export default class SiteDayItem {
+export default class SiteDayItem extends Abstract {
   constructor(waypoint) {
-    this._element = null;
+    super();
     this._waypoint = waypoint;
   }
 
   getTemplate() {
     return createSiteDayItem(this._waypoint);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

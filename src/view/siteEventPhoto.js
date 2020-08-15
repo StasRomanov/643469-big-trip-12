@@ -1,28 +1,16 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteEventPhotoTemplate = (photo) => {
   return `<img class="event__photo" src="${photo}" alt="Event photo">`;
 };
 
-export default class SiteEventPhotoTemplate {
+export default class SiteEventPhotoTemplate extends Abstract {
   constructor(photo) {
-    this._element = null;
+    super();
     this._photo = photo;
   }
 
   getTemplate() {
     return createSiteEventPhotoTemplate(this._photo);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

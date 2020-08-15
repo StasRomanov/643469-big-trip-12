@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, price, startTime, endTime, important} = waypoint;
@@ -130,25 +130,13 @@ const createSiteEditEventTemplate = (waypoint) => {
   </form>`;
 };
 
-export default class SiteEditEventTemplate {
+export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
-    this._element = null;
+    super();
     this._waypoint = waypoint;
   }
 
   getTemplate() {
     return createSiteEditEventTemplate(this._waypoint);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

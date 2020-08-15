@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteWaypointTemplate = (waypoint) => {
   const {type, price} = waypoint;
@@ -111,25 +111,13 @@ const createSiteWaypointTemplate = (waypoint) => {
   </form>`;
 };
 
-export default class SiteWaypointTemplate {
+export default class SiteWaypointTemplate extends Abstract {
   constructor(waypoint) {
-    this._element = null;
+    super();
     this._waypoint = waypoint;
   }
 
   getTemplate() {
     return createSiteWaypointTemplate(this._waypoint);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
