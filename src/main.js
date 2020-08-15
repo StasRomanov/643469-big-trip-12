@@ -75,37 +75,35 @@ const renderWaypointMode = (wrapper, waypoint) => {
   };
 
   const setEditModeListener = () => {
-    waypointElement.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointElementClick);
-    waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointEditClick);
-    waypointEdit.getElement().addEventListener(`submit`, onWaypointEditSubmit);
+    waypointElement.setRollupButtonClickHandler(() => {
+      replaceWaypointMode(WaypointMode.EDIT);
+      setEditModeListener();
+    });
+    waypointEdit.setRollupButtonClickHandler(() => {
+      replaceWaypointMode(WaypointMode.VIEW);
+      setNormalModeListener();
+    });
+    waypointEdit.setFormSubmitHandler(() => {
+      replaceWaypointMode(WaypointMode.VIEW);
+      setNormalModeListener();
+    });
     document.addEventListener(`keydown`, onDocumentKeydown);
   };
 
   const setNormalModeListener = () => {
-    waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
-    waypointEdit.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointEditClick);
-    waypointEdit.getElement().removeEventListener(`submit`, onWaypointEditSubmit);
-    document.removeEventListener(`keydown`, onDocumentKeydown);
-  };
-
-  const onWaypointElementClick = function (evt) {
-    if (evt.button === MouseKey.LEFT) {
+    waypointElement.setRollupButtonClickHandler(() => {
       replaceWaypointMode(WaypointMode.EDIT);
       setEditModeListener();
-    }
-  };
-
-  const onWaypointEditClick = function (evt) {
-    if (evt.button === MouseKey.LEFT) {
+    });
+    waypointEdit.removeRollupButtonClickHandler(() => {
       replaceWaypointMode(WaypointMode.VIEW);
       setNormalModeListener();
-    }
-  };
-
-  const onWaypointEditSubmit = function (evt) {
-    evt.preventDefault();
-    replaceWaypointMode(WaypointMode.VIEW);
-    setNormalModeListener();
+    });
+    waypointEdit.removeFormSubmitHandler(() => {
+      replaceWaypointMode(WaypointMode.VIEW);
+      setNormalModeListener();
+    });
+    document.removeEventListener(`keydown`, onDocumentKeydown);
   };
 
   const onDocumentKeydown = function (evt) {
@@ -115,7 +113,10 @@ const renderWaypointMode = (wrapper, waypoint) => {
     }
   };
 
-  waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
+  waypointElement.setRollupButtonClickHandler(() => {
+    replaceWaypointMode(WaypointMode.EDIT);
+    setEditModeListener();
+  });
   render(wrapper, waypointElement.getElement());
 };
 

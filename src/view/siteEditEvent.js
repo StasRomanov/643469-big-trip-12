@@ -1,4 +1,5 @@
 import Abstract from "./abstract";
+import {MouseKey} from "../const";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, price, startTime, endTime, important} = waypoint;
@@ -134,9 +135,43 @@ export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
     super();
     this._waypoint = waypoint;
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
+
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  _rollupButtonClickHandler(evt) {
+    if (evt.button === MouseKey.LEFT) {
+      this._callback.rollupButtonClick();
+    }
   }
 
   getTemplate() {
     return createSiteEditEventTemplate(this._waypoint);
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  setRollupButtonClickHandler(callback) {
+    this._callback.rollupButtonClick = callback;
+    this.getElement().addEventListener(`click`, this._rollupButtonClickHandler);
+  }
+
+  removeFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().removeEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  removeRollupButtonClickHandler(callback) {
+    this._callback.rollupButtonClick = callback;
+    this.getElement().removeEventListener(`click`, this._rollupButtonClickHandler);
   }
 }

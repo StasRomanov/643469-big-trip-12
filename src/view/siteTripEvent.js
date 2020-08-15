@@ -1,4 +1,5 @@
 import Abstract from "./abstract";
+import SiteEditEventTemplate from "./siteEditEvent";
 
 const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, price} = waypoint;
@@ -37,7 +38,7 @@ const createSiteTripEvent = (waypoint) => {
   </li>`;
 };
 
-export default class SiteTripEvent extends Abstract {
+export default class SiteTripEvent extends SiteEditEventTemplate {
   constructor(waypoint) {
     super();
     this._waypoint = waypoint;
