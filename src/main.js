@@ -74,14 +74,14 @@ const renderWaypointMode = (wrapper, waypoint) => {
     }
   };
 
-  const editModeListener = () => {
+  const setEditModeListener = () => {
     waypointElement.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointElementClick);
     waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointEditClick);
     waypointEdit.getElement().addEventListener(`submit`, onWaypointEditSubmit);
     document.addEventListener(`keydown`, onDocumentKeydown);
   };
 
-  const normalModeListener = () => {
+  const setNormalModeListener = () => {
     waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
     waypointEdit.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointEditClick);
     waypointEdit.getElement().removeEventListener(`submit`, onWaypointEditSubmit);
@@ -91,27 +91,27 @@ const renderWaypointMode = (wrapper, waypoint) => {
   const onWaypointElementClick = function (evt) {
     if (evt.button === MouseKey.LEFT) {
       replaceWaypointMode(WaypointMode.EDIT);
-      editModeListener();
+      setEditModeListener();
     }
   };
 
   const onWaypointEditClick = function (evt) {
     if (evt.button === MouseKey.LEFT) {
       replaceWaypointMode(WaypointMode.VIEW);
-      normalModeListener();
+      setNormalModeListener();
     }
   };
 
   const onWaypointEditSubmit = function (evt) {
     evt.preventDefault();
     replaceWaypointMode(WaypointMode.VIEW);
-    normalModeListener();
+    setNormalModeListener();
   };
 
   const onDocumentKeydown = function (evt) {
     if (evt.code === KeyboardKey.ESCAPE) {
       replaceWaypointMode(WaypointMode.VIEW);
-      normalModeListener();
+      setNormalModeListener();
     }
   };
 
