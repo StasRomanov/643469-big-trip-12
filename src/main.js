@@ -9,12 +9,9 @@ import SiteEventTitleTemplate from "./view/siteEventTitle";
 import SiteDayListTemplate from "./view/siteDayList";
 import SiteDayItem from "./view/siteDayItem";
 import SiteNoWaypointMessage from "./view/siteNoWaypointMessage";
-import {RenderPosition} from "./const";
 import {render} from "./utilFunction";
 import {travelDays} from "./utilData";
-import {WaypointMode} from "./const";
-import {MouseKey} from "./const";
-import {KeyboardKey} from "./const";
+import {MouseKey, KeyboardKey, WaypointMode, RenderPosition} from "./const";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
