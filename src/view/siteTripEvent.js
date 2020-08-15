@@ -1,4 +1,3 @@
-import Abstract from "./abstract";
 import SiteEditEventTemplate from "./siteEditEvent";
 
 const createSiteTripEvent = (waypoint) => {

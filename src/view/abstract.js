@@ -1,4 +1,4 @@
-import {createElement} from "../mock/utilFunction";
+import {createElement} from "../util/renderFunction";
 
 export default class Abstract {
   constructor() {

@@ -9,9 +9,9 @@ import SiteEventTitleTemplate from "./view/siteEventTitle";
 import SiteDayListTemplate from "./view/siteDayList";
 import SiteDayItem from "./view/siteDayItem";
 import SiteNoWaypointMessage from "./view/siteNoWaypointMessage";
-import {render} from "./mock/utilFunction";
-import {travelDays} from "./mock/utilData";
-import {KeyboardKey, MouseKey, RenderPosition, WaypointMode} from "./const";
+import {render, replace} from "./util/renderFunction";
+import {travelDays} from "./mock/data";
+import {KeyboardKey, RenderPosition, WaypointMode} from "./const";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
@@ -19,11 +19,11 @@ const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
 const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 
 const renderFilter = (days) => {
-  render(headerWrapper, new SiteMenu(travelDays).getElement(), RenderPosition.AFTERBEGIN);
-  render(filterWrapper, new SiteFilterHeaderTemplate().getElement());
-  render(filterWrapper, new SiteFilterTemplate().getElement());
+  render(headerWrapper, new SiteMenu(travelDays), RenderPosition.AFTERBEGIN);
+  render(filterWrapper, new SiteFilterHeaderTemplate());
+  render(filterWrapper, new SiteFilterTemplate());
   if (days.length > 0) {
-    render(sortFilterWrapper, new SiteSortFilterTemplate().getElement());
+    render(sortFilterWrapper, new SiteSortFilterTemplate());
   }
 };
 
@@ -36,22 +36,22 @@ const renderWaypoint = (dayCount, waypointCount) => {
   travelDays[dayCount].waypoints[waypointCount].bonusOptions.forEach(function (item, index) {
     let optionCount = lastEventOffer.querySelectorAll(`.event__offer`).length;
     if (travelDays[dayCount].waypoints[waypointCount].bonusOptions[index].used && optionCount < 3) {
-      render(lastEventOffer, new SiteEventTitleTemplate(travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]).getElement());
+      render(lastEventOffer, new SiteEventTitleTemplate(travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
     }
   });
 };
 
 const renderDays = () => {
-  render(sortFilterWrapper, new SiteDayListTemplate().getElement());
+  render(sortFilterWrapper, new SiteDayListTemplate());
   if (travelDays.length > 0) {
     travelDays.forEach(function (item, travelDaysIndex) {
-      render(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item).getElement());
+      render(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item));
       item.waypoints.forEach(function (value, waypointsIndex) {
         renderWaypoint(travelDaysIndex, waypointsIndex);
       });
     });
   } else {
-    render(sortFilterWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage().getElement());
+    render(sortFilterWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
   }
 };
 
@@ -61,16 +61,16 @@ const renderWaypointMode = (wrapper, waypoint) => {
 
   const replaceWaypointMode = (mode = WaypointMode.VIEW) => {
     if (mode === WaypointMode.EDIT) {
-      wrapper.replaceChild(waypointEdit.getElement(), waypointElement.getElement());
+      replace(waypointEdit, waypointElement);
       const {bonusOptions} = waypoint;
       const bonusOptionWrapper = mainWrapper.querySelector(`.event__available-offers`);
       bonusOptionWrapper.innerHTML = ``;
       for (let bonusOption of bonusOptions) {
-        render(bonusOptionWrapper, new SiteEventTemplate(bonusOption).getElement());
+        render(bonusOptionWrapper, new SiteEventTemplate(bonusOption));
       }
     }
     if (mode === WaypointMode.VIEW) {
-      wrapper.replaceChild(waypointElement.getElement(), waypointEdit.getElement());
+      replace(waypointElement, waypointEdit);
     }
   };
 
@@ -117,7 +117,7 @@ const renderWaypointMode = (wrapper, waypoint) => {
     replaceWaypointMode(WaypointMode.EDIT);
     setEditModeListener();
   });
-  render(wrapper, waypointElement.getElement());
+  render(wrapper, waypointElement);
 };
 
 renderFilter(travelDays);

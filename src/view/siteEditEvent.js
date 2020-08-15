@@ -162,7 +162,7 @@ export default class SiteEditEventTemplate extends Abstract {
 
   setRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
-    this.getElement().addEventListener(`click`, this._rollupButtonClickHandler);
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
   }
 
   removeFormSubmitHandler(callback) {
@@ -172,6 +172,6 @@ export default class SiteEditEventTemplate extends Abstract {
 
   removeRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
-    this.getElement().removeEventListener(`click`, this._rollupButtonClickHandler);
+    this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
   }
 }
