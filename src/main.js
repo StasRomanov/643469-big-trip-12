@@ -8,21 +8,23 @@ import SiteTripEvent from "./view/siteTripEvent";
 import SiteEventTitleTemplate from "./view/siteEventTitle";
 import SiteDayListTemplate from "./view/siteDayList";
 import SiteDayItem from "./view/siteDayItem";
-import {RenderPosition} from "./const";
+import SiteNoWaypointMessage from "./view/siteNoWaypointMessage";
 import {render} from "./utilFunction";
 import {travelDays} from "./utilData";
-import {WaypointMode} from "./const";
+import {MouseKey, KeyboardKey, WaypointMode, RenderPosition} from "./const";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
 const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
 const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 
-const renderFilter = () => {
+const renderFilter = (days) => {
   render(headerWrapper, new SiteMenu(travelDays).getElement(), RenderPosition.AFTERBEGIN);
   render(filterWrapper, new SiteFilterHeaderTemplate().getElement());
   render(filterWrapper, new SiteFilterTemplate().getElement());
-  render(sortFilterWrapper, new SiteSortFilterTemplate().getElement());
+  if (days.length > 0) {
+    render(sortFilterWrapper, new SiteSortFilterTemplate().getElement());
+  }
 };
 
 const renderWaypoint = (dayCount, waypointCount) => {
@@ -41,12 +43,16 @@ const renderWaypoint = (dayCount, waypointCount) => {
 
 const renderDays = () => {
   render(sortFilterWrapper, new SiteDayListTemplate().getElement());
-  travelDays.forEach(function (item, travelDaysIndex) {
-    render(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item).getElement());
-    item.waypoints.forEach(function (value, waypointsIndex) {
-      renderWaypoint(travelDaysIndex, waypointsIndex);
+  if (travelDays.length > 0) {
+    travelDays.forEach(function (item, travelDaysIndex) {
+      render(sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item).getElement());
+      item.waypoints.forEach(function (value, waypointsIndex) {
+        renderWaypoint(travelDaysIndex, waypointsIndex);
+      });
     });
-  });
+  } else {
+    render(sortFilterWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage().getElement());
+  }
 };
 
 const renderWaypointMode = (wrapper, waypoint) => {
@@ -68,15 +74,50 @@ const renderWaypointMode = (wrapper, waypoint) => {
     }
   };
 
-  waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replaceWaypointMode(WaypointMode.EDIT);
-  });
+  const setEditModeListener = () => {
+    waypointElement.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointElementClick);
+    waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointEditClick);
+    waypointEdit.getElement().addEventListener(`submit`, onWaypointEditSubmit);
+    document.addEventListener(`keydown`, onDocumentKeydown);
+  };
 
-  waypointEdit.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  const setNormalModeListener = () => {
+    waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
+    waypointEdit.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, onWaypointEditClick);
+    waypointEdit.getElement().removeEventListener(`submit`, onWaypointEditSubmit);
+    document.removeEventListener(`keydown`, onDocumentKeydown);
+  };
+
+  const onWaypointElementClick = function (evt) {
+    if (evt.button === MouseKey.LEFT) {
+      replaceWaypointMode(WaypointMode.EDIT);
+      setEditModeListener();
+    }
+  };
+
+  const onWaypointEditClick = function (evt) {
+    if (evt.button === MouseKey.LEFT) {
+      replaceWaypointMode(WaypointMode.VIEW);
+      setNormalModeListener();
+    }
+  };
+
+  const onWaypointEditSubmit = function (evt) {
+    evt.preventDefault();
     replaceWaypointMode(WaypointMode.VIEW);
-  });
+    setNormalModeListener();
+  };
+
+  const onDocumentKeydown = function (evt) {
+    if (evt.code === KeyboardKey.ESCAPE) {
+      replaceWaypointMode(WaypointMode.VIEW);
+      setNormalModeListener();
+    }
+  };
+
+  waypointElement.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, onWaypointElementClick);
   render(wrapper, waypointElement.getElement());
 };
 
-renderFilter();
+renderFilter(travelDays);
 renderDays();
