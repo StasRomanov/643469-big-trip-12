@@ -78,8 +78,8 @@ const createTravelInfo = (array, mock, count = 5) => {
         endTime: dateArray[dateIndexEnd[i]],
         photos: shuffle(mock.photo).slice(0, getRandomInteger(1, mock.photo.length)),
         description: shuffle(mock.description).slice(0, 5),
-        bonusOptions: shuffle(mock.bonusOption).map((item) => {
-          return {name: item.name, price: item.price, used: getRandomBoolean()};
+        bonusOptions: shuffle(mock.bonusOption).map((bonusOptionsItem) => {
+          return {name: bonusOptionsItem.name, price: bonusOptionsItem.price, used: getRandomBoolean()};
         })
       };
       waypoint.differenceTime = getTimeDifference(waypoint.startTime, waypoint.endTime).toUpperCase();
