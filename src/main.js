@@ -12,6 +12,7 @@ import SiteNoWaypointMessage from "./view/siteNoWaypointMessage";
 import {render, replace} from "./util/renderFunction";
 import {travelDays} from "./mock/data";
 import {KeyboardKey, RenderPosition, WaypointMode} from "./const";
+import DayRender from "./presenter/travelDay";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
@@ -120,5 +121,9 @@ const renderWaypointMode = (wrapper, waypoint) => {
   render(wrapper, waypointElement);
 };
 
-renderFilter(travelDays);
-renderDays();
+// renderFilter(travelDays);
+// renderDays();
+
+const renderDemo = new DayRender();
+
+renderDemo.init(travelDays);
