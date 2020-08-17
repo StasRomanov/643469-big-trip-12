@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteWaypointDestinationTemplate = (description) => {
   return `<section class="event__section  event__section--destination">
@@ -10,25 +10,13 @@ const createSiteWaypointDestinationTemplate = (description) => {
   </section>`;
 };
 
-export default class SiteWaypointDestinationTemplate {
+export default class SiteWaypointDestinationTemplate extends Abstract {
   constructor(description) {
-    this._element = null;
+    super();
     this._description = description;
   }
 
   getTemplate() {
     return createSiteWaypointDestinationTemplate(this._description);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

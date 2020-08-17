@@ -1,4 +1,4 @@
-import {createElement} from "../utilFunction";
+import Abstract from "./abstract";
 
 const createSiteEventTemplate = (bonusOption) => {
   const {name, price, used} = bonusOption;
@@ -12,25 +12,13 @@ const createSiteEventTemplate = (bonusOption) => {
   </div>`;
 };
 
-export default class SiteEventTemplate {
+export default class SiteEventTemplate extends Abstract {
   constructor(bonusOption) {
-    this._element = null;
+    super();
     this._bonusOption = bonusOption;
   }
 
   getTemplate() {
     return createSiteEventTemplate(this._bonusOption);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
