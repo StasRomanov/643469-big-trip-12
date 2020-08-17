@@ -1,11 +1,11 @@
 import {travelDays} from "./mock/data";
-import TravelDaysList from "./presenter/travelDay";
+import TravelDaysList from "./presenter/travel-day";
 import {RenderPosition} from "./const";
-import SiteMenu from "./view/siteMenu";
-import {render} from "./util/renderFunction";
-import SiteFilterHeaderTemplate from "./view/siteFilterHeader";
-import SiteFilterTemplate from "./view/siteFilter";
-import SiteSortFilterTemplate from "./view/siteSortFilter";
+import SiteMenu from "./view/site-menu";
+import {render} from "./util/render-function";
+import SiteFilterHeaderTemplate from "./view/site-filter-header";
+import SiteFilterTemplate from "./view/site-filter";
+import SiteSortFilterTemplate from "./view/site-sort-filter";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);

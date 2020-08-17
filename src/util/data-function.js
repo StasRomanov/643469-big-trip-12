@@ -16,9 +16,9 @@ export const getRandomDate = (day, count = 10) => {
 export const msToTime = (timeInMs) => {
   let minutes = parseInt((timeInMs / (1000 * 60)) % 60, 10);
   let hours = parseInt((timeInMs / (1000 * 60 * 60)) % 24, 10);
-  hours = (hours < 10) ? `0` + hours : hours;
-  minutes = (minutes < 10) ? `0` + minutes : minutes;
-  return `${hours > 0 ? hours + `h` : ``} ${minutes > 0 ? minutes + `m` : ``}`;
+  hours = (hours < 10) ? `0${hours}` : hours;
+  minutes = (minutes < 10) ? `0${minutes}` : minutes;
+  return `${hours > 0 ? `${hours}h` : ``} ${minutes > 0 ? `${minutes}m` : ``}`;
 };
 
 export const getTimeDifference = (startTime, endTime) => {

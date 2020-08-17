@@ -1,4 +1,4 @@
-import SiteEditEventTemplate from "./siteEditEvent";
+import SiteEditEventTemplate from "./site-edit-event";
 
 const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, price} = waypoint;

@@ -1,4 +1,4 @@
-import {getRandomBoolean, getRandomDate, getRandomInteger, getTimeDifference, shuffle} from "../util/dataFunction";
+import {getRandomBoolean, getRandomDate, getRandomInteger, getTimeDifference, shuffle} from "../util/data-function";
 
 let travelDays = [];
 const travel = {
