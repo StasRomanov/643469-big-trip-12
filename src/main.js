@@ -6,11 +6,12 @@ import {render} from "./util/render-function";
 import SiteFilterHeaderTemplate from "./view/site-filter-header";
 import SiteFilterTemplate from "./view/site-filter";
 import SiteSortFilterTemplate from "./view/site-sort-filter";
+import {offerSort} from "./mock/filter-data";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
 const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
-const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
+export const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 const renderDemo = new TravelDaysList();
 
 const renderFilter = (days) => {
