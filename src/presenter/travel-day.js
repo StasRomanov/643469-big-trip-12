@@ -14,7 +14,7 @@ import {priceSort, timeSort} from "../mock/filter-data";
 export default class TravelDaysList {
   constructor() {
     this._mainWrapper = document.querySelector(`.page-main`);
-    this._sortFilterWrapper = this._mainWrapper.querySelector(`.trip-events`);
+    this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
   }
 
   init(travelDays) {
@@ -26,11 +26,11 @@ export default class TravelDaysList {
     if (!this._travelDays.length) {
       this._noWaypointRender();
     } else {
-      render(this._sortFilterWrapper, new SiteSortFilterTemplate());
-      render(this._sortFilterWrapper, new SiteDayListTemplate());
+      render(this._sortWrapper, new SiteSortFilterTemplate());
+      render(this._sortWrapper, new SiteDayListTemplate());
       this._setSortListener();
       this._travelDays.forEach((item, travelDaysIndex) => {
-        render(this._sortFilterWrapper.querySelector(`.trip-days`), new SiteDayItem(item));
+        render(this._sortWrapper.querySelector(`.trip-days`), new SiteDayItem(item));
         item.waypoints.forEach((value, waypointsIndex) => {
           this._renderWaypoint(travelDaysIndex, waypointsIndex);
         });
@@ -104,7 +104,7 @@ export default class TravelDaysList {
   }
 
   _renderWaypoint(dayCount, waypointCount) {
-    let trimEventItem = this._sortFilterWrapper.querySelectorAll(`.trip-events__list`);
+    let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
     trimEventItem = trimEventItem[trimEventItem.length - 1];
     this._renderWaypointMode(trimEventItem, this._travelDays[dayCount].waypoints[waypointCount]);
     let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
@@ -113,7 +113,7 @@ export default class TravelDaysList {
   }
 
   _noWaypointRender() {
-    render(this._sortFilterWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
+    render(this._sortWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
   }
 
   _renderBonusOption(index, dayCount, waypointCount) {
@@ -124,45 +124,32 @@ export default class TravelDaysList {
   }
 
   _setSortListener() {
-    this._sortFilterWrapper.addEventListener(`change`, (evt) => {
-      this._onSortFilterWrapperChange(evt);
+    this._sortWrapper.addEventListener(`change`, (evt) => {
+      this._onSortWrapperChange(evt);
     });
   }
 
-  _onSortFilterWrapperChange(evt) {
+  _onSortWrapperChange(evt) {
     const target = evt.target;
     const targetType = target.id.split(`-`)[1];
 
     switch (targetType) {
       case `event`:
-        this._sortFilterWrapper.innerHTML = ``;
+        this._sortWrapper.innerHTML = ``;
         this._renderDay();
         break;
       case `time`:
-        this._renderFilterTime();
+        this._sort(timeSort);
         break;
       case `price`:
-        this._renderFilterPrice();
+        this._sort(priceSort);
         break;
     }
   }
 
-  _renderFilterTime() {
+  _sort(data) {
     this._clearWaypoint();
-    timeSort.forEach((value, index) => {
-      this._renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
-      value.bonusOptions.forEach((bonusOptionsValue) => {
-        const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
-        if (bonusOptionsValue.used && optionWrapper.childElementCount < 3) {
-          render(optionWrapper, new SiteEventTitleTemplate(bonusOptionsValue));
-        }
-      });
-    });
-  }
-
-  _renderFilterPrice() {
-    this._clearWaypoint();
-    priceSort.forEach((value, index) => {
+    data.forEach((value, index) => {
       this._renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
       value.bonusOptions.forEach((bonusOptionsValue) => {
         const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
@@ -174,8 +161,8 @@ export default class TravelDaysList {
   }
 
   _clearWaypoint() {
-    this._allDay = this._sortFilterWrapper.querySelectorAll(`.trip-days__item`);
-    this._sortFilterWrapper.querySelector(`.trip-sort__item--day`).textContent = ``;
+    this._allDay = this._sortWrapper.querySelectorAll(`.trip-days__item`);
+    this._sortWrapper.querySelector(`.trip-sort__item--day`).textContent = ``;
     this._allDay.forEach(((value, key) => {
       if (key > 0) {
         value.remove();
