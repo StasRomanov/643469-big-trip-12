@@ -107,8 +107,8 @@ const getOffersSortWaypoints = (waypoints) => {
   return sortWaypoints;
 };
 
-export const everythingWaypoints = shuffleWaypoints(travelDays);
-export const futureWaypoints = getFutureWaypoints(travelDays);
+// export const everythingWaypoints = shuffleWaypoints(travelDays);
+// export const futureWaypoints = getFutureWaypoints(travelDays);
 export const nameSort = getNameSortWaypoints(travelDays);
 export const timeSort = getTimeSortWaypoints(travelDays);
 export const priceSort = getPriceSortWaypoints(travelDays);
