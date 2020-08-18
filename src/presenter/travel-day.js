@@ -1,14 +1,13 @@
 import SiteTripEvent from "../view/site-trip-event";
 import SiteDayItem from "../view/site-day-item";
 import SiteNoWaypointMessage from "../view/site-no-waypoint-message";
-import {remove, render, replace} from "../util/render-function";
-import {KeyboardKey, RenderPosition, WaypointMode} from "../const";
+import {render, replace} from "../util/render-function";
+import {KeyboardKey, WaypointMode} from "../const";
 import SiteEditEventTemplate from "../view/site-edit-event";
 import SiteEventTemplate from "../view/site-event";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
-import {sortFilterWrapper} from "../main";
 import {priceSort, timeSort} from "../mock/filter-data";
 
 export default class TravelDaysList {

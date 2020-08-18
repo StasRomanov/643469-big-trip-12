@@ -5,7 +5,6 @@ import SiteMenu from "./view/site-menu";
 import {render} from "./util/render-function";
 import SiteFilterHeaderTemplate from "./view/site-filter-header";
 import SiteFilterTemplate from "./view/site-filter";
-import SiteSortFilterTemplate from "./view/site-sort-filter";
 
 const headerWrapper = document.querySelector(`.trip-main`);
 const mainWrapper = document.querySelector(`.page-main`);
