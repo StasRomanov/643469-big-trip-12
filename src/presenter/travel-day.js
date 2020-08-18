@@ -9,7 +9,7 @@ import SiteDayListTemplate from "../view/site-day-list";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
 import {sortFilterWrapper} from "../main";
-import {timeSort} from "../mock/filter-data";
+import {priceSort, timeSort} from "../mock/filter-data";
 
 export default class TravelDaysList {
   constructor() {
@@ -135,38 +135,56 @@ export default class TravelDaysList {
 
     switch (targetType) {
       case `event`:
-        console.log(`3${targetType}`);
+        this._sortFilterWrapper.innerHTML = ``;
+        this._renderDay();
         break;
       case `time`:
         this._renderFilterTime();
         break;
       case `price`:
-        console.log(`1${targetType}`);
+        this._renderFilterPrice();
         break;
     }
   }
 
   _renderFilterTime() {
-    this._sortFilterWrapper.querySelector(`.trip-sort__item--day`).textContent = ``;
-    const allDay = this._sortFilterWrapper.querySelectorAll(`.trip-days__item`);
-    allDay.forEach(((value, key) => {
-      if (key > 0) {
-        value.remove();
-      }
-    }));
-    allDay[0].querySelector(`.day__counter`).textContent = ``;
-    allDay[0].querySelector(`.day__date`).textContent = ``;
-    allDay[0].querySelectorAll(`.trip-events__item`).forEach((value) => {
-      value.remove();
-    });
+    this._clearWaypoint();
     timeSort.forEach((value, index) => {
-      this._renderWaypointMode(allDay[0].querySelector(`.trip-events__list`), value);
+      this._renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
       value.bonusOptions.forEach((bonusOptionsValue) => {
-        const optionWrapper = allDay[0].querySelectorAll(`.event__selected-offers`)[index];
+        const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
         if (bonusOptionsValue.used && optionWrapper.childElementCount < 3) {
           render(optionWrapper, new SiteEventTitleTemplate(bonusOptionsValue));
         }
       });
+    });
+  }
+
+  _renderFilterPrice() {
+    this._clearWaypoint();
+    priceSort.forEach((value, index) => {
+      this._renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
+      value.bonusOptions.forEach((bonusOptionsValue) => {
+        const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
+        if (bonusOptionsValue.used && optionWrapper.childElementCount < 3) {
+          render(optionWrapper, new SiteEventTitleTemplate(bonusOptionsValue));
+        }
+      });
+    });
+  }
+
+  _clearWaypoint() {
+    this._allDay = this._sortFilterWrapper.querySelectorAll(`.trip-days__item`);
+    this._sortFilterWrapper.querySelector(`.trip-sort__item--day`).textContent = ``;
+    this._allDay.forEach(((value, key) => {
+      if (key > 0) {
+        value.remove();
+      }
+    }));
+    this._allDay[0].querySelector(`.day__counter`).textContent = ``;
+    this._allDay[0].querySelector(`.day__date`).textContent = ``;
+    this._allDay[0].querySelectorAll(`.trip-events__item`).forEach((value) => {
+      value.remove();
     });
   }
 }
