@@ -107,7 +107,7 @@ export default class TravelDaysList {
     let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
     trimEventItem = trimEventItem[trimEventItem.length - 1];
     this._renderWaypointMode(trimEventItem, this._travelDays[dayCount].waypoints[waypointCount]);
-    let eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
+    const eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
     this._lastEventOffer = eventOffer[eventOffer.length - 1];
     this._travelDays[dayCount].waypoints[waypointCount].bonusOptions.forEach((item, index) => this._renderBonusOption(index, dayCount, waypointCount));
   }
