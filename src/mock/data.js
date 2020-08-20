@@ -83,6 +83,7 @@ const createTravelInfo = (array, mock, count = 5) => {
         })
       };
       waypoint.differenceTime = getTimeDifference(waypoint.startTime, waypoint.endTime).toUpperCase();
+      waypoint.differenceTimeMs = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       travelInfo.waypoints.push(waypoint);
     }
     array.push(travelInfo);

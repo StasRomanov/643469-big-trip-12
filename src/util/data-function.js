@@ -21,11 +21,15 @@ export const msToTime = (timeInMs) => {
   return `${hours > 0 ? `${hours}h` : ``} ${minutes > 0 ? `${minutes}m` : ``}`;
 };
 
-export const getTimeDifference = (startTime, endTime) => {
+export const getTimeDifference = (startTime, endTime, msMode = false) => {
   const dateInMsA = Date.parse(startTime);
   const dateInMsB = Date.parse(endTime);
   const timeDifference = dateInMsB - dateInMsA;
-  return msToTime(timeDifference);
+  if (msMode) {
+    return timeDifference;
+  } else {
+    return msToTime(timeDifference);
+  }
 };
 
 export const shuffle = (arr) => {
