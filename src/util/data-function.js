@@ -45,4 +45,6 @@ export const shuffle = (arr) => {
   return array;
 };
 
+export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
+
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));

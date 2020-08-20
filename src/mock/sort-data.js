@@ -1,5 +1,3 @@
-import {travelDays} from "./data";
-
 const getOnlyWaypoints = (days) => {
   const sortWaypoints = [];
   days.forEach((item) => {
@@ -10,7 +8,7 @@ const getOnlyWaypoints = (days) => {
   return sortWaypoints;
 };
 
-const getTimeSortWaypoints = (waypoints) => {
+export const getTimeSortWaypoints = (waypoints) => {
   const sortTravelDays = waypoints.slice();
   const sortWaypoints = getOnlyWaypoints(sortTravelDays);
   sortWaypoints.sort((a, b) => {
@@ -19,7 +17,7 @@ const getTimeSortWaypoints = (waypoints) => {
   return sortWaypoints;
 };
 
-const getPriceSortWaypoints = (waypoints) => {
+export const getPriceSortWaypoints = (waypoints) => {
   const sortTravelDays = waypoints.slice();
   const sortWaypoints = getOnlyWaypoints(sortTravelDays);
   sortWaypoints.sort((a, b) => {
@@ -27,6 +25,3 @@ const getPriceSortWaypoints = (waypoints) => {
   });
   return sortWaypoints;
 };
-
-export const timeSort = getTimeSortWaypoints(travelDays);
-export const priceSort = getPriceSortWaypoints(travelDays);

@@ -1,4 +1,11 @@
-import {getRandomBoolean, getRandomDate, getRandomInteger, getTimeDifference, shuffle} from "../util/data-function";
+import {
+  getId,
+  getRandomBoolean,
+  getRandomDate,
+  getRandomInteger,
+  getTimeDifference,
+  shuffle,
+} from "../util/data-function";
 
 let travelDays = [];
 const travel = {
@@ -70,6 +77,7 @@ const createTravelInfo = (array, mock, count = 5) => {
     });
     for (let i = 0; i < count; i++) {
       const waypoint = {
+        id: getId(),
         important: getRandomBoolean(),
         price: Math.round(Math.random() * 300),
         type: mock.type[getRandomInteger(0, mock.type.length - 1)],

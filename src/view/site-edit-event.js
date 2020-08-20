@@ -2,8 +2,8 @@ import Abstract from "./abstract";
 import {MouseKey} from "../const";
 
 const createSiteEditEventTemplate = (waypoint) => {
-  const {type, town, price, startTime, endTime, important} = waypoint;
-  return `<form class="event  event--edit" action="#" method="post">
+  const {type, town, price, startTime, endTime, important, id} = waypoint;
+  return `<form class="event  event--edit" action="#" method="post" data-id="${id}">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -137,7 +137,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._waypoint = waypoint;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
-
+    this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
   }
 
   _formSubmitHandler(evt) {
@@ -148,6 +148,12 @@ export default class SiteEditEventTemplate extends Abstract {
   _rollupButtonClickHandler(evt) {
     if (evt.button === MouseKey.LEFT) {
       this._callback.rollupButtonClick();
+    }
+  }
+
+  _importantMarkClickHandler(evt) {
+    if (evt.button === MouseKey.LEFT) {
+      this._callback.importantMarkClick();
     }
   }
 
@@ -173,5 +179,15 @@ export default class SiteEditEventTemplate extends Abstract {
   removeRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
     this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
+  }
+
+  setImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
+  }
+
+  removeImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).removeEventListener(`click`, this._importantMarkClickHandler);
   }
 }

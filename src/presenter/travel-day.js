@@ -8,7 +8,7 @@ import SiteEventTemplate from "../view/site-event";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
-import {priceSort, timeSort} from "../mock/filter-data";
+import {getPriceSortWaypoints, getTimeSortWaypoints} from "../mock/sort-data";
 
 export default class TravelDaysList {
   constructor() {
@@ -46,15 +46,31 @@ export default class TravelDaysList {
       if (mode === WaypointMode.EDIT) {
         replace(waypointEdit, waypointElement);
         const {bonusOptions} = waypoint;
-        this._bonusOptionWrapper = this._mainWrapper.querySelector(`.event__available-offers`);
-        this._bonusOptionWrapper.innerHTML = ``;
+        const bonusOptionWrapper = this._mainWrapper.querySelectorAll(`.event__available-offers`);
+        bonusOptionWrapper.forEach((item) => {
+          item.innerHTML = ``;
+        });
+        const lastBonusOptionWrapper = bonusOptionWrapper[bonusOptionWrapper.length - 1];
         for (let bonusOption of bonusOptions) {
-          render(this._bonusOptionWrapper, new SiteEventTemplate(bonusOption));
+          render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
         }
+        waypointEdit.setImportantMarkClickHandler(() => setImportantMode());
+
       }
       if (mode === WaypointMode.VIEW) {
         replace(waypointElement, waypointEdit);
+        waypointEdit.removeImportantMarkClickHandler(() => setImportantMode());
       }
+    };
+
+    const setImportantMode = () => {
+      this._travelDays.forEach((item) => {
+        item.waypoints.forEach((waypointsItem) => {
+          if (waypointsItem.id === waypointEdit.getElement().getAttribute(`data-id`)) {
+            waypointsItem.important = !waypointsItem.important;
+          }
+        });
+      });
     };
 
     const setEditModeListener = () => {
@@ -132,6 +148,8 @@ export default class TravelDaysList {
   _onSortWrapperChange(evt) {
     const target = evt.target;
     const targetType = target.id.split(`-`)[1];
+    const timeSort = getTimeSortWaypoints(this._travelDays);
+    const priceSort = getPriceSortWaypoints(this._travelDays);
 
     switch (targetType) {
       case `event`:
