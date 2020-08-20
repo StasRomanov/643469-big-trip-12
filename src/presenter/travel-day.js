@@ -2,7 +2,7 @@ import SiteTripEvent from "../view/site-trip-event";
 import SiteDayItem from "../view/site-day-item";
 import SiteNoWaypointMessage from "../view/site-no-waypoint-message";
 import {render, replace} from "../util/render-function";
-import {KeyboardKey, WaypointMode} from "../const";
+import {KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, WaypointMode} from "../const";
 import SiteEditEventTemplate from "../view/site-edit-event";
 import SiteEventTemplate from "../view/site-event";
 import SiteDayListTemplate from "../view/site-day-list";
@@ -28,8 +28,9 @@ export default class TravelDaysList {
       render(this._sortWrapper, new SiteSortFilterTemplate());
       render(this._sortWrapper, new SiteDayListTemplate());
       this._setSortListener();
+      const dayWrapper = this._sortWrapper.querySelector(`.trip-days`);
       this._travelDays.forEach((item, travelDaysIndex) => {
-        render(this._sortWrapper.querySelector(`.trip-days`), new SiteDayItem(item));
+        render(dayWrapper, new SiteDayItem(item));
         item.waypoints.forEach((value, waypointsIndex) => {
           this._renderWaypoint(travelDaysIndex, waypointsIndex);
         });
@@ -117,7 +118,7 @@ export default class TravelDaysList {
 
   _renderBonusOption(index, dayCount, waypointCount) {
     const optionCount = this._lastEventOffer.querySelectorAll(`.event__offer`).length;
-    if (this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index].used && optionCount < 3) {
+    if (this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index].used && optionCount < MAX_OFFERS_IN_VIEW_MODE) {
       render(this._lastEventOffer, new SiteEventTitleTemplate(this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
     }
   }
@@ -146,13 +147,13 @@ export default class TravelDaysList {
     }
   }
 
-  _sort(data) {
+  _sort(sortTravelDays) {
     this._clearWaypoint();
-    data.forEach((value, index) => {
+    sortTravelDays.forEach((value, index) => {
       this._renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
+      const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
       value.bonusOptions.forEach((bonusOptionsValue) => {
-        const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
-        if (bonusOptionsValue.used && optionWrapper.childElementCount < 3) {
+        if (bonusOptionsValue.used && optionWrapper.childElementCount < MAX_OFFERS_IN_VIEW_MODE) {
           render(optionWrapper, new SiteEventTitleTemplate(bonusOptionsValue));
         }
       });

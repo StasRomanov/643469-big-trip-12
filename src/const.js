@@ -18,3 +18,5 @@ export const KeyboardKey = {
   ESCAPE: `Escape`,
   ENTER: `Enter`
 };
+
+export const MAX_OFFERS_IN_VIEW_MODE = 3;

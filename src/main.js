@@ -7,9 +7,7 @@ import SiteFilterHeaderTemplate from "./view/site-filter-header";
 import SiteFilterTemplate from "./view/site-filter";
 
 const headerWrapper = document.querySelector(`.trip-main`);
-const mainWrapper = document.querySelector(`.page-main`);
 const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
-export const sortFilterWrapper = mainWrapper.querySelector(`.trip-events`);
 const renderDemo = new TravelDaysList();
 
 const renderFilter = () => {
