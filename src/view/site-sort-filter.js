@@ -33,7 +33,23 @@ const createSiteSortFilterTemplate = () =>
   </form>`;
 
 export default class SiteSortFilterTemplate extends Abstract {
+  constructor() {
+    super();
+    this._onSortChange = this._onSortChange.bind(this);
+  }
+
   getTemplate() {
     return createSiteSortFilterTemplate();
+  }
+
+  setSortChangeListener(callback) {
+    this._sortChangeListener = callback;
+    this.getElement().addEventListener(`change`, this._onSortChange);
+  }
+
+  _onSortChange(evt) {
+    const target = evt.target;
+    const targetType = target.id.split(`-`)[1];
+    this._sortChangeListener(targetType);
   }
 }
