@@ -138,6 +138,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
     this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
+    this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
   }
 
   _formSubmitHandler(evt) {
@@ -157,6 +158,14 @@ export default class SiteEditEventTemplate extends Abstract {
     }
   }
 
+  _travelTypeChangeHandler(evt) {
+    const target = evt.target;
+    if (target.classList.contains(`event__type-input`)) {
+      const targetValue = target.getAttribute(`value`);
+      this._callback.travelTypeChange(targetValue);
+    }
+  }
+
   getTemplate() {
     return createSiteEditEventTemplate(this._waypoint);
   }
@@ -171,6 +180,16 @@ export default class SiteEditEventTemplate extends Abstract {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
   }
 
+  setImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
+  }
+
+  setTravelTypeChangeHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
+  }
+
   removeFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().removeEventListener(`submit`, this._formSubmitHandler);
@@ -179,11 +198,6 @@ export default class SiteEditEventTemplate extends Abstract {
   removeRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
     this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
-  }
-
-  setImportantMarkClickHandler(callback) {
-    this._callback.importantMarkClick = callback;
-    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
   }
 
   removeImportantMarkClickHandler(callback) {

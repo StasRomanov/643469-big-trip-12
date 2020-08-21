@@ -13,12 +13,12 @@ export default class Waypoint {
   }
 
   renderWaypointMode(dayWrapper, waypoint) {
-    const waypointElement = new SiteTripEvent(waypoint);
-    const waypointEdit = new SiteEditEventTemplate(waypoint);
+    this._waypointElement = new SiteTripEvent(waypoint);
+    this._waypointEdit = new SiteEditEventTemplate(waypoint);
 
     const replaceWaypointMode = (mode = WaypointMode.VIEW) => {
       if (mode === WaypointMode.EDIT) {
-        replace(waypointEdit, waypointElement);
+        replace(this._waypointEdit, this._waypointElement);
         const {bonusOptions} = waypoint;
         const bonusOptionWrapper = this._mainWrapper.querySelectorAll(`.event__available-offers`);
         bonusOptionWrapper.forEach((item) => {
@@ -28,19 +28,28 @@ export default class Waypoint {
         for (let bonusOption of bonusOptions) {
           render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
         }
-        waypointEdit.setImportantMarkClickHandler(() => setImportantMode());
-
+        this._waypointEdit.setImportantMarkClickHandler(() => setImportantMode());
+        this._waypointEdit.setTravelTypeChangeHandler((travelType) => {
+          editTravelMode(travelType);
+        });
       }
       if (mode === WaypointMode.VIEW) {
-        replace(waypointElement, waypointEdit);
-        waypointEdit.removeImportantMarkClickHandler(() => setImportantMode());
+        replace(this._waypointElement, this._waypointEdit);
+        this._waypointEdit.removeImportantMarkClickHandler(() => setImportantMode());
       }
+    };
+
+    const editTravelMode = (travelType) => {
+      const img = this._waypointEdit.getElement().querySelector(`.event__type-icon`);
+      const text = this._waypointEdit.getElement().querySelector(`.event__label`);
+      img.setAttribute(`src`, `img/icons/${travelType}.png`);
+      text.textContent = `${travelType[0].toUpperCase() + travelType.slice(1)} to`;
     };
 
     const setImportantMode = () => {
       this._travelDays.forEach((item) => {
         item.waypoints.forEach((waypointsItem) => {
-          if (waypointsItem.id === waypointEdit.getElement().getAttribute(`data-id`)) {
+          if (waypointsItem.id === this._waypointEdit.getElement().getAttribute(`data-id`)) {
             waypointsItem.important = !waypointsItem.important;
           }
         });
@@ -48,15 +57,15 @@ export default class Waypoint {
     };
 
     const setEditModeListener = () => {
-      waypointElement.setRollupButtonClickHandler(() => {
+      this._waypointElement.setRollupButtonClickHandler(() => {
         replaceWaypointMode(WaypointMode.EDIT);
         setEditModeListener();
       });
-      waypointEdit.setRollupButtonClickHandler(() => {
+      this._waypointEdit.setRollupButtonClickHandler(() => {
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
-      waypointEdit.setFormSubmitHandler(() => {
+      this._waypointEdit.setFormSubmitHandler(() => {
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
@@ -64,15 +73,15 @@ export default class Waypoint {
     };
 
     const setNormalModeListener = () => {
-      waypointElement.setRollupButtonClickHandler(() => {
+      this._waypointElement.setRollupButtonClickHandler(() => {
         replaceWaypointMode(WaypointMode.EDIT);
         setEditModeListener();
       });
-      waypointEdit.removeRollupButtonClickHandler(() => {
+      this._waypointEdit.removeRollupButtonClickHandler(() => {
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
-      waypointEdit.removeFormSubmitHandler(() => {
+      this._waypointEdit.removeFormSubmitHandler(() => {
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
@@ -86,11 +95,11 @@ export default class Waypoint {
       }
     };
 
-    waypointElement.setRollupButtonClickHandler(() => {
+    this._waypointElement.setRollupButtonClickHandler(() => {
       replaceWaypointMode(WaypointMode.EDIT);
       setEditModeListener();
     });
-    render(dayWrapper, waypointElement);
+    render(dayWrapper, this._waypointElement);
   }
 
   renderWaypoint(dayCount, waypointCount) {
@@ -108,4 +117,8 @@ export default class Waypoint {
       render(this._lastEventOffer, new SiteEventTitleTemplate(this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
     }
   }
+
+  // ---------------------------
+
+
 }

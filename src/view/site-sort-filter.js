@@ -43,13 +43,13 @@ export default class SiteSortFilterTemplate extends Abstract {
   }
 
   setSortChangeListener(callback) {
-    this._sortChangeListener = callback;
+    this._callback.sortChangeListener = callback;
     this.getElement().addEventListener(`change`, this._onSortChange);
   }
 
   _onSortChange(evt) {
     const target = evt.target;
     const targetType = target.id.split(`-`)[1];
-    this._sortChangeListener(targetType);
+    this._callback.sortChangeListener(targetType);
   }
 }
