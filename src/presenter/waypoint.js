@@ -18,6 +18,7 @@ export default class Waypoint {
 
     const replaceWaypointMode = (mode = WaypointMode.VIEW) => {
       if (mode === WaypointMode.EDIT) {
+        this._waypointEdit = new SiteEditEventTemplate(waypoint);
         replace(this._waypointEdit, this._waypointElement);
         const {bonusOptions} = waypoint;
         const bonusOptionWrapper = this._mainWrapper.querySelectorAll(`.event__available-offers`);
@@ -28,29 +29,48 @@ export default class Waypoint {
         for (let bonusOption of bonusOptions) {
           render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
         }
-        this._waypointEdit.setImportantMarkClickHandler(() => setImportantMode());
-        this._waypointEdit.setTravelTypeChangeHandler((travelType) => {
-          editTravelMode(travelType);
-        });
+        this._waypointEdit.setTravelTypeChangeHandler((travelType) => editTravelMode(travelType));
       }
       if (mode === WaypointMode.VIEW) {
+        this._waypointElement = new SiteTripEvent(waypoint);
         replace(this._waypointElement, this._waypointEdit);
-        this._waypointEdit.removeImportantMarkClickHandler(() => setImportantMode());
       }
     };
 
     const editTravelMode = (travelType) => {
       const img = this._waypointEdit.getElement().querySelector(`.event__type-icon`);
       const text = this._waypointEdit.getElement().querySelector(`.event__label`);
+      this._avatarInput = this._waypointEdit.getElement().querySelector(`.event__type-toggle`);
       img.setAttribute(`src`, `img/icons/${travelType}.png`);
       text.textContent = `${travelType[0].toUpperCase() + travelType.slice(1)} to`;
+      this._avatarInput.setAttribute(`data-type`, travelType);
     };
 
-    const setImportantMode = () => {
+    const saveMode = () => {
       this._travelDays.forEach((item) => {
         item.waypoints.forEach((waypointsItem) => {
           if (waypointsItem.id === this._waypointEdit.getElement().getAttribute(`data-id`)) {
-            waypointsItem.important = !waypointsItem.important;
+            const bonusOptions = [];
+            const star = this._waypointEdit.getElement().querySelector(`.event__favorite-checkbox`).checked;
+            const price = Number(this._waypointEdit.getElement().querySelector(`.event__input--price`).value);
+            const type = this._avatarInput.getAttribute(`data-type`);
+            const town = this._waypointEdit.getElement().querySelector(`.event__input--destination`).value;
+            const offers = this._waypointEdit.getElement().querySelectorAll(`.event__offer-selector`);
+            const offersName = this._waypointEdit.getElement().querySelectorAll(`.event__offer-title`);
+            const offersPrice = this._waypointEdit.getElement().querySelectorAll(`.event__offer-price`);
+            const offersChecked = this._waypointEdit.getElement().querySelectorAll(`.event__offer-checkbox`);
+            offers.forEach((bonusOptionItem, index) => {
+              bonusOptions.push({
+                name: offersName[index].textContent,
+                price: offersPrice[index].textContent,
+                used: offersChecked[index].checked,
+              });
+            });
+            waypointsItem.important = star;
+            waypointsItem.price = price;
+            waypointsItem.type = type;
+            waypointsItem.town = town;
+            waypointsItem.bonusOptions = bonusOptions;
           }
         });
       });
@@ -66,6 +86,7 @@ export default class Waypoint {
         setNormalModeListener();
       });
       this._waypointEdit.setFormSubmitHandler(() => {
+        saveMode();
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
@@ -82,6 +103,7 @@ export default class Waypoint {
         setNormalModeListener();
       });
       this._waypointEdit.removeFormSubmitHandler(() => {
+        saveMode();
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
