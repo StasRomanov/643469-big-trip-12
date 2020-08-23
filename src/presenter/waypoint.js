@@ -51,7 +51,7 @@ export default class Waypoint {
         item.waypoints.forEach((waypointsItem) => {
           if (waypointsItem.id === this._waypointEdit.getElement().getAttribute(`data-id`)) {
             const bonusOptions = [];
-            const star = this._waypointEdit.getElement().querySelector(`.event__favorite-checkbox`).checked;
+            const importantMode = this._waypointEdit.getElement().querySelector(`.event__favorite-checkbox`).checked;
             const price = Number(this._waypointEdit.getElement().querySelector(`.event__input--price`).value);
             const type = this._avatarInput.getAttribute(`data-type`);
             const town = this._waypointEdit.getElement().querySelector(`.event__input--destination`).value;
@@ -66,7 +66,7 @@ export default class Waypoint {
                 used: offersChecked[index].checked,
               });
             });
-            waypointsItem.important = star;
+            waypointsItem.important = importantMode;
             waypointsItem.price = price;
             waypointsItem.type = type;
             waypointsItem.town = town;
@@ -139,8 +139,4 @@ export default class Waypoint {
       render(this._lastEventOffer, new SiteEventTitleTemplate(this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
     }
   }
-
-  // ---------------------------
-
-
 }
