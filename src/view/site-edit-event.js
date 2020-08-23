@@ -10,7 +10,7 @@ const createSiteEditEventTemplate = (waypoint) => {
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" data-type="${type}">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
@@ -139,6 +139,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
     this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
     this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
+    // this._priceChangeHandler = this._priceChangeHandler.bind(this);
   }
 
   _formSubmitHandler(evt) {
@@ -158,13 +159,20 @@ export default class SiteEditEventTemplate extends Abstract {
     }
   }
 
-  _travelTypeChangeHandler(evt) {
-    const target = evt.target;
-    if (target.classList.contains(`event__type-input`)) {
-      const targetValue = target.getAttribute(`value`);
-      this._callback.travelTypeChange(targetValue);
-    }
+  _travelTypeChangeHandler() {
+    // const target = evt.target;
+    // if (target.classList.contains(`event__type-input`)) {
+    //   const targetValue = target.getAttribute(`value`);
+    //   this._callback.travelTypeChange(targetValue);
+    // }
+    const travelType = this.getElement().querySelector(`.event__type-input`);
+    const targetValue = travelType.getAttribute(`value`);
+    this._callback.travelTypeChange(targetValue);
   }
+
+  // _priceChangeHandler() {
+  //   console.log(`test`);
+  // }
 
   getTemplate() {
     return createSiteEditEventTemplate(this._waypoint);
@@ -187,8 +195,13 @@ export default class SiteEditEventTemplate extends Abstract {
 
   setTravelTypeChangeHandler(callback) {
     this._callback.travelTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
+    this.getElement().addEventListener(`input`, this._travelTypeChangeHandler);
   }
+
+  // setPriceChangeHandler(callback) {
+  //   this._callback.travelTypeChange = callback;
+  //   this.getElement().addEventListener(`input`, this._priceChangeHandler);
+  // }
 
   removeFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;

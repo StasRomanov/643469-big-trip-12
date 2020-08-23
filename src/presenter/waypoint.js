@@ -30,10 +30,34 @@ export default class Waypoint {
           render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
         }
         this._waypointEdit.setTravelTypeChangeHandler((travelType) => editTravelMode(travelType));
+        // this._waypointEdit.setPriceChangeHandler(() => {});
       }
       if (mode === WaypointMode.VIEW) {
         this._waypointElement = new SiteTripEvent(waypoint);
         replace(this._waypointElement, this._waypointEdit);
+        waypoint.bonusOptions.forEach((item) => {
+          const optionCount = this._waypointElement.getElement().querySelectorAll(`.event__offer`).length;
+          if (item.used && optionCount < MAX_OFFERS_IN_VIEW_MODE) {
+            render(this._waypointElement.getElement().querySelector(`.event__selected-offers`), new SiteEventTitleTemplate(item));
+          }
+        });
+        // this._travelDays.forEach((item, index) => item.waypoints.forEach((waypointItem, waypointIndex) => {
+        //   console.log(waypointItem.id, waypoint.id, index, waypointIndex);
+        //   if (waypointItem.id === waypoint.id) {
+        //     this.renderWaypoint(index, waypointIndex);
+        //   }
+        // }));
+        // replace(this._waypointElement, this._waypointEdit);
+        // waypoint.bonusOptions.forEach((item, index) => {
+        //   let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
+        //   trimEventItem = trimEventItem[trimEventItem.length - 1];
+        //   const eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
+        //   this._lastEventOffer = eventOffer[eventOffer.length - 1];
+        //   const optionCount = this._lastEventOffer.querySelectorAll(`.event__offer`).length;
+        //   if (waypoint.bonusOptions[index].used && optionCount < MAX_OFFERS_IN_VIEW_MODE) {
+        //     render(this._lastEventOffer, new SiteEventTitleTemplate(waypoint.bonusOptions[index]));
+        //   }
+        // });
       }
     };
 
