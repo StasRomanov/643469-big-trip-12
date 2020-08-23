@@ -138,8 +138,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
     this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
-    this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
-    // this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._waypointEditInputHandler = this._waypointEditInputHandler.bind(this);
   }
 
   _formSubmitHandler(evt) {
@@ -159,20 +158,11 @@ export default class SiteEditEventTemplate extends Abstract {
     }
   }
 
-  _travelTypeChangeHandler() {
-    // const target = evt.target;
-    // if (target.classList.contains(`event__type-input`)) {
-    //   const targetValue = target.getAttribute(`value`);
-    //   this._callback.travelTypeChange(targetValue);
-    // }
+  _waypointEditInputHandler() {
     const travelType = this.getElement().querySelector(`.event__type-input`);
     const targetValue = travelType.getAttribute(`value`);
     this._callback.travelTypeChange(targetValue);
   }
-
-  // _priceChangeHandler() {
-  //   console.log(`test`);
-  // }
 
   getTemplate() {
     return createSiteEditEventTemplate(this._waypoint);
@@ -193,15 +183,10 @@ export default class SiteEditEventTemplate extends Abstract {
     this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
   }
 
-  setTravelTypeChangeHandler(callback) {
+  setWaypointEditInputHandler(callback) {
     this._callback.travelTypeChange = callback;
-    this.getElement().addEventListener(`input`, this._travelTypeChangeHandler);
+    this.getElement().addEventListener(`input`, this._waypointEditInputHandler);
   }
-
-  // setPriceChangeHandler(callback) {
-  //   this._callback.travelTypeChange = callback;
-  //   this.getElement().addEventListener(`input`, this._priceChangeHandler);
-  // }
 
   removeFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
