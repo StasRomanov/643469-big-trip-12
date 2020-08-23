@@ -134,6 +134,7 @@ const createSiteEditEventTemplate = (waypoint) => {
 export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
     super();
+    this._currentEditData = waypoint;
     this._waypoint = waypoint;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
@@ -159,9 +160,46 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   _waypointEditInputHandler() {
-    const travelType = this.getElement().querySelector(`.event__type-input`);
-    const targetValue = travelType.getAttribute(`value`);
-    this._callback.travelTypeChange(targetValue);
+    this._saveDataMode();
+  }
+
+  _saveDataMode(saveInMock = false) {
+    const bonusOptions = [];
+    const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    const price = Number(this.getElement().querySelector(`.event__input--price`).value);
+    const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
+    const town = this.getElement().querySelector(`.event__input--destination`).value;
+    const offers = this.getElement().querySelectorAll(`.event__offer-selector`);
+    const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
+    const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
+    const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
+    offers.forEach((bonusOptionItem, index) => {
+      bonusOptions.push({
+        name: offersName[index].textContent,
+        price: offersPrice[index].textContent,
+        used: offersChecked[index].checked,
+      });
+    });
+    if (saveInMock) {
+      this._travelDays.forEach((item) => {
+        item.waypoints.forEach((waypointsItem) => {
+          if (waypointsItem.id === this.getElement().getAttribute(`data-id`)) {
+            waypointsItem.important = importantMode;
+            waypointsItem.price = price;
+            waypointsItem.type = type;
+            waypointsItem.town = town;
+            waypointsItem.bonusOptions = bonusOptions;
+          }
+        });
+      });
+    } else {
+      this._currentEditData.important = importantMode;
+      this._currentEditData.price = price;
+      this._currentEditData.type = type;
+      this._currentEditData.town = town;
+      this._currentEditData.bonusOptions = bonusOptions;
+      this._callback.travelTypeChange(this._currentEditData);
+    }
   }
 
   getTemplate() {
