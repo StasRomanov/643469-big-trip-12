@@ -64,6 +64,7 @@ export default class Waypoint {
         setNormalModeListener();
       });
       this._waypointEdit.setFormSubmitHandler(() => {
+        this._waypointEdit.saveDataMode(true, this._travelDays);
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });
@@ -80,6 +81,7 @@ export default class Waypoint {
         setNormalModeListener();
       });
       this._waypointEdit.removeFormSubmitHandler(() => {
+        this._waypointEdit.saveDataMode(true, this._travelDays);
         replaceWaypointMode(WaypointMode.VIEW);
         setNormalModeListener();
       });

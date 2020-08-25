@@ -149,6 +149,7 @@ export default class SiteEditEventTemplate extends Abstract {
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit();
+    // this.saveDataMode(evt.target, true, )
   }
 
   _rollupButtonClickHandler(evt) {
@@ -165,10 +166,11 @@ export default class SiteEditEventTemplate extends Abstract {
 
   _waypointEditInputHandler(evt) {
     const target = evt.target;
-    this._saveDataMode(target);
+    this.saveDataMode();
+    this._callback.travelTypeChange(this._currentEditData, target);
   }
 
-  _saveDataMode(target, saveInMock = false) {
+  saveDataMode(saveInMock = false, mock) {
     const bonusOptions = [];
     const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
@@ -186,7 +188,7 @@ export default class SiteEditEventTemplate extends Abstract {
       });
     });
     if (saveInMock) {
-      this._travelDays.forEach((item) => {
+      mock.forEach((item) => {
         item.waypoints.forEach((waypointsItem) => {
           if (waypointsItem.id === this.getElement().getAttribute(`data-id`)) {
             waypointsItem.important = importantMode;
@@ -203,7 +205,6 @@ export default class SiteEditEventTemplate extends Abstract {
       this._currentEditData.type = type;
       this._currentEditData.town = town;
       this._currentEditData.bonusOptions = bonusOptions;
-      this._callback.travelTypeChange(this._currentEditData, target);
     }
   }
 
