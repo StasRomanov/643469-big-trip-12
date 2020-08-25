@@ -2,7 +2,11 @@ import Abstract from "./abstract";
 import {MouseKey} from "../const";
 
 const createSiteEditEventTemplate = (waypoint) => {
-  const {type, town, price, startTime, endTime, important, id} = waypoint;
+  const {type, town, startTime, endTime, important, id} = waypoint;
+  let {price} = waypoint;
+  if (isNaN(price)) {
+    price = 0;
+  }
   return `<form class="event  event--edit" action="#" method="post" data-id="${id}">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -134,8 +138,8 @@ const createSiteEditEventTemplate = (waypoint) => {
 export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
     super();
-    this._currentEditData = waypoint;
-    this._waypoint = waypoint;
+    this._currentEditData = Object.assign({}, waypoint);
+    this._waypoint = Object.assign({}, waypoint);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
     this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
@@ -159,11 +163,12 @@ export default class SiteEditEventTemplate extends Abstract {
     }
   }
 
-  _waypointEditInputHandler() {
-    this._saveDataMode();
+  _waypointEditInputHandler(evt) {
+    const target = evt.target;
+    this._saveDataMode(target);
   }
 
-  _saveDataMode(saveInMock = false) {
+  _saveDataMode(target, saveInMock = false) {
     const bonusOptions = [];
     const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
@@ -198,7 +203,7 @@ export default class SiteEditEventTemplate extends Abstract {
       this._currentEditData.type = type;
       this._currentEditData.town = town;
       this._currentEditData.bonusOptions = bonusOptions;
-      this._callback.travelTypeChange(this._currentEditData);
+      this._callback.travelTypeChange(this._currentEditData, target);
     }
   }
 

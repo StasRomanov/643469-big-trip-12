@@ -22,12 +22,8 @@ export default class Waypoint {
         replace(this._waypointEdit, this._waypointElement);
         this._renderBonusOptionEditMode(waypoint);
 
-        this._waypointEdit.setWaypointEditInputHandler((data) => {
-          const noChangeWaypointEdit = this._waypointEdit;
-          this._waypointEdit = new SiteEditEventTemplate(data);
-          replace(this._waypointEdit, noChangeWaypointEdit);
-          this._renderBonusOptionEditMode(data);
-          setEditModeListener();
+        this._waypointEdit.setWaypointEditInputHandler((data, target) => {
+          updateWaypoint(data, target);
         });
       }
       if (mode === WaypointMode.VIEW) {
@@ -40,6 +36,22 @@ export default class Waypoint {
           }
         });
       }
+    };
+
+    const updateWaypoint = (data, target) => {
+      const noChangeWaypointEdit = this._waypointEdit;
+      this._waypointEdit = new SiteEditEventTemplate(data);
+      replace(this._waypointEdit, noChangeWaypointEdit);
+      const elemFocus = this._waypointEdit.getElement().querySelector(`.${target.classList[target.classList.length - 1]}`);
+      if (elemFocus.tagName === `INPUT`) {
+        elemFocus.focus();
+        elemFocus.selectionStart = elemFocus.value.length;
+      }
+      this._renderBonusOptionEditMode(data);
+      setEditModeListener();
+      this._waypointEdit.setWaypointEditInputHandler((data1, target1) => {
+        updateWaypoint(data1, target1);
+      });
     };
 
     const setEditModeListener = () => {
