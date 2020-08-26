@@ -5,7 +5,7 @@ import {MAX_OFFERS_IN_VIEW_MODE} from "../const";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
-import {getPriceSortWaypoints, getTimeSortWaypoints} from "../mock/sort-data";
+import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
 
 export default class TravelDaysList {

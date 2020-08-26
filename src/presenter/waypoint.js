@@ -39,6 +39,7 @@ export default class Waypoint {
     };
 
     const updateWaypoint = (data, target) => {
+      console.log(`test`);
       const noChangeWaypointEdit = this._waypointEdit;
       this._waypointEdit = new SiteEditEventTemplate(data);
       replace(this._waypointEdit, noChangeWaypointEdit);
@@ -47,6 +48,17 @@ export default class Waypoint {
         elemFocus.focus();
         elemFocus.selectionStart = elemFocus.value.length;
       }
+      // if (elemFocus.classList.contains(`visually-hidden`)) {
+      //   this._waypointEdit.getElement().querySelector(`#event-type-toggle-1`).toggleAttribute(`checked`);
+      // }
+      // const radio = this._waypointEdit.getElement().querySelectorAll(`.event__type-input`);
+      // radio.forEach((item) => {
+      //   item.addEventListener(`change`, (evt) => {
+      //     console.log(evt.target);
+      //     console.log(this._travelDays);
+      //   });
+      // });
+      // console.log(elemFocus);
       this._renderBonusOptionEditMode(data);
       setEditModeListener();
       this._waypointEdit.setWaypointEditInputHandler((data1, target1) => {
