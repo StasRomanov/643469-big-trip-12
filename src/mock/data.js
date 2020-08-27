@@ -1,11 +1,13 @@
 import {
   getId,
+  getOffers,
   getRandomBoolean,
   getRandomDate,
   getRandomInteger,
   getTimeDifference,
   shuffle,
 } from "../util/data-function";
+import {bonusOptionMock} from "./bonusOption";
 
 let travelDays = [];
 const travel = {
@@ -22,28 +24,28 @@ const travel = {
     `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
     `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat.`,
     `Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus.`],
-  bonusOption: [
-    {
-      name: `Add luggage`,
-      price: 30,
-    },
-    {
-      name: `Switch to comfort class`,
-      price: 100,
-    },
-    {
-      name: `Add meal`,
-      price: 15,
-    },
-    {
-      name: `Choose seats`,
-      price: 5,
-    },
-    {
-      name: `Travel by train`,
-      price: 40,
-    },
-  ]
+  // bonusOption: [
+  //   {
+  //     type: `Add luggage`,
+  //     price: 30,
+  //   },
+  //   {
+  //     type: `Switch to comfort class`,
+  //     price: 100,
+  //   },
+  //   {
+  //     type: `Add meal`,
+  //     price: 15,
+  //   },
+  //   {
+  //     type: `Choose seats`,
+  //     price: 5,
+  //   },
+  //   {
+  //     type: `Travel by train`,
+  //     price: 40,
+  //   },
+  // ]
 };
 
 const createTravelInfo = (array, mock, count = 5) => {
@@ -86,10 +88,8 @@ const createTravelInfo = (array, mock, count = 5) => {
         endTime: dateArray[dateIndexEnd[i]],
         photos: shuffle(mock.photo).slice(0, getRandomInteger(1, mock.photo.length)),
         description: shuffle(mock.description).slice(0, 5),
-        bonusOptions: shuffle(mock.bonusOption).map((bonusOptionsItem) => {
-          return {name: bonusOptionsItem.name, price: bonusOptionsItem.price, used: getRandomBoolean()};
-        })
       };
+      waypoint.bonusOptions = getOffers(waypoint, bonusOptionMock);
       waypoint.differenceTime = getTimeDifference(waypoint.startTime, waypoint.endTime).toUpperCase();
       waypoint.differenceTimeMs = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       travelInfo.waypoints.push(waypoint);

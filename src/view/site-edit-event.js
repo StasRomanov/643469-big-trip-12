@@ -145,6 +145,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
     this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
     this._waypointEditInputHandler = this._waypointEditInputHandler.bind(this);
+    this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
   }
 
   _formSubmitHandler(evt) {
@@ -171,6 +172,24 @@ export default class SiteEditEventTemplate extends Abstract {
     }
     this.saveDataMode();
     this._callback.travelTypeChange(this._currentEditData, target);
+  }
+
+  _travelTypeChangeHandler(evt) {
+    const target = evt.target;
+    if (target.classList.contains(`event__type-input`)) {
+      const targetValue = target.getAttribute(`value`);
+      this._callback.travelTypeChange(targetValue);
+    }
+  }
+
+  setImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
+  }
+
+  setTravelTypeChangeHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
   }
 
   saveDataMode(saveInMock = false, mock) {
@@ -223,11 +242,6 @@ export default class SiteEditEventTemplate extends Abstract {
   setRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
-  }
-
-  setImportantMarkClickHandler(callback) {
-    this._callback.importantMarkClick = callback;
-    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
   }
 
   setWaypointEditInputHandler(callback) {
