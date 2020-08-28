@@ -146,6 +146,89 @@ export default class SiteEditEventTemplate extends Abstract {
     this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
     this._waypointEditInputHandler = this._waypointEditInputHandler.bind(this);
     this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
+    this._waypointTownChangeHandler = this._waypointTownChangeHandler.bind(this);
+  }
+
+  setImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
+  }
+
+  setTravelTypeChangeHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
+  }
+
+  saveDataMode(mock) {
+    const bonusOptions = [];
+    const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    const price = Number(this.getElement().querySelector(`.event__input--price`).value);
+    const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
+    const town = this.getElement().querySelector(`.event__input--destination`).value;
+    const offers = this.getElement().querySelectorAll(`.event__offer-selector`);
+    const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
+    const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
+    const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
+    const offersDescription = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+
+    offers.forEach((bonusOptionItem, index) => {
+      bonusOptions.push({
+        name: offersName[index].textContent,
+        price: offersPrice[index].textContent,
+        used: offersChecked[index].checked,
+      });
+    });
+    mock.forEach((item) => {
+      item.waypoints.forEach((waypointsItem) => {
+        if (waypointsItem.id === this.getElement().getAttribute(`data-id`)) {
+          waypointsItem.important = importantMode;
+          waypointsItem.price = price;
+          waypointsItem.type = type;
+          waypointsItem.town = town;
+          waypointsItem.bonusOptions = bonusOptions;
+          waypointsItem.description = offersDescription;
+        }
+      });
+    });
+  }
+
+  getTemplate() {
+    return createSiteEditEventTemplate(this._waypoint);
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  setRollupButtonClickHandler(callback) {
+    this._callback.rollupButtonClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
+  }
+
+  setWaypointEditInputHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._waypointEditInputHandler);
+  }
+
+  removeFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().removeEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  removeRollupButtonClickHandler(callback) {
+    this._callback.rollupButtonClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
+  }
+
+  removeImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).removeEventListener(`click`, this._importantMarkClickHandler);
+  }
+
+  setWaypointTownChangeHandler(callback) {
+    this._callback.townChange = callback;
+    this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._waypointTownChangeHandler);
   }
 
   _formSubmitHandler(evt) {
@@ -182,85 +265,7 @@ export default class SiteEditEventTemplate extends Abstract {
     }
   }
 
-  setImportantMarkClickHandler(callback) {
-    this._callback.importantMarkClick = callback;
-    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
-  }
-
-  setTravelTypeChangeHandler(callback) {
-    this._callback.travelTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
-  }
-
-  saveDataMode(saveInMock = false, mock) {
-    const bonusOptions = [];
-    const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
-    const price = Number(this.getElement().querySelector(`.event__input--price`).value);
-    const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
-    const town = this.getElement().querySelector(`.event__input--destination`).value;
-    const offers = this.getElement().querySelectorAll(`.event__offer-selector`);
-    const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
-    const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
-    const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
-    offers.forEach((bonusOptionItem, index) => {
-      bonusOptions.push({
-        name: offersName[index].textContent,
-        price: offersPrice[index].textContent,
-        used: offersChecked[index].checked,
-      });
-    });
-    if (saveInMock) {
-      mock.forEach((item) => {
-        item.waypoints.forEach((waypointsItem) => {
-          if (waypointsItem.id === this.getElement().getAttribute(`data-id`)) {
-            waypointsItem.important = importantMode;
-            waypointsItem.price = price;
-            waypointsItem.type = type;
-            waypointsItem.town = town;
-            waypointsItem.bonusOptions = bonusOptions;
-          }
-        });
-      });
-    } else {
-      this._currentEditData.important = importantMode;
-      this._currentEditData.price = price;
-      this._currentEditData.type = type;
-      this._currentEditData.town = town;
-      this._currentEditData.bonusOptions = bonusOptions;
-    }
-  }
-
-  getTemplate() {
-    return createSiteEditEventTemplate(this._waypoint);
-  }
-
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
-  }
-
-  setRollupButtonClickHandler(callback) {
-    this._callback.rollupButtonClick = callback;
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
-  }
-
-  setWaypointEditInputHandler(callback) {
-    this._callback.travelTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._waypointEditInputHandler);
-  }
-
-  removeFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().removeEventListener(`submit`, this._formSubmitHandler);
-  }
-
-  removeRollupButtonClickHandler(callback) {
-    this._callback.rollupButtonClick = callback;
-    this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
-  }
-
-  removeImportantMarkClickHandler(callback) {
-    this._callback.importantMarkClick = callback;
-    this.getElement().querySelector(`.event__favorite-icon`).removeEventListener(`click`, this._importantMarkClickHandler);
+  _waypointTownChangeHandler() {
+    this._callback.townChange();
   }
 }
