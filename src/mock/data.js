@@ -24,28 +24,6 @@ const travel = {
     `Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.`,
     `Sed sed nisi sed augue convallis suscipit in sed felis.`, `Aliquam erat volutpat.`,
     `Nunc fermentum tortor ac porta dapibus.`, `In rutrum ac purus sit amet tempus.`],
-  // bonusOption: [
-  //   {
-  //     type: `Add luggage`,
-  //     price: 30,
-  //   },
-  //   {
-  //     type: `Switch to comfort class`,
-  //     price: 100,
-  //   },
-  //   {
-  //     type: `Add meal`,
-  //     price: 15,
-  //   },
-  //   {
-  //     type: `Choose seats`,
-  //     price: 5,
-  //   },
-  //   {
-  //     type: `Travel by train`,
-  //     price: 40,
-  //   },
-  // ]
 };
 
 const createTravelInfo = (array, mock, count = 5) => {
