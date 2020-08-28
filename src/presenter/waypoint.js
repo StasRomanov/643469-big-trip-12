@@ -4,25 +4,21 @@ import {KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, WaypointMode} from "../const";
 import {remove, render, replace} from "../util/render-function";
 import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
-import EventObserver from "../util/observer";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
-import {shuffle} from "../util/data-function";
+import {getOffers, shuffle} from "../util/data-function";
 
 export default class Waypoint {
-  constructor(travelDays) {
-    this._editWaypointObserver = new EventObserver();
-    this._waypointElementObserver = new EventObserver();
+  constructor(travelDays, offers) {
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._travelDays = travelDays.slice();
+    this._offersAll = offers.slice();
   }
 
   renderWaypointMode(dayWrapper, waypoint) {
     this._waypointElement = new SiteTripEvent(waypoint);
     this._waypointEdit = new SiteEditEventTemplate(waypoint);
-    this._editWaypointObserver.addObserver(this._waypointEdit);
-    this._waypointElementObserver.addObserver(this._waypointElement);
 
     const replaceWaypointMode = (mode = WaypointMode.VIEW) => {
       if (mode === WaypointMode.EDIT) {
@@ -30,7 +26,9 @@ export default class Waypoint {
         replace(this._waypointEdit, this._waypointElement);
         this._renderBonusOptionEditMode(waypoint);
         this._renderDestinationAndPhotoEditMode(waypoint);
-        this._waypointEdit.setTravelTypeChangeHandler((travelType) => this._updateTravelType(travelType));
+        this._waypointEdit.setTravelTypeChangeHandler((travelType) => {
+          this._updateTravelType(travelType, waypoint);
+        });
         this._waypointEdit.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode(waypoint));
       }
       if (mode === WaypointMode.VIEW) {
@@ -139,12 +137,20 @@ export default class Waypoint {
     this._renderDestinationAndPhotoEditMode(waypoint, descriptionShuffle);
   }
 
-  _updateTravelType(travelType) {
+  _updateTravelType(travelType, waypoint) {
     const img = this._waypointEdit.getElement().querySelector(`.event__type-icon`);
     const text = this._waypointEdit.getElement().querySelector(`.event__label`);
     this._avatarInput = this._waypointEdit.getElement().querySelector(`.event__type-toggle`);
     img.setAttribute(`src`, `img/icons/${travelType}.png`);
     text.textContent = `${travelType[0].toUpperCase() + travelType.slice(1)} to`;
     this._avatarInput.setAttribute(`data-type`, travelType);
+    this._updateOffers(waypoint, this._offersAll, travelType);
+  }
+
+  _updateOffers(waypoint, offersMock, type) {
+    const updateWaypoint = Object.assign({}, waypoint);
+    updateWaypoint.type = type;
+    updateWaypoint.bonusOptions = getOffers(updateWaypoint, offersMock);
+    this._renderBonusOptionEditMode(updateWaypoint);
   }
 }

@@ -7,6 +7,7 @@ import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
 import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
+import {bonusOptionMock} from "../mock/bonusOption";
 
 export default class TravelDaysList {
   constructor() {
@@ -34,7 +35,7 @@ export default class TravelDaysList {
       this._travelDays.forEach((item, travelDaysIndex) => {
         render(dayWrapper, new SiteDayItem(item));
         item.waypoints.forEach((value, waypointsIndex) => {
-          new Waypoint(this._travelDays).renderWaypoint(travelDaysIndex, waypointsIndex);
+          new Waypoint(this._travelDays, bonusOptionMock).renderWaypoint(travelDaysIndex, waypointsIndex);
         });
       });
     }
@@ -62,7 +63,7 @@ export default class TravelDaysList {
   _sort(sortTravelDays) {
     this._clearWaypoint();
     sortTravelDays.forEach((value, index) => {
-      new Waypoint(this._travelDays).renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
+      new Waypoint(this._travelDays, bonusOptionMock).renderWaypointMode(this._allDay[0].querySelector(`.trip-events__list`), value);
       const optionWrapper = this._allDay[0].querySelectorAll(`.event__selected-offers`)[index];
       value.bonusOptions.forEach((bonusOptionsValue) => {
         if (bonusOptionsValue.used && optionWrapper.childElementCount < MAX_OFFERS_IN_VIEW_MODE) {
