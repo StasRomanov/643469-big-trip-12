@@ -8,13 +8,11 @@ import SiteSortFilterTemplate from "../view/site-sort-filter";
 import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
 import {bonusOptionMock} from "../mock/bonusOption";
-import Observer from "../util/observer";
 
 export default class TravelDaysList {
   constructor() {
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
-    this._waypointEditObserver = new Observer();
   }
 
   init(travelDays) {

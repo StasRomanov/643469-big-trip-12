@@ -14,7 +14,7 @@ export default class Waypoint {
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._travelDays = travelDays.slice();
     this._offersAll = offers.slice();
-    this._waypoint = Object.assign({}, waypoint);
+    this._waypoint = waypoint;
   }
 
   renderWaypointMode(dayWrapper) {
