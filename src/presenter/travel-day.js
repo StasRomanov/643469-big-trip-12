@@ -4,7 +4,7 @@ import {render} from "../util/render-function";
 import {WaypointMode} from "../const";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
-import {getPriceSortWaypoints} from "../util/sort-data-function";
+import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
 import {bonusOptionMock} from "../mock/bonusOption";
 import Observer from "../util/observer";
@@ -42,11 +42,6 @@ export default class TravelDaysList {
         item.waypoints.forEach((value) => {
           const waypoint = new Waypoint(this._travelDays, bonusOptionMock, value, this._resetAsView);
           this._waypoints.push(waypoint);
-          // if (value.id === this._waypointId) {
-          //   waypoint.renderWaypoint(WaypointMode.EDIT);
-          // } else {
-          //   waypoint.renderWaypoint(WaypointMode.VIEW);
-          // }
           waypoint.renderWaypoint(WaypointMode.VIEW);
           // this._observer.addObserver(waypoint._onRollupButtonEditClickHandler);
           // waypoint.editModeFn = () => this._observer.notify();
@@ -66,11 +61,7 @@ export default class TravelDaysList {
         this._renderDay();
         break;
       case `time`:
-        // this._waypoints.forEach((item) => {
-        //   console.log(item);
-        //   item._onRollupButtonEditClickHandler();
-        // });
-        // this._sort(getTimeSortWaypoints(this._travelDays));
+        this._sort(getTimeSortWaypoints(this._travelDays));
         break;
       case `price`:
         this._sort(getPriceSortWaypoints(this._travelDays));
@@ -81,7 +72,6 @@ export default class TravelDaysList {
   _sort(sortTravelDays) {
     this.clearWaypoint();
     sortTravelDays.forEach((value) => {
-      console.log(value.id === this._waypointId);
       new Waypoint(this._travelDays, bonusOptionMock, value, this._resetAsView).renderWaypointMode(this._allDays.querySelector(`.trip-events__list`), WaypointMode.VIEW);
     });
   }

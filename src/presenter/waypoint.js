@@ -17,28 +17,21 @@ export default class Waypoint {
     this._travelDays = travelDays.slice();
     this._offersAll = offers.slice();
     this._waypoint = waypoint;
-    this._callback = {}; // создаем объект с callbacks для отсутствия ошибки в set editModeFn
+    this._callback = {};
   }
 
-  set editModeFn(callback) { // передаем observer notify в presenter/waypoint
-    this._callback.editMode = callback; // в this._callback.editMode хранится observer.notify из presenter/travel-day
+  set editModeFn(callback) {
+    this._callback.editMode = callback;
   }
 
-  _onRollupButtonEditClickHandler() { // переводит в режим просмотра waypoint
-    this._replaceWaypointMode(WaypointMode.VIEW); // рисовалка
-    // (не нужна так как observer.notify из presenter/travel-day переведет в режим просмотра все)
-    this._setNormalModeListener(); // слушатели
+  _onRollupButtonEditClickHandler() {
+    this._replaceWaypointMode(WaypointMode.VIEW);
+    this._setNormalModeListener();
   }
 
-  _onRollupButtonViewClickHandler() { // переводит в режим редактирования waypoint
-    // const count = this._closeOtherOpenEditWaypoint();
-    // if (count > 0) {
-    //   this._sortWrapper.innerHTML = ``;
-    //   new TravelDaysList(this._waypoint.id).init(this._travelDays);
-    //   return;
-    // }
-    this._replaceWaypointMode(WaypointMode.EDIT); // рисовалка
-    this._setEditModeListener(); // слушатели
+  _onRollupButtonViewClickHandler() {
+    this._replaceWaypointMode(WaypointMode.EDIT);
+    this._setEditModeListener();
   }
 
   renderWaypointMode(dayWrapper, mode = WaypointMode.VIEW) {
@@ -66,8 +59,6 @@ export default class Waypoint {
     }
     if (mode === WaypointMode.EDIT) {
       this._resetFn();
-      console.log(`reset`);
-      console.log(this._mainWrapper.querySelector(`.event--edit`), this._resetFn);
       this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
@@ -78,7 +69,6 @@ export default class Waypoint {
       this._waypointEdit.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode());
     }
     if (mode === WaypointMode.VIEW && id === this._waypoint.id) {
-      console.log(this._mainWrapper.querySelector(`.event--edit`));
       this._waypointElement = new SiteTripEvent(this._waypoint);
       replace(this._waypointElement, this._waypointEdit);
       this._renderBonusOptionViewMode();

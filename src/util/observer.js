@@ -14,8 +14,4 @@ export default class Observer {
   notify() {
     this._observers.forEach((observer) => observer());
   }
-
-  showObservers() {
-    console.log(this._observers);
-  }
 }
