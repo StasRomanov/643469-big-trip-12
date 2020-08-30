@@ -9,9 +9,8 @@ import SiteEventPhotoTemplate from "../view/site-event-photo";
 import {getOffers, shuffle} from "../util/data-function";
 
 export default class Waypoint {
-  constructor(travelDays, offers, waypoint, cb) {
-    this._resetFn = cb;
-    this._onRollupButtonEditClickHandler = this._onRollupButtonEditClickHandler.bind(this);
+  constructor(travelDays, offers, waypoint) {
+    this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._travelDays = travelDays.slice();
@@ -20,18 +19,14 @@ export default class Waypoint {
     this._callback = {};
   }
 
-  set editModeFn(callback) {
+  set renderAllWaypointsInViewMode(callback) {
     this._callback.editMode = callback;
   }
 
-  _onRollupButtonEditClickHandler() {
-    this._replaceWaypointMode(WaypointMode.VIEW);
-    this._setNormalModeListener();
-  }
-
-  _onRollupButtonViewClickHandler() {
-    this._replaceWaypointMode(WaypointMode.EDIT);
-    this._setEditModeListener();
+  renderWaypoint(mode = WaypointMode.VIEW) {
+    let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
+    trimEventItem = trimEventItem[trimEventItem.length - 1];
+    this.renderWaypointMode(trimEventItem, mode);
   }
 
   renderWaypointMode(dayWrapper, mode = WaypointMode.VIEW) {
@@ -48,7 +43,7 @@ export default class Waypoint {
     if (mode === WaypointMode.EDIT) {
       this._replaceWaypointMode(WaypointMode.EDIT);
       this._setEditModeListener();
-      this._waypointEdit.setRollupButtonClickHandler(() => this._onRollupButtonEditClickHandler());
+      this._waypointEdit.setRollupButtonClickHandler(() => this.onRollupButtonEditClickHandler());
     }
   }
 
@@ -58,7 +53,7 @@ export default class Waypoint {
       id = this._mainWrapper.querySelector(`.event--edit`).getAttribute(`data-id`);
     }
     if (mode === WaypointMode.EDIT) {
-      this._resetFn();
+      this._callback.editMode();
       this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
@@ -116,12 +111,6 @@ export default class Waypoint {
     }
   }
 
-  renderWaypoint(mode = WaypointMode.VIEW) {
-    let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
-    trimEventItem = trimEventItem[trimEventItem.length - 1];
-    this.renderWaypointMode(trimEventItem, mode);
-  }
-
   _renderBonusOptionEditMode(waypoint) {
     const {bonusOptions} = waypoint;
     const bonusOptionWrapper = this._waypointEdit.getElement().querySelectorAll(`.event__available-offers`);
@@ -174,12 +163,13 @@ export default class Waypoint {
     this._renderBonusOptionEditMode(updateWaypoint);
   }
 
-  _closeOtherOpenEditWaypoint() {
-    const count = this._mainWrapper.querySelectorAll(`.event--edit`);
-    return count.length;
+  onRollupButtonEditClickHandler() {
+    this._replaceWaypointMode(WaypointMode.VIEW);
+    this._setNormalModeListener();
   }
 
-  _test() {
-    this._callback.editMode();
+  _onRollupButtonViewClickHandler() {
+    this._replaceWaypointMode(WaypointMode.EDIT);
+    this._setEditModeListener();
   }
 }

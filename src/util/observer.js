@@ -11,6 +11,10 @@ export default class Observer {
     this._observers = this._observers.filter((observer) !== observer);
   }
 
+  destroyObserver() {
+    this._observers = [];
+  }
+
   notify() {
     this._observers.forEach((observer) => observer());
   }
