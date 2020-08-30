@@ -11,7 +11,11 @@ export default class Observer {
     this._observers = this._observers.filter((observer) !== observer);
   }
 
-  notify(event, payload) {
-    this._observers.forEach((observer) => observer(event, payload));
+  notify() {
+    this._observers.forEach((observer) => observer());
+  }
+
+  showObservers() {
+    console.log(this._observers);
   }
 }

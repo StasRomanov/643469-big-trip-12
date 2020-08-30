@@ -9,27 +9,65 @@ import SiteEventPhotoTemplate from "../view/site-event-photo";
 import {getOffers, shuffle} from "../util/data-function";
 
 export default class Waypoint {
-  constructor(travelDays, offers, waypoint) {
+  constructor(travelDays, offers, waypoint, cb) {
+    this._resetFn = cb;
+    this._onRollupButtonEditClickHandler = this._onRollupButtonEditClickHandler.bind(this);
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._travelDays = travelDays.slice();
     this._offersAll = offers.slice();
     this._waypoint = waypoint;
+    this._callback = {}; // создаем объект с callbacks для отсутствия ошибки в set editModeFn
   }
 
-  renderWaypointMode(dayWrapper) {
+  set editModeFn(callback) { // передаем observer notify в presenter/waypoint
+    this._callback.editMode = callback; // в this._callback.editMode хранится observer.notify из presenter/travel-day
+  }
+
+  _onRollupButtonEditClickHandler() { // переводит в режим просмотра waypoint
+    this._replaceWaypointMode(WaypointMode.VIEW); // рисовалка
+    // (не нужна так как observer.notify из presenter/travel-day переведет в режим просмотра все)
+    this._setNormalModeListener(); // слушатели
+  }
+
+  _onRollupButtonViewClickHandler() { // переводит в режим редактирования waypoint
+    // const count = this._closeOtherOpenEditWaypoint();
+    // if (count > 0) {
+    //   this._sortWrapper.innerHTML = ``;
+    //   new TravelDaysList(this._waypoint.id).init(this._travelDays);
+    //   return;
+    // }
+    this._replaceWaypointMode(WaypointMode.EDIT); // рисовалка
+    this._setEditModeListener(); // слушатели
+  }
+
+  renderWaypointMode(dayWrapper, mode = WaypointMode.VIEW) {
     this._waypointElement = new SiteTripEvent(this._waypoint);
     this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
+    render(dayWrapper, this._waypointElement);
 
-    this._waypointElement.setRollupButtonClickHandler(() => {
+    if (mode === WaypointMode.VIEW) {
+      this._renderBonusOptionViewMode();
+      this._waypointElement.setRollupButtonClickHandler(() => {
+        this._onRollupButtonViewClickHandler();
+      });
+    }
+    if (mode === WaypointMode.EDIT) {
       this._replaceWaypointMode(WaypointMode.EDIT);
       this._setEditModeListener();
-    });
-    render(dayWrapper, this._waypointElement);
+      this._waypointEdit.setRollupButtonClickHandler(() => this._onRollupButtonEditClickHandler());
+    }
   }
 
   _replaceWaypointMode(mode = WaypointMode.VIEW) {
+    let id = ``;
+    if (this._mainWrapper.querySelector(`.event--edit`)) {
+      id = this._mainWrapper.querySelector(`.event--edit`).getAttribute(`data-id`);
+    }
     if (mode === WaypointMode.EDIT) {
+      this._resetFn();
+      console.log(`reset`);
+      console.log(this._mainWrapper.querySelector(`.event--edit`), this._resetFn);
       this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
@@ -39,7 +77,8 @@ export default class Waypoint {
       });
       this._waypointEdit.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode());
     }
-    if (mode === WaypointMode.VIEW) {
+    if (mode === WaypointMode.VIEW && id === this._waypoint.id) {
+      console.log(this._mainWrapper.querySelector(`.event--edit`));
       this._waypointElement = new SiteTripEvent(this._waypoint);
       replace(this._waypointElement, this._waypointEdit);
       this._renderBonusOptionViewMode();
@@ -87,29 +126,19 @@ export default class Waypoint {
     }
   }
 
-  renderWaypoint(dayCount, waypointCount) {
+  renderWaypoint(mode = WaypointMode.VIEW) {
     let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
     trimEventItem = trimEventItem[trimEventItem.length - 1];
-    this.renderWaypointMode(trimEventItem, this._waypoint);
-    const eventOffer = trimEventItem.querySelectorAll(`.event__selected-offers`);
-    this._lastEventOffer = eventOffer[eventOffer.length - 1];
-    this._travelDays[dayCount].waypoints[waypointCount].bonusOptions.forEach((item, index) => this._renderBonusOption(index, dayCount, waypointCount));
-  }
-
-  _renderBonusOption(index, dayCount, waypointCount) {
-    const optionCount = this._lastEventOffer.querySelectorAll(`.event__offer`).length;
-    if (this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index].used && optionCount < MAX_OFFERS_IN_VIEW_MODE) {
-      render(this._lastEventOffer, new SiteEventTitleTemplate(this._travelDays[dayCount].waypoints[waypointCount].bonusOptions[index]));
-    }
+    this.renderWaypointMode(trimEventItem, mode);
   }
 
   _renderBonusOptionEditMode(waypoint) {
     const {bonusOptions} = waypoint;
-    const bonusOptionWrapper = this._mainWrapper.querySelectorAll(`.event__available-offers`);
+    const bonusOptionWrapper = this._waypointEdit.getElement().querySelectorAll(`.event__available-offers`);
     bonusOptionWrapper.forEach((item) => {
       item.innerHTML = ``;
     });
-    const lastBonusOptionWrapper = bonusOptionWrapper[bonusOptionWrapper.length - 1];
+    const lastBonusOptionWrapper = this._waypointEdit.getElement().querySelector(`.event__available-offers`);
     for (let bonusOption of bonusOptions) {
       render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
     }
@@ -153,5 +182,14 @@ export default class Waypoint {
     updateWaypoint.type = type;
     updateWaypoint.bonusOptions = getOffers(updateWaypoint, this._offersAll);
     this._renderBonusOptionEditMode(updateWaypoint);
+  }
+
+  _closeOtherOpenEditWaypoint() {
+    const count = this._mainWrapper.querySelectorAll(`.event--edit`);
+    return count.length;
+  }
+
+  _test() {
+    this._callback.editMode();
   }
 }
