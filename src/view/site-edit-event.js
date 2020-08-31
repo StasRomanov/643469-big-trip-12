@@ -93,12 +93,12 @@ const createSiteEditEventTemplate = (waypoint) => {
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime.getDate()}/${startTime.getMonth() < 9 ? `0` + startTime.getMonth() : startTime.getMonth()}/${startTime.getFullYear().toString().slice(-2)} ${startTime.getHours() < 9 ? `0` + startTime.getHours() : startTime.getHours()}:${startTime.getMinutes() < 9 ? `0` + startTime.getMinutes() : startTime.getMinutes()}">
+        <input readonly="readonly" class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime.getDate()}/${startTime.getMonth() < 9 ? `0` + startTime.getMonth() : startTime.getMonth()}/${startTime.getFullYear().toString().slice(-2)} ${startTime.getHours() < 9 ? `0` + startTime.getHours() : startTime.getHours()}:${startTime.getMinutes() < 9 ? `0` + startTime.getMinutes() : startTime.getMinutes()}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime.getDate()}/${endTime.getMonth() < 9 ? `0` + endTime.getMonth() : endTime.getMonth()}/${endTime.getFullYear().toString().slice(-2)} ${endTime.getHours() < 9 ? `0` + endTime.getHours() : endTime.getHours()}:${endTime.getMinutes() < 9 ? `0` + endTime.getMinutes() : endTime.getMinutes()}">
+        <input readonly="readonly" class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime.getDate()}/${endTime.getMonth() < 9 ? `0` + endTime.getMonth() : endTime.getMonth()}/${endTime.getFullYear().toString().slice(-2)} ${endTime.getHours() < 9 ? `0` + endTime.getHours() : endTime.getHours()}:${endTime.getMinutes() < 9 ? `0` + endTime.getMinutes() : endTime.getMinutes()}">
       </div>
 
       <div class="event__field-group  event__field-group--price">

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 export const getRandomDate = (day, count = 10) => {
@@ -13,22 +15,14 @@ export const getRandomDate = (day, count = 10) => {
   return dateArr;
 };
 
-export const msToTime = (timeInMs) => {
-  let minutes = parseInt((timeInMs / (1000 * 60)) % 60, 10);
-  let hours = parseInt((timeInMs / (1000 * 60 * 60)) % 24, 10);
-  hours = (hours < 10) ? `0${hours}` : hours;
-  minutes = (minutes < 10) ? `0${minutes}` : minutes;
-  return `${hours > 0 ? `${hours}h` : ``} ${minutes > 0 ? `${minutes}m` : ``}`;
-};
-
 export const getTimeDifference = (startTime, endTime, msMode = false) => {
-  const dateInMsA = Date.parse(startTime);
-  const dateInMsB = Date.parse(endTime);
-  const timeDifference = dateInMsB - dateInMsA;
   if (msMode) {
-    return timeDifference;
+    return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
-    return msToTime(timeDifference);
+    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm`);
+    const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
+    const min = Number(timeDifference.split(` `)[1]) > 0 ? timeDifference.split(` `)[1] + `M` : ``;
+    return `${hours} ${min}`;
   }
 };
 
