@@ -64,6 +64,16 @@ export const getOffers = (waypoint, offers) => {
   filterOffers.forEach((item) => {
     item.name = getCapitalizedWord(item.name);
     item.used = getRandomBoolean();
+    item.price = getRandomInteger(30, 400);
   });
   return filterOffers;
+};
+
+export const updateWaypoints = (oldWaypoints, newWaypoint) => {
+  oldWaypoints.important = newWaypoint.importantMode;
+  oldWaypoints.price = newWaypoint.price;
+  oldWaypoints.type = newWaypoint.type;
+  oldWaypoints.town = newWaypoint.town;
+  oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
+  oldWaypoints.description = newWaypoint.offersDescription;
 };
