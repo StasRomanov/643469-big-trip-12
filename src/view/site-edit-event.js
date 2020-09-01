@@ -159,7 +159,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
   }
 
-  saveDataMode(mock) {
+  saveDataMode() {
     const bonusOptions = [];
     const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
@@ -178,18 +178,14 @@ export default class SiteEditEventTemplate extends Abstract {
         used: offersChecked[index].checked,
       });
     });
-    mock.forEach((item) => {
-      item.waypoints.forEach((waypointsItem) => {
-        if (waypointsItem.id === this.getElement().getAttribute(`data-id`)) {
-          waypointsItem.important = importantMode;
-          waypointsItem.price = price;
-          waypointsItem.type = type;
-          waypointsItem.town = town;
-          waypointsItem.bonusOptions = bonusOptions;
-          waypointsItem.description = offersDescription;
-        }
-      });
-    });
+    return {
+      bonusOptions,
+      importantMode,
+      price,
+      type,
+      town,
+      offersDescription,
+    };
   }
 
   getTemplate() {

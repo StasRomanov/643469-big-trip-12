@@ -6,7 +6,7 @@ import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
-import {getOffers, shuffle} from "../util/data-function";
+import {getOffers, shuffle, updateWaypoints} from "../util/data-function";
 
 export default class Waypoint {
   constructor(travelDays, offers, waypoint) {
@@ -76,12 +76,12 @@ export default class Waypoint {
       this._setEditModeListener();
     });
     this._waypointEdit.setRollupButtonClickHandler(() => {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     this._waypointEdit.setFormSubmitHandler(() => {
-      this._waypointEdit.saveDataMode(this._travelDays);
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      updateWaypoints(this._waypoint, this._waypointEdit.saveDataMode(this._travelDays));
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     document.addEventListener(`keydown`, this._onDocumentKeydown);
@@ -93,12 +93,11 @@ export default class Waypoint {
       this._setEditModeListener();
     });
     this._waypointEdit.removeRollupButtonClickHandler(() => {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     this._waypointEdit.removeFormSubmitHandler(() => {
-      this._waypointEdit.saveDataMode(this._travelDays);
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     document.removeEventListener(`keydown`, this._onDocumentKeydown);
@@ -106,7 +105,7 @@ export default class Waypoint {
 
   _onDocumentKeydown(evt) {
     if (evt.code === KeyboardKey.ESCAPE) {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     }
   }
@@ -164,7 +163,7 @@ export default class Waypoint {
   }
 
   onRollupButtonEditClickHandler() {
-    this._replaceWaypointMode(WaypointMode.VIEW);
+    this._replaceWaypointMode();
     this._setNormalModeListener();
   }
 

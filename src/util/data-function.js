@@ -1,5 +1,18 @@
+const getCapitalizedWord = (str) => {
+  if (typeof str === `string`) {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+  return str;
+};
+
 import moment from "moment";
 
+const getCapitalizedWord = (str) => {
+  if (typeof str === `string`) {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+  return str;
+};
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 export const getRandomDate = (day, count = 10) => {
@@ -43,25 +56,24 @@ export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
-export const ucFirst = (str) => {
-  if (!str) {
-    return str;
-  }
-  return str[0].toUpperCase() + str.slice(1);
+export const getOffers = (waypoint, offers) => {
+  let filterOffers = offers.filter((item) => {
+    return item.type.toLowerCase() === waypoint.type.toLowerCase();
+  });
+  filterOffers = filterOffers[0].offers;
+  filterOffers.forEach((item) => {
+    item.name = getCapitalizedWord(item.name);
+    item.used = getRandomBoolean();
+    item.price = getRandomInteger(30, 400);
+  });
+  return filterOffers;
 };
 
-export const getOffers = (mock, offers) => {
-  let bonusOptions = [];
-  let filterOffers = offers.filter((item) => {
-    return item.type.toLowerCase() === mock.type.toLowerCase();
-  });
-  filterOffers = filterOffers[0];
-  filterOffers.names.forEach((item, index) => {
-    bonusOptions.push({
-      name: ucFirst(filterOffers.names[index]),
-      price: filterOffers.prices[index],
-      used: filterOffers.used[index],
-    });
-  });
-  return bonusOptions;
+export const updateWaypoints = (oldWaypoints, newWaypoint) => {
+  oldWaypoints.important = newWaypoint.importantMode;
+  oldWaypoints.price = newWaypoint.price;
+  oldWaypoints.type = newWaypoint.type;
+  oldWaypoints.town = newWaypoint.town;
+  oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
+  oldWaypoints.description = newWaypoint.offersDescription;
 };
