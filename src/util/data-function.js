@@ -1,3 +1,10 @@
+const getCapitalizedWord = (str) => {
+  if (typeof str === `string`) {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+  return str;
+};
+
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 export const getRandomDate = (day, count = 10) => {
@@ -49,25 +56,14 @@ export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
-export const ucFirst = (str) => {
-  if (!str) {
-    return str;
-  }
-  return str[0].toUpperCase() + str.slice(1);
-};
-
-export const getOffers = (mock, offers) => {
-  let bonusOptions = [];
+export const getOffers = (waypoint, offers) => {
   let filterOffers = offers.filter((item) => {
-    return item.type.toLowerCase() === mock.type.toLowerCase();
+    return item.type.toLowerCase() === waypoint.type.toLowerCase();
   });
-  filterOffers = filterOffers[0];
-  filterOffers.names.forEach((item, index) => {
-    bonusOptions.push({
-      name: ucFirst(filterOffers.names[index]),
-      price: filterOffers.prices[index],
-      used: filterOffers.used[index],
-    });
+  filterOffers = filterOffers[0].offers;
+  filterOffers.forEach((item) => {
+    item.name = getCapitalizedWord(item.name);
+    item.used = getRandomBoolean();
   });
-  return bonusOptions;
+  return filterOffers;
 };

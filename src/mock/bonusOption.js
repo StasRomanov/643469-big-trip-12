@@ -1,64 +1,176 @@
-import {getRandomBoolean} from "../util/data-function";
-
 export const bonusOptionMock = [
   {
     type: `taxi`,
-    names: [`switch to comfort class`, `with kids`, `good driver`, `expensive car`],
-    prices: [30, 10, 15, 40],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `Upgrade to a business class`,
+        price: 120,
+      }, {
+        name: `Choose the radio station`,
+        price: 60,
+      }, {
+        name: `switch to comfort class`,
+        price: 30,
+      }, {
+        name: `with kids`,
+        price: 10,
+      }, {
+        name: `good driver`,
+        price: 15,
+      }, {
+        name: `expensive car`,
+        price: 40,
+      },
+    ],
+  }, {
     type: `bus`,
-    names: [`fast route`, `guide`, `good driver`, `free seats`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast route`,
+        price: 70,
+      }, {
+        name: `guide`,
+        price: 60,
+      }, {
+        name: `good driver`,
+        price: 50,
+      }, {
+        name: `free seats`,
+        price: 40,
+      },
+    ],
+  }, {
     type: `train`,
-    names: [`fast route`, `guide`, `good driver`, `heavy luggage`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast route`,
+        price: 130,
+      }, {
+        name: `guide`,
+        price: 65,
+      }, {
+        name: `good driver`,
+        price: 120,
+      }, {
+        name: `heavy luggage`,
+        price: 90,
+      },
+    ],
+  }, {
     type: `ship`,
-    names: [`fast route`, `guide`, `good captain`, `beautiful view`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast route`,
+        price: 40,
+      }, {
+        name: `guide`,
+        price: 20,
+      }, {
+        name: `good captain`,
+        price: 65,
+      }, {
+        name: `beautiful view`,
+        price: 400,
+      },
+    ],
+  }, {
     type: `transport`,
-    names: [`fast route`, `guide`, `good driver`, `beautiful view`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast route`,
+        price: 120,
+      }, {
+        name: `guide`,
+        price: 60,
+      }, {
+        name: `good driver`,
+        price: 120,
+      }, {
+        name: `beautiful view`,
+        price: 60,
+      },
+    ],
+  }, {
     type: `drive`,
-    names: [`fast route`, `guide`, `good driver`, `beautiful view`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast route`,
+        price: 120,
+      }, {
+        name: `guide`,
+        price: 60,
+      }, {
+        name: `good driver`,
+        price: 120,
+      }, {
+        name: `beautiful view`,
+        price: 60,
+      },
+    ],
+  }, {
     type: `flight`,
-    names: [`fast wi-fi`, `wi-fi`, `good driver`, `beautiful view`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast wi-fi`,
+        price: 120,
+      }, {
+        name: `wi-fi`,
+        price: 60,
+      }, {
+        name: `good driver`,
+        price: 70,
+      }, {
+        name: `beautiful view`,
+        price: 150,
+      },
+    ],
+  }, {
     type: `check-in`,
-    names: [`fast check`, `wi-fi`, `beautiful hotel`],
-    prices: [30, 25, 75],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `fast check`,
+        price: 120,
+      }, {
+        name: `wi-fi`,
+        price: 60,
+      }, {
+        name: `beautiful hotel`,
+        price: 700,
+      },
+    ],
+  }, {
     type: `sightseeing`,
-    names: [`long route`, `guide`, `awesome guide`, `beautiful view`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
-  },
-  {
+    offers: [
+      {
+        name: `long route`,
+        price: 120,
+      }, {
+        name: `guide`,
+        price: 60,
+      }, {
+        name: `awesome guide`,
+        price: 120,
+      }, {
+        name: `beautiful view`,
+        price: 90,
+      },
+    ],
+  }, {
     type: `restaurant`,
-    names: [`Add meal`, `exclusive dishes`, `awesome menu`, `beautiful view`],
-    prices: [30, 25, 15, 10],
-    used: [getRandomBoolean(), getRandomBoolean(), getRandomBoolean(), getRandomBoolean()],
+    offers: [
+      {
+        name: `Add meal`,
+        price: 120,
+      }, {
+        name: `exclusive dishes`,
+        price: 60,
+      }, {
+        name: `awesome menu`,
+        price: 30,
+      }, {
+        name: `beautiful view`,
+        price: 230,
+      },
+    ],
   },
 ];
