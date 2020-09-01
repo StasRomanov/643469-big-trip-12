@@ -1,10 +1,3 @@
-const getCapitalizedWord = (str) => {
-  if (typeof str === `string`) {
-    return str[0].toUpperCase() + str.slice(1);
-  }
-  return str;
-};
-
 import moment from "moment";
 
 const getCapitalizedWord = (str) => {
