@@ -26,10 +26,10 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   if (msMode) {
     return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
-    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`DD HH mm[M]`);
-    const days = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `D` : ``;
-    const hours = Number(timeDifference.split(` `)[1]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
-    const min = timeDifference.split(` `)[2];
+    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm[M]`);
+    const days = Number(timeDifference.split(` `)[0]) >= 24 ? Math.floor(Number(timeDifference.split(` `)[0]) / 24) + `D` : ``;
+    const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
+    const min = timeDifference.split(` `)[1];
     return `${days} ${hours} ${min}`;
   }
 };
@@ -71,4 +71,5 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.town = newWaypoint.town;
   oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
   oldWaypoints.description = newWaypoint.offersDescription;
+  oldWaypoints.startTime = newWaypoint.startTime;
 };

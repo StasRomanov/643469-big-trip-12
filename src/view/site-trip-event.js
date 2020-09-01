@@ -8,7 +8,6 @@ const createSiteTripEvent = (waypoint) => {
   if (isNaN(price)) {
     price = 0;
   }
-
   return `<li class="trip-events__item" data-id="${id}">
     <div class="event">
       <div class="event__type">
