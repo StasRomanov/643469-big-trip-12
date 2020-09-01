@@ -76,12 +76,12 @@ export default class Waypoint {
       this._setEditModeListener();
     });
     this._waypointEdit.setRollupButtonClickHandler(() => {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     this._waypointEdit.setFormSubmitHandler(() => {
       updateWaypoints(this._waypoint, this._waypointEdit.saveDataMode(this._travelDays));
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     document.addEventListener(`keydown`, this._onDocumentKeydown);
@@ -93,11 +93,11 @@ export default class Waypoint {
       this._setEditModeListener();
     });
     this._waypointEdit.removeRollupButtonClickHandler(() => {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     this._waypointEdit.removeFormSubmitHandler(() => {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     });
     document.removeEventListener(`keydown`, this._onDocumentKeydown);
@@ -105,7 +105,7 @@ export default class Waypoint {
 
   _onDocumentKeydown(evt) {
     if (evt.code === KeyboardKey.ESCAPE) {
-      this._replaceWaypointMode(WaypointMode.VIEW);
+      this._replaceWaypointMode();
       this._setNormalModeListener();
     }
   }
@@ -163,7 +163,7 @@ export default class Waypoint {
   }
 
   onRollupButtonEditClickHandler() {
-    this._replaceWaypointMode(WaypointMode.VIEW);
+    this._replaceWaypointMode();
     this._setNormalModeListener();
   }
 
