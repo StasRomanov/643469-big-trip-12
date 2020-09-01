@@ -1,14 +1,12 @@
 import Abstract from "./abstract";
+import moment from "moment";
 
 const createSiteDayItem = (waypoint) => {
   const {day, date} = waypoint;
-  const options = {
-    month: `short`,
-  };
   return `<li class="trip-days__item  day">
       <div class="day__info">
         <span class="day__counter">${day + 1}</span>
-        <time class="day__date" datetime="2019-03-18">${date.toLocaleString(`en`, options).toUpperCase()} ${date.getDate()}</time>
+        <time class="day__date" datetime="2019-03-18">${moment(date).format(`MMMM DD`)}</time>
       </div>
 
       <ul class="trip-events__list"></ul>

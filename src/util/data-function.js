@@ -6,6 +6,7 @@ const getCapitalizedWord = (str) => {
   }
   return str;
 };
+
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 export const getRandomDate = (day, count = 10) => {
@@ -25,10 +26,11 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   if (msMode) {
     return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
-    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm`);
-    const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
-    const min = Number(timeDifference.split(` `)[1]) > 0 ? timeDifference.split(` `)[1] + `M` : ``;
-    return `${hours} ${min}`;
+    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`DD HH mm[M]`);
+    const days = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `D` : ``;
+    const hours = Number(timeDifference.split(` `)[1]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
+    const min = timeDifference.split(` `)[2];
+    return `${days} ${hours} ${min}`;
   }
 };
 

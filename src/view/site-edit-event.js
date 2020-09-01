@@ -1,5 +1,9 @@
 import Abstract from "./abstract";
 import {MouseKey} from "../const";
+import moment from "moment";
+import he from "he";
+
+import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, startTime, endTime, important, id} = waypoint;
@@ -81,7 +85,7 @@ const createSiteEditEventTemplate = (waypoint) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type} to
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${town}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1">
         <datalist id="destination-list-1">
           <option value="Amsterdam"></option>
           <option value="Geneva"></option>
@@ -93,12 +97,12 @@ const createSiteEditEventTemplate = (waypoint) => {
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input readonly="readonly" class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime.getDate()}/${startTime.getMonth() < 9 ? `0` + startTime.getMonth() : startTime.getMonth()}/${startTime.getFullYear().toString().slice(-2)} ${startTime.getHours() < 9 ? `0` + startTime.getHours() : startTime.getHours()}:${startTime.getMinutes() < 9 ? `0` + startTime.getMinutes() : startTime.getMinutes()}">
+        <input readonly="readonly" class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${moment(startTime).format(`DD/MM/YY HH:mm`)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input readonly="readonly" class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime.getDate()}/${endTime.getMonth() < 9 ? `0` + endTime.getMonth() : endTime.getMonth()}/${endTime.getFullYear().toString().slice(-2)} ${endTime.getHours() < 9 ? `0` + endTime.getHours() : endTime.getHours()}:${endTime.getMinutes() < 9 ? `0` + endTime.getMinutes() : endTime.getMinutes()}">
+        <input readonly="readonly" class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${moment(endTime).format(`DD/MM/YY HH:mm`)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -139,6 +143,7 @@ export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
     super();
     this._dropBoxOpen = false;
+    this._datepicker = null;
     this._currentEditData = Object.assign({}, waypoint);
     this._waypoint = Object.assign({}, waypoint);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -264,4 +269,24 @@ export default class SiteEditEventTemplate extends Abstract {
   _waypointTownChangeHandler() {
     this._callback.townChange();
   }
+
+  //
+  // _setDatepicker() {
+  //   if (this._datepicker) {
+  //     this._datepicker.destroy();
+  //     this._datepicker = null;
+  //   }
+  //
+  //   this._datepicker = flatpickr(
+  //       this.getElement().querySelector(`.event__input--time`),
+  //       {
+  //         defaultDate: this._waypoint.startTime,
+  //         onChange: this._dueDateChangeHandler,
+  //       }
+  //   );
+  // }
+  //
+  // _dueDateChangeHandler(selectedDates) {
+  //   console.log(selectedDates[0]);
+  // }
 }
