@@ -2,15 +2,19 @@ import Abstract from "./abstract";
 import {MouseKey} from "../const";
 
 const createSiteEditEventTemplate = (waypoint) => {
-  const {type, town, price, startTime, endTime, important} = waypoint;
-  return `<form class="event  event--edit" action="#" method="post">
+  const {type, town, startTime, endTime, important, id} = waypoint;
+  let {price} = waypoint;
+  if (isNaN(price)) {
+    price = 0;
+  }
+  return `<form class="event  event--edit" action="#" method="post" data-id="${id}">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" data-type="${type}">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
@@ -134,21 +138,54 @@ const createSiteEditEventTemplate = (waypoint) => {
 export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
     super();
-    this._waypoint = waypoint;
+    this._dropBoxOpen = false;
+    this._currentEditData = Object.assign({}, waypoint);
+    this._waypoint = Object.assign({}, waypoint);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._rollupButtonClickHandler = this._rollupButtonClickHandler.bind(this);
-
+    this._importantMarkClickHandler = this._importantMarkClickHandler.bind(this);
+    this._waypointEditInputHandler = this._waypointEditInputHandler.bind(this);
+    this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
+    this._waypointTownChangeHandler = this._waypointTownChangeHandler.bind(this);
   }
 
-  _formSubmitHandler(evt) {
-    evt.preventDefault();
-    this._callback.formSubmit();
+  setImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
   }
 
-  _rollupButtonClickHandler(evt) {
-    if (evt.button === MouseKey.LEFT) {
-      this._callback.rollupButtonClick();
-    }
+  setTravelTypeChangeHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
+  }
+
+  saveDataMode() {
+    const bonusOptions = [];
+    const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    const price = Number(this.getElement().querySelector(`.event__input--price`).value);
+    const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
+    const town = this.getElement().querySelector(`.event__input--destination`).value;
+    const offers = this.getElement().querySelectorAll(`.event__offer-selector`);
+    const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
+    const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
+    const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
+    const offersDescription = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+
+    offers.forEach((bonusOptionItem, index) => {
+      bonusOptions.push({
+        name: offersName[index].textContent,
+        price: offersPrice[index].textContent,
+        used: offersChecked[index].checked,
+      });
+    });
+    return {
+      bonusOptions,
+      importantMode,
+      price,
+      type,
+      town,
+      offersDescription,
+    };
   }
 
   getTemplate() {
@@ -165,6 +202,11 @@ export default class SiteEditEventTemplate extends Abstract {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
   }
 
+  setWaypointEditInputHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._waypointEditInputHandler);
+  }
+
   removeFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().removeEventListener(`submit`, this._formSubmitHandler);
@@ -173,5 +215,53 @@ export default class SiteEditEventTemplate extends Abstract {
   removeRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
     this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
+  }
+
+  removeImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).removeEventListener(`click`, this._importantMarkClickHandler);
+  }
+
+  setWaypointTownChangeHandler(callback) {
+    this._callback.townChange = callback;
+    this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._waypointTownChangeHandler);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  _rollupButtonClickHandler(evt) {
+    if (evt.button === MouseKey.LEFT) {
+      this._callback.rollupButtonClick();
+    }
+  }
+
+  _importantMarkClickHandler(evt) {
+    if (evt.button === MouseKey.LEFT) {
+      this._callback.importantMarkClick();
+    }
+  }
+
+  _waypointEditInputHandler(evt) {
+    const target = evt.target;
+    if (target.classList.contains(`event__type-toggle`)) {
+      this._dropBoxOpen = !this._dropBoxOpen;
+    }
+    this.saveDataMode();
+    this._callback.travelTypeChange(this._currentEditData, target);
+  }
+
+  _travelTypeChangeHandler(evt) {
+    const target = evt.target;
+    if (target.classList.contains(`event__type-input`)) {
+      const targetValue = target.getAttribute(`value`);
+      this._callback.travelTypeChange(targetValue);
+    }
+  }
+
+  _waypointTownChangeHandler() {
+    this._callback.townChange();
   }
 }

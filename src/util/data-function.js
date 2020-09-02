@@ -1,3 +1,10 @@
+const getCapitalizedWord = (str) => {
+  if (typeof str === `string`) {
+    return str[0].toUpperCase() + str.slice(1);
+  }
+  return str;
+};
+
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 export const getRandomDate = (day, count = 10) => {
@@ -45,4 +52,28 @@ export const shuffle = (arr) => {
   return array;
 };
 
+export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
+
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
+
+export const getOffers = (waypoint, offers) => {
+  let filterOffers = offers.filter((item) => {
+    return item.type.toLowerCase() === waypoint.type.toLowerCase();
+  });
+  filterOffers = filterOffers[0].offers;
+  filterOffers.forEach((item) => {
+    item.name = getCapitalizedWord(item.name);
+    item.used = getRandomBoolean();
+    item.price = getRandomInteger(30, 400);
+  });
+  return filterOffers;
+};
+
+export const updateWaypoints = (oldWaypoints, newWaypoint) => {
+  oldWaypoints.important = newWaypoint.importantMode;
+  oldWaypoints.price = newWaypoint.price;
+  oldWaypoints.type = newWaypoint.type;
+  oldWaypoints.town = newWaypoint.town;
+  oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
+  oldWaypoints.description = newWaypoint.offersDescription;
+};
