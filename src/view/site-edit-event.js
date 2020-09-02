@@ -167,7 +167,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
   }
 
-  saveDataMode() {
+  saveData() {
     const bonusOptions = [];
     const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
@@ -261,7 +261,7 @@ export default class SiteEditEventTemplate extends Abstract {
     if (target.classList.contains(`event__type-toggle`)) {
       this._dropBoxOpen = !this._dropBoxOpen;
     }
-    this.saveDataMode();
+    this.saveData();
     this._callback.travelTypeChange(this._currentEditData, target);
   }
 
@@ -306,7 +306,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._datepickerEnd = flatpickr(
         this.getElement().querySelector(`#event-end-time-1`),
         {
-          defaultDate: this._waypoint.startTime,
+          defaultDate: this._waypoint.endTime,
           enableTime: true,
           // eslint-disable-next-line camelcase
           time_24hr: true,

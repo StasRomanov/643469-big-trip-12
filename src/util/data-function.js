@@ -26,8 +26,9 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   if (msMode) {
     return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
+    const days = moment(endTime).format(`D`) - moment(startTime).format(`D`) > 0 ?
+      `${moment(endTime).format(`D`) - moment(startTime).format(`D`)}D` : ``;
     const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm[M]`);
-    const days = Number(timeDifference.split(` `)[0]) >= 24 ? Math.floor(Number(timeDifference.split(` `)[0]) / 24) + `D` : ``;
     const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
     const min = timeDifference.split(` `)[1];
     return `${days} ${hours} ${min}`;
@@ -73,4 +74,6 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.description = newWaypoint.offersDescription;
   oldWaypoints.startTime = newWaypoint.startTime;
   oldWaypoints.endTime = newWaypoint.endTime;
+  oldWaypoints.differenceTime = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime).toUpperCase();
+  oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
 };
