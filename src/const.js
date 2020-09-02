@@ -20,3 +20,5 @@ export const KeyboardKey = {
 };
 
 export const MAX_OFFERS_IN_VIEW_MODE = 3;
+
+export const MAX_TOWN_IN_HEADER = 3;
