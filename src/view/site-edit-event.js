@@ -103,7 +103,7 @@ const createSiteEditEventTemplate = (waypoint) => {
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input readonly="readonly" class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${moment(endTime).format(`DD/MM/YY HH:mm`)}" data-time="${startTime}">
+        <input readonly="readonly" class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${moment(endTime).format(`DD/MM/YY HH:mm`)}" data-time="${endTime}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -144,7 +144,7 @@ export default class SiteEditEventTemplate extends Abstract {
   constructor(waypoint) {
     super();
     this._dropBoxOpen = false;
-    this._datepicker = null;
+    this._datepickerStart = null;
     this._currentEditData = Object.assign({}, waypoint);
     this._waypoint = Object.assign({}, waypoint);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -154,6 +154,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._travelTypeChangeHandler = this._travelTypeChangeHandler.bind(this);
     this._waypointTownChangeHandler = this._waypointTownChangeHandler.bind(this);
     this._dueDateStartChangeHandler = this._dueDateStartChangeHandler.bind(this);
+    this._dueDateEndChangeHandler = this._dueDateEndChangeHandler.bind(this);
   }
 
   setImportantMarkClickHandler(callback) {
@@ -172,7 +173,8 @@ export default class SiteEditEventTemplate extends Abstract {
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
     const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
     const town = this.getElement().querySelector(`.event__input--destination`).value;
-    const startTime = this.getElement().querySelector(`#event-start-time-1`).getAttribute(`date-time`);
+    const startTime = this.getElement().querySelector(`#event-start-time-1`).getAttribute(`data-time`);
+    const endTime = this.getElement().querySelector(`#event-end-time-1`).getAttribute(`data-time`);
     const offers = this.getElement().querySelectorAll(`.event__offer-selector`);
     const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
     const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
@@ -194,6 +196,7 @@ export default class SiteEditEventTemplate extends Abstract {
       town,
       offersDescription,
       startTime,
+      endTime,
     };
   }
 
@@ -275,12 +278,12 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   _setDatepickerStart() {
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
+    if (this._datepickerStart) {
+      this._datepickerStart.destroy();
+      this._datepickerStart = null;
     }
 
-    this._datepicker = flatpickr(
+    this._datepickerStart = flatpickr(
         this.getElement().querySelector(`#event-start-time-1`),
         {
           defaultDate: this._waypoint.startTime,
@@ -294,7 +297,31 @@ export default class SiteEditEventTemplate extends Abstract {
     );
   }
 
+  _setDatepickerEnd() {
+    if (this._datepickerEnd) {
+      this._datepickerEnd.destroy();
+      this._datepickerEnd = null;
+    }
+
+    this._datepickerEnd = flatpickr(
+        this.getElement().querySelector(`#event-end-time-1`),
+        {
+          defaultDate: this._waypoint.startTime,
+          enableTime: true,
+          // eslint-disable-next-line camelcase
+          time_24hr: true,
+          altFormat: `F j, Y`,
+          dateFormat: `d/m/y H:i`,
+          onChange: this._dueDateEndChangeHandler,
+        }
+    );
+  }
+
   _dueDateStartChangeHandler(selectedDates) {
-    this.getElement().querySelector(`#event-start-time-1`).setAttribute(`date-time`, selectedDates[0]);
+    this.getElement().querySelector(`#event-start-time-1`).setAttribute(`data-time`, selectedDates[0]);
+  }
+
+  _dueDateEndChangeHandler(selectedDates) {
+    this.getElement().querySelector(`#event-end-time-1`).setAttribute(`data-time`, selectedDates[0]);
   }
 }

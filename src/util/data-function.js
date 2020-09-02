@@ -72,4 +72,5 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
   oldWaypoints.description = newWaypoint.offersDescription;
   oldWaypoints.startTime = newWaypoint.startTime;
+  oldWaypoints.endTime = newWaypoint.endTime;
 };

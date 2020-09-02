@@ -63,6 +63,7 @@ export default class Waypoint {
       });
       this._waypointEdit.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode());
       this._waypointEdit._setDatepickerStart();
+      this._waypointEdit._setDatepickerEnd();
     }
     if (mode === WaypointMode.VIEW && id === this._waypoint.id) {
       this._waypointElement = new SiteTripEvent(this._waypoint);
