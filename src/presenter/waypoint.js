@@ -9,11 +9,10 @@ import SiteEventPhotoTemplate from "../view/site-event-photo";
 import {getOffers, shuffle, updateWaypoints} from "../util/data-function";
 
 export default class Waypoint {
-  constructor(travelDays, offers, waypoint) {
+  constructor(offers, waypoint) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
-    this._travelDays = travelDays.slice();
     this._offersAll = offers.slice();
     this._waypoint = waypoint;
     this._callback = {};

@@ -9,7 +9,7 @@ import {
 } from "../util/data-function";
 import {bonusOptionMock} from "./bonusOption";
 
-let travelDays = [];
+let waypoints = [];
 const travel = {
   dates: [`apr 18`, `apr 19`, `apr 20`, `apr 21`],
   type: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`,
@@ -27,17 +27,11 @@ const travel = {
 };
 
 const createTravelInfo = (array, mock, count = 5) => {
-  mock.dates.forEach(function (item, index) {
-    const travelInfo = {
-      day: index,
-      data: mock.dates[index].toUpperCase(),
-      date: new Date(2020, 3, 18 + index),
-      waypoints: [],
-    };
+  mock.dates.forEach((item, index) => {
     const dateIndexStart = [];
     const dateIndexEnd = [];
     const dateArray = getRandomDate(index, count);
-    dateArray.sort(function (a, b) {
+    dateArray.sort((a, b) => {
       const dateInMsA = Date.parse(a);
       const dateInMsB = Date.parse(b);
       if (dateInMsA > dateInMsB) {
@@ -48,7 +42,7 @@ const createTravelInfo = (array, mock, count = 5) => {
       }
       return 0;
     });
-    dateArray.forEach(function (dateItem, dateIndex) {
+    dateArray.forEach((dateItem, dateIndex) => {
       if (dateIndex % 2 === 0) {
         dateIndexStart.push(dateIndex);
       } else {
@@ -70,12 +64,11 @@ const createTravelInfo = (array, mock, count = 5) => {
       waypoint.bonusOptions = getOffers(waypoint, bonusOptionMock);
       waypoint.differenceTime = getTimeDifference(waypoint.startTime, waypoint.endTime).toUpperCase();
       waypoint.differenceTimeMs = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
-      travelInfo.waypoints.push(waypoint);
+      array.push(waypoint);
     }
-    array.push(travelInfo);
   });
   return array;
 };
 
-travelDays = createTravelInfo(travelDays, travel);
-export {travelDays};
+waypoints = createTravelInfo(waypoints, travel);
+export {waypoints};

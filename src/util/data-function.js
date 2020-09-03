@@ -1,5 +1,4 @@
 import moment from "moment";
-import {getOnlyWaypoints} from "./sort-data-function";
 import {MAX_TOWN_IN_HEADER} from "../const";
 
 const getCapitalizedWord = (str) => {
@@ -80,11 +79,10 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
 };
 
-export const getSimilarWaypointInfo = (travelDays) => {
+export const getSimilarWaypointInfo = (waypoints) => {
   let townsList = [];
   let townChangeCount = 0;
   let currentTown = null;
-  const waypoints = getOnlyWaypoints(travelDays);
   waypoints.forEach((item) => {
     if (currentTown !== item.town) {
       currentTown = item.town;

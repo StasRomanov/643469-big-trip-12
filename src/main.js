@@ -1,4 +1,4 @@
-import {travelDays} from "./mock/data";
+import {waypoints} from "./mock/data";
 import TravelDaysList from "./presenter/travel-day";
 import {RenderPosition} from "./const";
 import SiteMenu from "./view/site-menu";
@@ -11,10 +11,10 @@ const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
 const renderDemo = new TravelDaysList();
 
 const renderFilter = () => {
-  render(headerWrapper, new SiteMenu(travelDays), RenderPosition.AFTERBEGIN);
+  render(headerWrapper, new SiteMenu(waypoints), RenderPosition.AFTERBEGIN);
   render(filterWrapper, new SiteFilterHeaderTemplate());
   render(filterWrapper, new SiteFilterTemplate());
 };
 
 renderFilter();
-renderDemo.init(travelDays);
+renderDemo.init(waypoints);
