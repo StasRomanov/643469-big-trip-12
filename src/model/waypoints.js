@@ -1,7 +1,7 @@
 import Observer from "../util/observer";
 import {removeItem, updateItem} from "../util/data-function";
 
-export class Waypoint extends Observer {
+export default class Waypoints extends Observer {
   constructor() {
     super();
     this._waypoints = [];
@@ -22,6 +22,6 @@ export class Waypoint extends Observer {
   addWaypoint() {}
 
   deleteWaypoint(update) {
-    this._tasks = removeItem(this._tasks, update);
+    this._waypoints = removeItem(this._waypoints, update);
   }
 }

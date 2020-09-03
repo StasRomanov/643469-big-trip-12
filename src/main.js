@@ -1,10 +1,12 @@
 import {waypoints} from "./mock/data";
 import TravelDaysList from "./presenter/travel-day";
-import {Header} from "./presenter/header";
+import Header from "./presenter/header";
+import Waypoints from "./model/waypoints";
 
-const daysList = new TravelDaysList();
+const waypointModel = new Waypoints();
+waypointModel.setWaypoint(waypoints);
 const header = new Header();
+const daysList = new TravelDaysList(waypointModel);
 
-// renderFilter();
 header.init();
-daysList.init(waypoints);
+daysList.init();

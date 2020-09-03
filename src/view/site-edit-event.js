@@ -145,6 +145,7 @@ export default class SiteEditEventTemplate extends Abstract {
     super();
     this._dropBoxOpen = false;
     this._datepickerStart = null;
+    this._datepickerEnd = null;
     this._currentEditData = Object.assign({}, waypoint);
     this._waypoint = Object.assign({}, waypoint);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -155,6 +156,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._waypointTownChangeHandler = this._waypointTownChangeHandler.bind(this);
     this._dueDateStartChangeHandler = this._dueDateStartChangeHandler.bind(this);
     this._dueDateEndChangeHandler = this._dueDateEndChangeHandler.bind(this);
+    this._waypointDeleteChangeHandler = this._waypointDeleteChangeHandler.bind(this);
   }
 
   setImportantMarkClickHandler(callback) {
@@ -237,6 +239,11 @@ export default class SiteEditEventTemplate extends Abstract {
   setWaypointTownChangeHandler(callback) {
     this._callback.townChange = callback;
     this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._waypointTownChangeHandler);
+  }
+
+  setWaypointDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._waypointDeleteChangeHandler);
   }
 
   _formSubmitHandler(evt) {
@@ -323,5 +330,9 @@ export default class SiteEditEventTemplate extends Abstract {
 
   _dueDateEndChangeHandler(selectedDates) {
     this.getElement().querySelector(`#event-end-time-1`).setAttribute(`data-time`, selectedDates[0]);
+  }
+
+  _waypointDeleteChangeHandler() {
+    this._callback.deleteClick();
   }
 }

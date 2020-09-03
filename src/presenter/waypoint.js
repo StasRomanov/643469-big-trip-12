@@ -9,10 +9,11 @@ import SiteEventPhotoTemplate from "../view/site-event-photo";
 import {getOffers, shuffle, updateWaypoints} from "../util/data-function";
 
 export default class Waypoint {
-  constructor(offers, waypoint) {
+  constructor(offers, waypoint, waypointsModel) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
+    this._waypoints = waypointsModel;
     this._offersAll = offers.slice();
     this._waypoint = waypoint;
     this._callback = {};
@@ -57,10 +58,9 @@ export default class Waypoint {
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
       this._renderDestinationAndPhotoEditMode();
-      this._waypointEdit.setTravelTypeChangeHandler((travelType) => {
-        this._updateTravelType(travelType);
-      });
+      this._waypointEdit.setTravelTypeChangeHandler((travelType) => this._updateTravelType(travelType));
       this._waypointEdit.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode());
+      this._waypointEdit.setWaypointDeleteClickHandler(() => this._removeWaypoint());
       this._waypointEdit._setDatepickerStart();
       this._waypointEdit._setDatepickerEnd();
     }
@@ -171,5 +171,11 @@ export default class Waypoint {
   _onRollupButtonViewClickHandler() {
     this._replaceWaypointMode(WaypointMode.EDIT);
     this._setEditModeListener();
+  }
+
+  _removeWaypoint() {
+    this._waypoints.deleteWaypoint(this._waypoint);
+    this._waypointEdit.getElement().remove();
+    this._waypointElement.getElement().remove();
   }
 }

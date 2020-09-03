@@ -11,19 +11,19 @@ import Observer from "../util/observer";
 import moment from "moment";
 
 export default class TravelDaysList {
-  constructor() {
+  constructor(waypointsModel) {
+    this._waypoints = waypointsModel;
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._observer = new Observer();
   }
 
-  init(waypoints) {
-    this._waypoints = waypoints.slice();
+  init() {
     this._renderDay();
   }
 
   _renderDay() {
-    if (!this._waypoints.length) {
+    if (!this._waypoints.getWaypoint().length) {
       this._noWaypointRender();
     } else {
       let day = null;
@@ -36,13 +36,13 @@ export default class TravelDaysList {
         this._onSortWrapperChange(sortType);
       });
       const dayWrapper = this._sortWrapper.querySelector(`.trip-days`);
-      this._waypoints.forEach((item) => {
+      this._waypoints.getWaypoint().forEach((item) => {
         if (day !== moment(item.startTime).format(`D`)) {
           day = moment(item.startTime).format(`D`);
           dayCount++;
           render(dayWrapper, new SiteDayItem(dayCount, item));
         }
-        const waypoint = new Waypoint(bonusOptionMock, item);
+        const waypoint = new Waypoint(bonusOptionMock, item, this._waypoints);
         waypoint.renderWaypoint(WaypointMode.VIEW);
         this._observer.addObserver(waypoint.onRollupButtonEditClickHandler);
         waypoint.renderAllWaypointsInViewMode = () => this._observer.notify();
@@ -61,10 +61,10 @@ export default class TravelDaysList {
         this._renderDay();
         break;
       case `time`:
-        this._sort(getTimeSortWaypoints(this._waypoints));
+        this._sort(getTimeSortWaypoints(this._waypoints.getWaypoint()));
         break;
       case `price`:
-        this._sort(getPriceSortWaypoints(this._waypoints));
+        this._sort(getPriceSortWaypoints(this._waypoints.getWaypoint()));
         break;
     }
   }
@@ -73,7 +73,7 @@ export default class TravelDaysList {
     this.clearWaypoint();
     this._observer.destroyObserver();
     sortTravelWaypoints.forEach((value) => {
-      const waypoint = new Waypoint(bonusOptionMock, value);
+      const waypoint = new Waypoint(bonusOptionMock, value, this._waypoints);
       this._observer.addObserver(waypoint.onRollupButtonEditClickHandler);
       waypoint.renderWaypointMode(this._allDays.querySelector(`.trip-events__list`), WaypointMode.VIEW);
       waypoint.renderAllWaypointsInViewMode = () => this._observer.notify();

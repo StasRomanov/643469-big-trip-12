@@ -5,7 +5,7 @@ import {RenderPosition} from "../const";
 import SiteFilterHeaderTemplate from "../view/site-filter-header";
 import SiteFilterTemplate from "../view/site-filter";
 
-export class Header {
+export default class Header {
   init() {
     const headerWrapper = document.querySelector(`.trip-main`);
     const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
