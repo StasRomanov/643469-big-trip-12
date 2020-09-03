@@ -62,6 +62,8 @@ export default class Waypoint {
         this._updateTravelType(travelType);
       });
       this._waypointEdit.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode());
+      this._waypointEdit._setDatepickerStart();
+      this._waypointEdit._setDatepickerEnd();
     }
     if (mode === WaypointMode.VIEW && id === this._waypoint.id) {
       this._waypointElement = new SiteTripEvent(this._waypoint);
@@ -80,7 +82,7 @@ export default class Waypoint {
       this._setNormalModeListener();
     });
     this._waypointEdit.setFormSubmitHandler(() => {
-      updateWaypoints(this._waypoint, this._waypointEdit.saveDataMode(this._travelDays));
+      updateWaypoints(this._waypoint, this._waypointEdit.saveData());
       this._replaceWaypointMode();
       this._setNormalModeListener();
     });

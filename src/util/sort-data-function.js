@@ -1,4 +1,4 @@
-const getOnlyWaypoints = (days) => {
+export const getOnlyWaypoints = (days) => {
   const sortWaypoints = [];
   days.forEach((item) => {
     item.waypoints.forEach((waypointsItem) => {

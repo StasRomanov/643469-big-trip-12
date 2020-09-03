@@ -1,3 +1,7 @@
+import moment from "moment";
+import {getOnlyWaypoints} from "./sort-data-function";
+import {MAX_TOWN_IN_HEADER} from "../const";
+
 const getCapitalizedWord = (str) => {
   if (typeof str === `string`) {
     return str[0].toUpperCase() + str.slice(1);
@@ -20,22 +24,16 @@ export const getRandomDate = (day, count = 10) => {
   return dateArr;
 };
 
-export const msToTime = (timeInMs) => {
-  let minutes = parseInt((timeInMs / (1000 * 60)) % 60, 10);
-  let hours = parseInt((timeInMs / (1000 * 60 * 60)) % 24, 10);
-  hours = (hours < 10) ? `0${hours}` : hours;
-  minutes = (minutes < 10) ? `0${minutes}` : minutes;
-  return `${hours > 0 ? `${hours}h` : ``} ${minutes > 0 ? `${minutes}m` : ``}`;
-};
-
 export const getTimeDifference = (startTime, endTime, msMode = false) => {
-  const dateInMsA = Date.parse(startTime);
-  const dateInMsB = Date.parse(endTime);
-  const timeDifference = dateInMsB - dateInMsA;
   if (msMode) {
-    return timeDifference;
+    return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
-    return msToTime(timeDifference);
+    const days = moment(endTime).format(`D`) - moment(startTime).format(`D`) > 0 ?
+      `${moment(endTime).format(`D`) - moment(startTime).format(`D`)}D` : ``;
+    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm[M]`);
+    const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
+    const min = timeDifference.split(` `)[1];
+    return `${days} ${hours} ${min}`;
   }
 };
 
@@ -76,4 +74,26 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.town = newWaypoint.town;
   oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
   oldWaypoints.description = newWaypoint.offersDescription;
+  oldWaypoints.startTime = newWaypoint.startTime;
+  oldWaypoints.endTime = newWaypoint.endTime;
+  oldWaypoints.differenceTime = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime).toUpperCase();
+  oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
+};
+
+export const getSimilarWaypointInfo = (travelDays) => {
+  let townsList = [];
+  let townChangeCount = 0;
+  let currentTown = null;
+  const waypoints = getOnlyWaypoints(travelDays);
+  waypoints.forEach((item) => {
+    if (currentTown !== item.town) {
+      currentTown = item.town;
+      townChangeCount++;
+      townsList.push(item.town);
+    }
+  });
+  return {
+    status: townChangeCount <= MAX_TOWN_IN_HEADER,
+    items: townsList,
+  };
 };

@@ -1,28 +1,25 @@
 import SiteEditEventTemplate from "./site-edit-event";
+import moment from "moment";
+import he from "he";
 
 const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, id} = waypoint;
   let {price} = waypoint;
-  const options = {
-    hour: `numeric`,
-    minute: `numeric`,
-  };
   if (isNaN(price)) {
     price = 0;
   }
-
   return `<li class="trip-events__item" data-id="${id}">
     <div class="event">
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} to ${town}</h3>
+      <h3 class="event__title">${type} to ${he.encode(town)}</h3>
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${startTime}">${startTime.toLocaleString(`ru`, options)}</time>
+          <time class="event__start-time" datetime="${startTime}">${moment(startTime).format(`HH:mm`)}</time>
           &mdash;
-          <time class="event__end-time" datetime="${endTime}">${endTime.toLocaleString(`ru`, options)}</time>
+          <time class="event__end-time" datetime="${endTime}">${moment(endTime).format(`HH:mm`)}</time>
         </p>
         <p class="event__duration">${differenceTime}</p>
       </div>

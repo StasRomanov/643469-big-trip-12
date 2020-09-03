@@ -11,7 +11,7 @@ import {bonusOptionMock} from "./bonusOption";
 
 let travelDays = [];
 const travel = {
-  dates: [`mar 18`, `mar 19`, `mar 20`, `mar 21`],
+  dates: [`apr 18`, `apr 19`, `apr 20`, `apr 21`],
   type: [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`, `Check-in`,
     `Sightseeing`, `Restaurant`],
   town: [`Amsterdam`, `Chamonix`, `Geneva`],
@@ -31,7 +31,7 @@ const createTravelInfo = (array, mock, count = 5) => {
     const travelInfo = {
       day: index,
       data: mock.dates[index].toUpperCase(),
-      date: new Date(2020, 2, 18 + index),
+      date: new Date(2020, 3, 18 + index),
       waypoints: [],
     };
     const dateIndexStart = [];
