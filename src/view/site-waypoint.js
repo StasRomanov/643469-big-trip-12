@@ -1,7 +1,7 @@
-import Abstract from "./abstract";
 import {getId} from "../util/data-function";
 import he from "he";
 import moment from "moment";
+import SiteEditEventTemplate from "./site-edit-event";
 
 const createSiteWaypointTemplate = (waypointDefault) => {
   const {type, price, town, id, startTime, endTime} = waypointDefault;
@@ -12,7 +12,7 @@ const createSiteWaypointTemplate = (waypointDefault) => {
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" data-type="${type}">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
@@ -111,12 +111,21 @@ const createSiteWaypointTemplate = (waypointDefault) => {
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Cancel</button>
     </header>
+
+    <section class="event__details">
+      <section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+        <div class="event__available-offers"></div>
+      </section>
+    </section>
   </form>`;
 };
 
-export default class SiteWaypointTemplate extends Abstract {
+export default class SiteWaypointTemplate extends SiteEditEventTemplate {
   constructor() {
     super();
+    this._saveButtonClickHandler = this._saveButtonClickHandler.bind(this);
     this._waypointDefaultValue = {
       price: 0,
       type: `Bus`,
@@ -129,5 +138,15 @@ export default class SiteWaypointTemplate extends Abstract {
 
   getTemplate() {
     return createSiteWaypointTemplate(this._waypointDefaultValue);
+  }
+
+  setSaveButtonSubmitHandler1(callback) {
+    this._callback.saveButtonSubmit = callback;
+    this.getElement().addEventListener(`submit`, this._saveButtonClickHandler);
+  }
+
+  _saveButtonClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.saveButtonSubmit();
   }
 }

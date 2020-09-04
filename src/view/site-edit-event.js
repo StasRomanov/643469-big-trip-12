@@ -171,7 +171,11 @@ export default class SiteEditEventTemplate extends Abstract {
 
   saveData() {
     const bonusOptions = [];
-    const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    const id = this.getElement().getAttribute(`data-id`);
+    let importantMode = false;
+    if (this.getElement().querySelector(`.event__favorite-checkbox`)) {
+      importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    }
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
     const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
     const town = this.getElement().querySelector(`.event__input--destination`).value;
@@ -199,6 +203,7 @@ export default class SiteEditEventTemplate extends Abstract {
       offersDescription,
       startTime,
       endTime,
+      id,
     };
   }
 

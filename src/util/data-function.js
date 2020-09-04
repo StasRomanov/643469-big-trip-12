@@ -67,6 +67,7 @@ export const getOffers = (waypoint, offers) => {
 };
 
 export const updateWaypoints = (oldWaypoints, newWaypoint) => {
+  oldWaypoints.id = newWaypoint.id;
   oldWaypoints.important = newWaypoint.importantMode;
   oldWaypoints.price = newWaypoint.price;
   oldWaypoints.type = newWaypoint.type;

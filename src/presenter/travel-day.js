@@ -51,10 +51,11 @@ export default class TravelDaysList {
         waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
       });
       this._header.setAddWaypointButtonClickListener(() => {
+        const waypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints);
         this._observerViewMode.notify();
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.setAttribute(`disabled`, `true`));
         this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
-        new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints).renderNewWaypoint();
+        waypoint.renderNewWaypoint();
       });
     }
   }

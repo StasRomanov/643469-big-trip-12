@@ -51,6 +51,16 @@ export default class Waypoint {
 
   renderNewWaypoint() {
     render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
+    this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint);
+    this._renderDestinationAndPhotoEditMode(this._waypoint.description, this._newWaypoint);
+    this._newWaypoint.setSaveButtonSubmitHandler1(() => {
+      this._waypoints.addWaypoint(this._newWaypoint.saveData());
+      remove(this._newWaypoint);
+    });
+    this._newWaypoint.setTravelTypeChangeHandler((travelType) => this._updateTravelType(travelType, this._newWaypoint));
+    this._newWaypoint.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode(this._newWaypoint));
+    this._newWaypoint._setDatepickerStart();
+    this._newWaypoint._setDatepickerEnd();
   }
 
   _replaceWaypointMode(mode = WaypointMode.VIEW) {
@@ -117,21 +127,21 @@ export default class Waypoint {
     }
   }
 
-  _renderBonusOptionEditMode(waypoint) {
+  _renderBonusOptionEditMode(waypoint, element = this._waypointEdit) {
     const {bonusOptions} = waypoint;
-    const bonusOptionWrapper = this._waypointEdit.getElement().querySelectorAll(`.event__available-offers`);
+    const bonusOptionWrapper = element.getElement().querySelectorAll(`.event__available-offers`);
     bonusOptionWrapper.forEach((item) => {
       item.innerHTML = ``;
     });
-    const lastBonusOptionWrapper = this._waypointEdit.getElement().querySelector(`.event__available-offers`);
+    const lastBonusOptionWrapper = element.getElement().querySelector(`.event__available-offers`);
     for (let bonusOption of bonusOptions) {
       render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
     }
   }
 
-  _renderDestinationAndPhotoEditMode(description = this._waypoint.description) {
+  _renderDestinationAndPhotoEditMode(description = this._waypoint.description, element = this._waypointEdit) {
     this._waypointDestination = new SiteWaypointDestinationTemplate(description);
-    render(this._waypointEdit.getElement().querySelector(`.event__details`), this._waypointDestination);
+    render(element.getElement().querySelector(`.event__details`), this._waypointDestination);
     this._waypoint.photos.forEach((item) => {
       render(this._waypointDestination.getElement().querySelector(`.event__photos-tape`), new SiteEventPhotoTemplate(item));
     });
@@ -146,27 +156,27 @@ export default class Waypoint {
     });
   }
 
-  _replaceDestinationAndPhotoEditMode() {
+  _replaceDestinationAndPhotoEditMode(element = this._waypointEdit) {
     const descriptionShuffle = shuffle(this._waypoint.description);
     remove(this._waypointDestination);
-    this._renderDestinationAndPhotoEditMode(descriptionShuffle);
+    this._renderDestinationAndPhotoEditMode(descriptionShuffle, element);
   }
 
-  _updateTravelType(travelType) {
-    const img = this._waypointEdit.getElement().querySelector(`.event__type-icon`);
-    const text = this._waypointEdit.getElement().querySelector(`.event__label`);
-    this._avatarInput = this._waypointEdit.getElement().querySelector(`.event__type-toggle`);
+  _updateTravelType(travelType, element = this._waypointEdit) {
+    const img = element.getElement().querySelector(`.event__type-icon`);
+    const text = element.getElement().querySelector(`.event__label`);
+    this._avatarInput = element.getElement().querySelector(`.event__type-toggle`);
     img.setAttribute(`src`, `img/icons/${travelType}.png`);
     text.textContent = `${travelType[0].toUpperCase() + travelType.slice(1)} to`;
     this._avatarInput.setAttribute(`data-type`, travelType);
-    this._updateOffers(travelType);
+    this._updateOffers(travelType, element);
   }
 
-  _updateOffers(type) {
+  _updateOffers(type, element) {
     const updateWaypoint = Object.assign({}, this._waypoint);
     updateWaypoint.type = type;
     updateWaypoint.bonusOptions = getOffers(updateWaypoint, this._offersAll);
-    this._renderBonusOptionEditMode(updateWaypoint);
+    this._renderBonusOptionEditMode(updateWaypoint, element);
   }
 
   onRollupButtonEditClickHandler() {
