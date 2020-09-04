@@ -1,7 +1,7 @@
 import SiteDayItem from "../view/site-day-item";
 import SiteNoWaypointMessage from "../view/site-no-waypoint-message";
 import {render} from "../util/render-function";
-import {WaypointMode} from "../const";
+import {RenderPosition, WaypointMode} from "../const";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
 import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
@@ -46,7 +46,7 @@ export default class TravelDaysList {
           render(dayWrapper, new SiteDayItem(dayCount, item));
         }
         const waypoint = new Waypoint(bonusOptions, item, this._waypoints);
-        waypoint.renderWaypoint(WaypointMode.VIEW);
+        waypoint.renderWaypoint();
         this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
         waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
       });
@@ -56,6 +56,7 @@ export default class TravelDaysList {
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.setAttribute(`disabled`, `true`));
         this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
         waypoint.renderNewWaypoint();
+        waypoint.renderNewWaypointInViewMode = () => new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints, RenderPosition.AFTERBEGIN).renderWaypoint();
       });
     }
   }

@@ -10,8 +10,9 @@ import {getOffers, shuffle, updateWaypoints} from "../util/data-function";
 import SiteWaypointTemplate from "../view/site-waypoint";
 
 export default class Waypoint {
-  constructor(offers, waypoint, waypointsModel) {
+  constructor(offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
+    this._position = position;
     this._newWaypoint = new SiteWaypointTemplate();
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
@@ -25,16 +26,24 @@ export default class Waypoint {
     this._callback.editMode = callback;
   }
 
+  set renderNewWaypointInViewMode(callback) {
+    this._callback.renderNewWaypointView = callback;
+  }
+
   renderWaypoint(mode = WaypointMode.VIEW) {
     let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
-    trimEventItem = trimEventItem[trimEventItem.length - 1];
+    if (this._position === RenderPosition.BEFOREEND) {
+      trimEventItem = trimEventItem[trimEventItem.length - 1];
+    } else {
+      trimEventItem = trimEventItem[0];
+    }
     this.renderWaypointMode(trimEventItem, mode);
   }
 
   renderWaypointMode(dayWrapper, mode = WaypointMode.VIEW) {
     this._waypointElement = new SiteTripEvent(this._waypoint);
     this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
-    render(dayWrapper, this._waypointElement);
+    render(dayWrapper, this._waypointElement, this._position);
 
     if (mode === WaypointMode.VIEW) {
       this._renderBonusOptionViewMode();
@@ -56,6 +65,7 @@ export default class Waypoint {
     this._newWaypoint.setSaveButtonSubmitHandler1(() => {
       this._waypoints.addWaypoint(this._newWaypoint.saveData());
       remove(this._newWaypoint);
+      this._callback.renderNewWaypointView();
     });
     this._newWaypoint.setTravelTypeChangeHandler((travelType) => this._updateTravelType(travelType, this._newWaypoint));
     this._newWaypoint.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode(this._newWaypoint));
