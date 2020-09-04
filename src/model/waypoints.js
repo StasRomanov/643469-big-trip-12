@@ -1,5 +1,5 @@
 import Observer from "../util/observer";
-import {removeItem, updateItem} from "../util/data-function";
+import {getTimeDifference, removeItem, updateItem} from "../util/data-function";
 
 export default class Waypoints extends Observer {
   constructor() {
@@ -20,6 +20,8 @@ export default class Waypoints extends Observer {
   }
 
   addWaypoint(update) {
+    update.differenceTime = getTimeDifference(update.startTime, update.endTime).toUpperCase();
+    update.differenceTimeMs = getTimeDifference(update.startTime, update.endTime, true).toUpperCase();
     this._waypoints = [
       update,
       ...this._waypoints
