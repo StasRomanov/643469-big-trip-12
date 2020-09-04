@@ -170,11 +170,12 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   saveData() {
+    const photos = [];
     const bonusOptions = [];
     const id = this.getElement().getAttribute(`data-id`);
-    let importantMode = false;
+    let important = false;
     if (this.getElement().querySelector(`.event__favorite-checkbox`)) {
-      importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+      important = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     }
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
     const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
@@ -185,7 +186,10 @@ export default class SiteEditEventTemplate extends Abstract {
     const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
     const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
     const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
-    const offersDescription = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+    const description = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+    this.getElement().querySelectorAll(`.event__photo`).forEach((item) => {
+      photos.push(item.getAttribute(`src`));
+    });
 
     offers.forEach((bonusOptionItem, index) => {
       bonusOptions.push({
@@ -196,14 +200,15 @@ export default class SiteEditEventTemplate extends Abstract {
     });
     return {
       bonusOptions,
-      importantMode,
+      important,
       price,
       type,
       town,
-      offersDescription,
+      description,
       startTime,
       endTime,
       id,
+      photos,
     };
   }
 

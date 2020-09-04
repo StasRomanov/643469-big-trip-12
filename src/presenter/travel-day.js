@@ -52,11 +52,19 @@ export default class TravelDaysList {
       });
       this._header.setAddWaypointButtonClickListener(() => {
         const waypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints);
+        const rollupButtons = this._mainWrapper.querySelectorAll(`.event__rollup-btn`);
         this._observerViewMode.notify();
-        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.setAttribute(`disabled`, `true`));
+        rollupButtons.forEach((item) => item.toggleAttribute(`disabled`));
         this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
         waypoint.renderNewWaypoint();
-        waypoint.renderNewWaypointInViewMode = () => new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints, RenderPosition.AFTERBEGIN).renderWaypoint();
+        waypoint.renderNewWaypointInViewMode = () => {
+          const newWaypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints, RenderPosition.AFTERBEGIN);
+          newWaypoint.renderWaypoint();
+          this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
+          newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
+          this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
+          rollupButtons.forEach((item) => item.toggleAttribute(`disabled`));
+        };
       });
     }
   }

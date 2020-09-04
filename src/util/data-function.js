@@ -68,14 +68,15 @@ export const getOffers = (waypoint, offers) => {
 
 export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.id = newWaypoint.id;
-  oldWaypoints.important = newWaypoint.importantMode;
+  oldWaypoints.important = newWaypoint.important;
   oldWaypoints.price = newWaypoint.price;
   oldWaypoints.type = newWaypoint.type;
   oldWaypoints.town = newWaypoint.town;
   oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
-  oldWaypoints.description = newWaypoint.offersDescription;
+  oldWaypoints.description = newWaypoint.description;
   oldWaypoints.startTime = newWaypoint.startTime;
   oldWaypoints.endTime = newWaypoint.endTime;
+  oldWaypoints.photos = newWaypoint.photos;
   oldWaypoints.differenceTime = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime).toUpperCase();
   oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
 };
