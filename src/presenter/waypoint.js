@@ -1,16 +1,18 @@
 import SiteTripEvent from "../view/site-trip-event";
 import SiteEditEventTemplate from "../view/site-edit-event";
-import {KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, WaypointMode} from "../const";
+import {KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, RenderPosition, WaypointMode} from "../const";
 import {remove, render, replace} from "../util/render-function";
 import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
 import {getOffers, shuffle, updateWaypoints} from "../util/data-function";
+import SiteWaypointTemplate from "../view/site-waypoint";
 
 export default class Waypoint {
   constructor(offers, waypoint, waypointsModel) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
+    this._newWaypoint = new SiteWaypointTemplate();
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._waypoints = waypointsModel;
@@ -45,6 +47,10 @@ export default class Waypoint {
       this._setEditModeListener();
       this._waypointEdit.setRollupButtonClickHandler(() => this.onRollupButtonEditClickHandler());
     }
+  }
+
+  renderNewWaypoint() {
+    render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
   }
 
   _replaceWaypointMode(mode = WaypointMode.VIEW) {

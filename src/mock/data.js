@@ -7,7 +7,7 @@ import {
   getTimeDifference,
   shuffle,
 } from "../util/data-function";
-import {bonusOptionMock} from "./bonusOption";
+import {bonusOptions} from "./bonusOption";
 
 let waypoints = [];
 const travel = {
@@ -61,7 +61,7 @@ const createTravelInfo = (array, mock, count = 5) => {
         photos: shuffle(mock.photo).slice(0, getRandomInteger(1, mock.photo.length)),
         description: shuffle(mock.description).slice(0, 5),
       };
-      waypoint.bonusOptions = getOffers(waypoint, bonusOptionMock);
+      waypoint.bonusOptions = getOffers(waypoint, bonusOptions);
       waypoint.differenceTime = getTimeDifference(waypoint.startTime, waypoint.endTime).toUpperCase();
       waypoint.differenceTimeMs = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       array.push(waypoint);

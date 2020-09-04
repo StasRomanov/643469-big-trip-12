@@ -5,7 +5,7 @@ import Waypoints from "./model/waypoints";
 
 const waypointModel = new Waypoints();
 waypointModel.setWaypoint(waypoints);
-const header = new Header();
+const header = new Header(waypointModel);
 const daysList = new TravelDaysList(waypointModel);
 
 header.init();

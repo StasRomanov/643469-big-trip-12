@@ -19,7 +19,12 @@ export default class Waypoints extends Observer {
     this._waypoints = updateItem(this._waypoints, update);
   }
 
-  addWaypoint() {}
+  addWaypoint(update) {
+    this._waypoints = [
+      update,
+      ...this._waypoints
+    ];
+  }
 
   deleteWaypoint(update) {
     this._waypoints = removeItem(this._waypoints, update);

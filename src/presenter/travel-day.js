@@ -6,16 +6,19 @@ import SiteDayListTemplate from "../view/site-day-list";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
 import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
-import {bonusOptionMock} from "../mock/bonusOption";
+import {bonusOptions} from "../mock/bonusOption";
 import Observer from "../util/observer";
 import moment from "moment";
+import Header from "./header";
 
 export default class TravelDaysList {
   constructor(waypointsModel) {
     this._waypoints = waypointsModel;
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
-    this._observer = new Observer();
+    this._observerViewMode = new Observer();
+    this._header = new Header(this._waypoints);
+    this._headerWrapper = document.querySelector(`.trip-main__event-add-btn`);
   }
 
   init() {
@@ -42,10 +45,16 @@ export default class TravelDaysList {
           dayCount++;
           render(dayWrapper, new SiteDayItem(dayCount, item));
         }
-        const waypoint = new Waypoint(bonusOptionMock, item, this._waypoints);
+        const waypoint = new Waypoint(bonusOptions, item, this._waypoints);
         waypoint.renderWaypoint(WaypointMode.VIEW);
-        this._observer.addObserver(waypoint.onRollupButtonEditClickHandler);
-        waypoint.renderAllWaypointsInViewMode = () => this._observer.notify();
+        this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
+        waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
+      });
+      this._header.setAddWaypointButtonClickListener(() => {
+        this._observerViewMode.notify();
+        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.setAttribute(`disabled`, `true`));
+        this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
+        new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints).renderNewWaypoint();
       });
     }
   }
@@ -71,12 +80,12 @@ export default class TravelDaysList {
 
   _sort(sortTravelWaypoints) {
     this.clearWaypoint();
-    this._observer.destroyObserver();
+    this._observerViewMode.destroyObserver();
     sortTravelWaypoints.forEach((value) => {
-      const waypoint = new Waypoint(bonusOptionMock, value, this._waypoints);
-      this._observer.addObserver(waypoint.onRollupButtonEditClickHandler);
+      const waypoint = new Waypoint(bonusOptions, value, this._waypoints);
+      this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
       waypoint.renderWaypointMode(this._allDays.querySelector(`.trip-events__list`), WaypointMode.VIEW);
-      waypoint.renderAllWaypointsInViewMode = () => this._observer.notify();
+      waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
     });
   }
 
