@@ -2,6 +2,7 @@ import {getId} from "../util/data-function";
 import he from "he";
 import moment from "moment";
 import SiteEditEventTemplate from "./site-edit-event";
+import {defaultWaypoint} from "../const";
 
 const createSiteWaypointTemplate = (waypointDefault) => {
   const {type, price, town, id, startTime, endTime} = waypointDefault;
@@ -126,14 +127,8 @@ export default class SiteWaypointTemplate extends SiteEditEventTemplate {
   constructor() {
     super();
     this._saveButtonClickHandler = this._saveButtonClickHandler.bind(this);
-    this._waypointDefaultValue = {
-      price: 0,
-      type: `Bus`,
-      town: `Chamonix`,
-      startTime: new Date(),
-      endTime: new Date(),
-      id: getId(),
-    };
+    this._waypointDefaultValue = defaultWaypoint;
+    this._waypointDefaultValue.id = getId();
   }
 
   getTemplate() {

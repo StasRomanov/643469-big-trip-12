@@ -53,9 +53,9 @@ export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
-export const getOffers = (waypoint, offers) => {
+export const getOffers = (waypointType, offers) => {
   let filterOffers = offers.filter((item) => {
-    return item.type.toLowerCase() === waypoint.type.toLowerCase();
+    return item.type.toLowerCase() === waypointType.toLowerCase();
   });
   filterOffers = filterOffers[0].offers;
   filterOffers.forEach((item) => {

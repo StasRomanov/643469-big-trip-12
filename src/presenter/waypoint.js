@@ -1,6 +1,6 @@
 import SiteTripEvent from "../view/site-trip-event";
 import SiteEditEventTemplate from "../view/site-edit-event";
-import {KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, RenderPosition, WaypointMode} from "../const";
+import {defaultWaypoint, KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, RenderPosition, WaypointMode} from "../const";
 import {remove, render, replace} from "../util/render-function";
 import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
@@ -60,7 +60,7 @@ export default class Waypoint {
 
   renderNewWaypoint() {
     render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
-    this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint);
+    this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint, true);
     this._renderDestinationAndPhotoEditMode(this._waypoint.description, this._newWaypoint);
     this._newWaypoint.setSaveButtonSubmitHandler1(() => {
       this._waypoints.addWaypoint(this._newWaypoint.saveData());
@@ -137,8 +137,11 @@ export default class Waypoint {
     }
   }
 
-  _renderBonusOptionEditMode(waypoint, element = this._waypointEdit) {
-    const {bonusOptions} = waypoint;
+  _renderBonusOptionEditMode(waypoint, element = this._waypointEdit, defaultMode = false) {
+    let {bonusOptions} = waypoint;
+    if (defaultMode) {
+      bonusOptions = getOffers(defaultWaypoint.type, this._offersAll);
+    }
     const bonusOptionWrapper = element.getElement().querySelectorAll(`.event__available-offers`);
     bonusOptionWrapper.forEach((item) => {
       item.innerHTML = ``;
@@ -185,7 +188,7 @@ export default class Waypoint {
   _updateOffers(type, element) {
     const updateWaypoint = Object.assign({}, this._waypoint);
     updateWaypoint.type = type;
-    updateWaypoint.bonusOptions = getOffers(updateWaypoint, this._offersAll);
+    updateWaypoint.bonusOptions = getOffers(updateWaypoint.type, this._offersAll);
     this._renderBonusOptionEditMode(updateWaypoint, element);
   }
 
