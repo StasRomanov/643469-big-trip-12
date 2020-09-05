@@ -52,6 +52,7 @@ export default class TravelDaysList {
       };
     });
     this._header.renderFilterWaypoints = (filterType) => {
+      this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
       switch (filterType) {
         case FilterType.DEFAULT:
           this._sortDefault(this._waypoints.getWaypoint());
@@ -59,10 +60,12 @@ export default class TravelDaysList {
         case FilterType.FUTURE:
           this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoint());
           this._sortDefault(this._filterWaypoints);
+          this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
           return;
         case FilterType.PAST:
           this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoint());
           this._sortDefault(this._filterWaypoints);
+          this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
           return;
       }
     };
