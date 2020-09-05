@@ -12,6 +12,7 @@ import SiteWaypointTemplate from "../view/site-waypoint";
 export default class Waypoint {
   constructor(offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
+    this._documentKeydownListener = this._documentKeydownListener.bind(this);
     this._position = position;
     this._newWaypoint = new SiteWaypointTemplate();
     this._mainWrapper = document.querySelector(`.page-main`);
@@ -28,6 +29,10 @@ export default class Waypoint {
 
   set renderNewWaypointInViewMode(callback) {
     this._callback.renderNewWaypointView = callback;
+  }
+
+  set resetNewWaypointBtn(callback) {
+    this._callback.resetNewWaypointBtn = callback;
   }
 
   renderWaypoint(mode = WaypointMode.VIEW) {
@@ -62,11 +67,16 @@ export default class Waypoint {
     render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
     this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint, true);
     this._renderDestinationAndPhotoEditMode(this._waypoint.description, this._newWaypoint);
-    this._newWaypoint.setSaveButtonSubmitHandler1(() => {
+    this._newWaypoint.setSaveButtonSubmitHandler(() => {
       this._waypoints.addWaypoint(this._newWaypoint.saveData());
       remove(this._newWaypoint);
       this._callback.renderNewWaypointView();
     });
+    this._newWaypoint.setCancelButtonClickHandler(() => {
+      remove(this._newWaypoint);
+      this._callback.resetNewWaypointBtn();
+    });
+    document.addEventListener(`keydown`, this._documentKeydownListener);
     this._newWaypoint.setTravelTypeChangeHandler((travelType) => this._updateTravelType(travelType, this._newWaypoint));
     this._newWaypoint.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode(this._newWaypoint));
     this._newWaypoint._setDatepickerStart();
@@ -206,5 +216,13 @@ export default class Waypoint {
     this._waypoints.deleteWaypoint(this._waypoint);
     this._waypointEdit.getElement().remove();
     this._waypointElement.getElement().remove();
+  }
+
+  _documentKeydownListener(evt) {
+    if (evt.code === KeyboardKey.ESCAPE) {
+      remove(this._newWaypoint);
+      this._callback.resetNewWaypointBtn();
+      document.removeEventListener(`keydown`, this._documentKeydownListener);
+    }
   }
 }

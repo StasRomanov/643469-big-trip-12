@@ -2,7 +2,7 @@ import {getId} from "../util/data-function";
 import he from "he";
 import moment from "moment";
 import SiteEditEventTemplate from "./site-edit-event";
-import {defaultWaypoint} from "../const";
+import {defaultWaypoint, MouseKey} from "../const";
 
 const createSiteWaypointTemplate = (waypointDefault) => {
   const {type, price, town, id, startTime, endTime} = waypointDefault;
@@ -127,6 +127,7 @@ export default class SiteWaypointTemplate extends SiteEditEventTemplate {
   constructor() {
     super();
     this._saveButtonClickHandler = this._saveButtonClickHandler.bind(this);
+    this._cancelButtonClickHandler = this._cancelButtonClickHandler.bind(this);
     this._waypointDefaultValue = defaultWaypoint;
     this._waypointDefaultValue.id = getId();
   }
@@ -135,13 +136,24 @@ export default class SiteWaypointTemplate extends SiteEditEventTemplate {
     return createSiteWaypointTemplate(this._waypointDefaultValue);
   }
 
-  setSaveButtonSubmitHandler1(callback) {
+  setSaveButtonSubmitHandler(callback) {
     this._callback.saveButtonSubmit = callback;
     this.getElement().addEventListener(`submit`, this._saveButtonClickHandler);
+  }
+
+  setCancelButtonClickHandler(callback) {
+    this._callback.cancelButtonClick = callback;
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._cancelButtonClickHandler);
   }
 
   _saveButtonClickHandler(evt) {
     evt.preventDefault();
     this._callback.saveButtonSubmit();
+  }
+
+  _cancelButtonClickHandler(evt) {
+    if (evt.button === MouseKey.LEFT) {
+      this._callback.cancelButtonClick();
+    }
   }
 }
