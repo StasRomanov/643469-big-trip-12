@@ -30,3 +30,9 @@ export const defaultWaypoint = {
   startTime: new Date(),
   endTime: new Date(),
 };
+
+export const SortType = {
+  DEFAULT: `default`,
+  TIME: `time`,
+  PRICE: `price`,
+};
