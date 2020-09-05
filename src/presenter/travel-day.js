@@ -1,24 +1,25 @@
 import SiteDayItem from "../view/site-day-item";
 import SiteNoWaypointMessage from "../view/site-no-waypoint-message";
 import {render} from "../util/render-function";
-import {RenderPosition, SortType, WaypointMode} from "../const";
+import {FilterType, RenderPosition, SortType, WaypointMode} from "../const";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
 import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
-import {bonusOptions} from "../mock/bonusOption";
+import {bonusOptions} from "../mock/bonus-option";
 import Observer from "../util/observer";
 import moment from "moment";
-import Header from "./header";
+import {getFutureWaypointsFilter, getPastWaypointsFilter} from "../util/filter-data-function";
 
 export default class TravelDaysList {
-  constructor(waypointsModel) {
+  constructor(waypointsModel, headerPresenter) {
+    this._filterWaypoints = null;
     this._currentSortType = SortType.DEFAULT;
     this._waypoints = waypointsModel;
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._observerViewMode = new Observer();
-    this._header = new Header(this._waypoints);
+    this._header = headerPresenter;
     this._headerWrapper = document.querySelector(`.trip-main__event-add-btn`);
   }
 
@@ -27,33 +28,52 @@ export default class TravelDaysList {
   }
 
   _renderDay() {
-    if (!this._waypoints.getWaypoint().length) {
-      this._noWaypointRender();
-    } else {
-      this._dayRenderWaypoints();
-      this._header.setAddWaypointButtonClickListener(() => {
-        if (this._currentSortType !== SortType.DEFAULT) {
-          this._sortDefault();
-        }
-        const waypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints);
-        this._observerViewMode.notify();
+    this._dayRenderWaypoints();
+    this._header.setAddWaypointButtonClickListener(() => {
+      if (this._currentSortType !== SortType.DEFAULT) {
+        this._sortDefault();
+      }
+      const waypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints);
+      this._observerViewMode.notify();
+      this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
+      this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
+      waypoint.renderNewWaypoint();
+      waypoint.resetNewWaypointBtn = () => {
+        this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
-        this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
-        waypoint.renderNewWaypoint();
-        waypoint.resetNewWaypointBtn = () => {
-          this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
-          this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
-        };
-        waypoint.renderNewWaypointInViewMode = () => {
-          const newWaypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints, RenderPosition.AFTERBEGIN);
-          newWaypoint.renderWaypoint();
-          this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
-          newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
-          this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
-          this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
-        };
-      });
-    }
+      };
+      waypoint.renderNewWaypointInViewMode = () => {
+        const newWaypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints, RenderPosition.AFTERBEGIN);
+        newWaypoint.renderWaypoint();
+        this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
+        newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
+        this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
+        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
+      };
+    });
+    this._header.renderFilterWaypoints = (filterType) => {
+      switch (filterType) {
+        case FilterType.DEFAULT:
+          if (this._currentSortType !== SortType.DEFAULT) {
+            this._sortDefault();
+          }
+          return;
+        case FilterType.FUTURE:
+          if (this._currentSortType !== SortType.DEFAULT) {
+            this._sortDefault();
+          }
+          this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoint());
+          console.log(this._filterWaypoints);
+          return;
+        case FilterType.PAST:
+          if (this._currentSortType !== SortType.DEFAULT) {
+            this._sortDefault();
+          }
+          this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoint());
+          console.log(this._filterWaypoints);
+          return;
+      }
+    };
   }
 
   _noWaypointRender() {
@@ -121,6 +141,10 @@ export default class TravelDaysList {
   }
 
   _dayRenderWaypoints() {
+    if (!this._waypoints.getWaypoint().length) {
+      this._noWaypointRender();
+      return;
+    }
     let day = null;
     let dayCount = 0;
     let siteSortFilterTemplate = new SiteSortFilterTemplate();

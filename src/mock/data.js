@@ -7,7 +7,7 @@ import {
   getTimeDifference,
   shuffle,
 } from "../util/data-function";
-import {bonusOptions} from "./bonusOption";
+import {bonusOptions} from "./bonus-option";
 
 let waypoints = [];
 const travel = {

@@ -36,3 +36,9 @@ export const SortType = {
   TIME: `time`,
   PRICE: `price`,
 };
+
+export const FilterType = {
+  DEFAULT: `everything`,
+  FUTURE: `future`,
+  PAST: `past`,
+};

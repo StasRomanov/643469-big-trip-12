@@ -23,12 +23,19 @@ export default class Header extends abstract {
     render(headerWrapper, this._siteMenu, RenderPosition.AFTERBEGIN);
     render(filterWrapper, this._siteFilterHeaderTemplate);
     render(filterWrapper, this._siteFilterTemplate);
+    this._siteFilterTemplate.setFilterChangeListener((type) => {
+      this._callback.renderFilterWaypoints(type);
+    });
+  }
+
+  set renderFilterWaypoints(callback) {
+    this._callback.renderFilterWaypoints = callback;
   }
 
   setAddWaypointButtonClickListener(callback) {
     this._callback.addWaypointButtonClick = callback;
     this._newWaypointButton = this._header.querySelector(`.trip-main__event-add-btn`);
-    this._newWaypointButton.addEventListener(`click`, (evt) => this._addWaypointButtonClickListener(evt));
+    this._newWaypointButton.addEventListener(`click`, this._addWaypointButtonClickListener);
   }
 
   _addWaypointButtonClickListener(evt) {
