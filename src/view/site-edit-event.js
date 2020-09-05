@@ -1,5 +1,5 @@
 import Abstract from "./abstract";
-import {MouseKey} from "../const";
+import {MouseKey, TOWNS} from "../const";
 import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
@@ -88,9 +88,7 @@ const createSiteEditEventTemplate = (waypoint) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+        ${TOWNS.map((townName) => `<option value="${townName}"></option>`).join(``)}
         </datalist>
       </div>
 
@@ -278,7 +276,6 @@ export default class SiteEditEventTemplate extends Abstract {
     if (target.classList.contains(`event__type-toggle`)) {
       this._dropBoxOpen = !this._dropBoxOpen;
     }
-    this.saveData();
     this._callback.travelTypeChange(this._currentEditData, target);
   }
 
@@ -291,7 +288,14 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   _waypointTownChangeHandler() {
-    this._callback.townChange();
+    if (TOWNS.indexOf(this.getElement().querySelector(`.event__input--destination`).value) === -1) {
+      this.getElement().querySelector(`.event__input--destination`).setCustomValidity(`Выбранный город отсутствует в списке`);
+      this.getElement().querySelector(`.event__save-btn`).setAttribute(`disable`, `true`);
+    } else {
+      this.getElement().querySelector(`.event__input--destination`).setCustomValidity(``);
+      this.getElement().querySelector(`.event__save-btn`).removeAttribute(`disable`);
+      this._callback.townChange();
+    }
   }
 
   _setDatepickerStart() {

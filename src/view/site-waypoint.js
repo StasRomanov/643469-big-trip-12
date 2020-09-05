@@ -2,7 +2,7 @@ import {getId} from "../util/data-function";
 import he from "he";
 import moment from "moment";
 import SiteEditEventTemplate from "./site-edit-event";
-import {defaultWaypoint, MouseKey} from "../const";
+import {defaultWaypoint, MouseKey, TOWNS} from "../const";
 
 const createSiteWaypointTemplate = (waypointDefault) => {
   const {type, price, town, id, startTime, endTime} = waypointDefault;
@@ -82,10 +82,7 @@ const createSiteWaypointTemplate = (waypointDefault) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
-          <option value="Saint Petersburg"></option>
+        ${TOWNS.map((townName) => `<option value="${townName}"></option>`).join(``)}
         </datalist>
       </div>
 
