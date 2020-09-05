@@ -28,10 +28,10 @@ export default class TravelDaysList {
   }
 
   _renderDay() {
-    this._dayRenderWaypoints();
+    this._dayRenderWaypoints(this._waypoints.getWaypoint());
     this._header.setAddWaypointButtonClickListener(() => {
       if (this._currentSortType !== SortType.DEFAULT) {
-        this._sortDefault();
+        this._sortDefault(this._waypoints.getWaypoint());
       }
       const waypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints);
       this._observerViewMode.notify();
@@ -54,36 +54,33 @@ export default class TravelDaysList {
     this._header.renderFilterWaypoints = (filterType) => {
       switch (filterType) {
         case FilterType.DEFAULT:
-          if (this._currentSortType !== SortType.DEFAULT) {
-            this._sortDefault();
-          }
+          this._sortDefault(this._waypoints.getWaypoint());
           return;
         case FilterType.FUTURE:
-          if (this._currentSortType !== SortType.DEFAULT) {
-            this._sortDefault();
-          }
           this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoint());
-          console.log(this._filterWaypoints);
+          this._sortDefault(this._filterWaypoints);
           return;
         case FilterType.PAST:
-          if (this._currentSortType !== SortType.DEFAULT) {
-            this._sortDefault();
-          }
           this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoint());
-          console.log(this._filterWaypoints);
+          this._sortDefault(this._filterWaypoints);
           return;
       }
     };
   }
 
   _noWaypointRender() {
-    render(this._sortWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
+    if (this._sortWrapper.querySelector(`.trip-days`)) {
+      render(this._sortWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
+    } else {
+      render(this._sortWrapper, new SiteDayListTemplate());
+      render(this._sortWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
+    }
   }
 
   _onSortWrapperChange(sortType) {
     switch (sortType) {
       case `event`:
-        this._sortDefault();
+        this._sortDefault(this._waypoints.getWaypoint());
         break;
       case `time`:
         this._sortTime();
@@ -124,10 +121,10 @@ export default class TravelDaysList {
     });
   }
 
-  _sortDefault() {
+  _sortDefault(waypoints) {
     this._currentSortType = SortType.DEFAULT;
     this._sortWrapper.innerHTML = ``;
-    this._dayRenderWaypoints();
+    this._dayRenderWaypoints(waypoints);
   }
 
   _sortTime() {
@@ -140,28 +137,28 @@ export default class TravelDaysList {
     this._sort(getPriceSortWaypoints(this._waypoints.getWaypoint()));
   }
 
-  _dayRenderWaypoints() {
-    if (!this._waypoints.getWaypoint().length) {
+  _dayRenderWaypoints(waypoints) {
+    if (!waypoints.length) {
       this._noWaypointRender();
       return;
     }
     let day = null;
     let dayCount = 0;
-    let siteSortFilterTemplate = new SiteSortFilterTemplate();
-    let siteDayListTemplate = new SiteDayListTemplate();
+    const siteSortFilterTemplate = new SiteSortFilterTemplate();
+    const siteDayListTemplate = new SiteDayListTemplate();
     render(this._sortWrapper, siteSortFilterTemplate);
     render(this._sortWrapper, siteDayListTemplate);
     siteSortFilterTemplate.setSortChangeListener((sortType) => {
       this._onSortWrapperChange(sortType);
     });
     const dayWrapper = this._sortWrapper.querySelector(`.trip-days`);
-    this._waypoints.getWaypoint().forEach((item) => {
+    waypoints.forEach((item) => {
       if (day !== moment(item.startTime).format(`D`)) {
         day = moment(item.startTime).format(`D`);
         dayCount++;
         render(dayWrapper, new SiteDayItem(dayCount, item));
       }
-      const waypoint = new Waypoint(bonusOptions, item, this._waypoints);
+      const waypoint = new Waypoint(bonusOptions, item, waypoints);
       waypoint.renderWaypoint();
       this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
       waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
