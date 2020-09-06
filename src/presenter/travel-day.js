@@ -4,7 +4,7 @@ import {render} from "../util/render-function";
 import {FilterType, RenderPosition, SortType, WaypointMode} from "../const";
 import SiteDayListTemplate from "../view/site-day-list";
 import SiteSortFilterTemplate from "../view/site-sort-filter";
-import {getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
+import {getDefaultSortWaypoints, getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
 import {bonusOptions} from "../mock/bonus-option";
 import Observer from "../util/observer";
@@ -49,6 +49,8 @@ export default class TravelDaysList {
         newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
         this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
+        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
+        this._sortDefault(this._waypoints.getWaypoint());
       };
     });
     this._header.renderFilterWaypoints = (filterType) => {
