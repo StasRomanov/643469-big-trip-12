@@ -49,3 +49,7 @@ export const TOWNS = [
   `Geneva`,
   `Chamonix`,
 ];
+
+export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+
+export const EVENT_TYPE = [`Check-in`, `Sightseeing`, `Restaurant`];

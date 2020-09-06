@@ -1,7 +1,7 @@
 import moment from "moment";
 import {MAX_TOWN_IN_HEADER} from "../const";
 
-const getCapitalizedWord = (str) => {
+export const getCapitalizedWord = (str) => {
   if (typeof str === `string`) {
     return str[0].toUpperCase() + str.slice(1);
   }

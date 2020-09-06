@@ -28,7 +28,7 @@ export default class TravelDaysList {
   }
 
   _renderDay() {
-    this._dayRenderWaypoints(this._waypoints.getWaypoint());
+    this._dayRenderWaypoints(this._waypoints.getWaypoint(), this._waypoints);
     this._header.setAddWaypointButtonClickListener(() => {
       if (this._currentSortType !== SortType.DEFAULT) {
         this._sortDefault(this._waypoints.getWaypoint());
@@ -48,7 +48,7 @@ export default class TravelDaysList {
         this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
         newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
         this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
-        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
+        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
       };
     });
     this._header.renderFilterWaypoints = (filterType) => {
@@ -127,7 +127,7 @@ export default class TravelDaysList {
   _sortDefault(waypoints) {
     this._currentSortType = SortType.DEFAULT;
     this._sortWrapper.innerHTML = ``;
-    this._dayRenderWaypoints(waypoints);
+    this._dayRenderWaypoints(waypoints, this._waypoints);
   }
 
   _sortTime() {
@@ -140,7 +140,7 @@ export default class TravelDaysList {
     this._sort(getPriceSortWaypoints(this._waypoints.getWaypoint()));
   }
 
-  _dayRenderWaypoints(waypoints) {
+  _dayRenderWaypoints(waypoints, waypointsModel) {
     if (!waypoints.length) {
       this._noWaypointRender();
       return;
@@ -161,7 +161,7 @@ export default class TravelDaysList {
         dayCount++;
         render(dayWrapper, new SiteDayItem(dayCount, item));
       }
-      const waypoint = new Waypoint(bonusOptions, item, waypoints);
+      const waypoint = new Waypoint(bonusOptions, item, waypointsModel);
       waypoint.renderWaypoint();
       this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
       waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();

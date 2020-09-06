@@ -1,8 +1,8 @@
-import {getId} from "../util/data-function";
+import {getCapitalizedWord, getId} from "../util/data-function";
 import he from "he";
 import moment from "moment";
 import SiteEditEventTemplate from "./site-edit-event";
-import {defaultWaypoint, MouseKey, TOWNS} from "../const";
+import {defaultWaypoint, MouseKey, TOWNS, TRANSFER_TYPE} from "../const";
 
 const createSiteWaypointTemplate = (waypointDefault) => {
   const {type, price, town, id, startTime, endTime} = waypointDefault;
@@ -78,7 +78,7 @@ const createSiteWaypointTemplate = (waypointDefault) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          ${type} to
+          ${getCapitalizedWord(type)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(type)) !== -1 ? `to` : `in`}
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1">
         <datalist id="destination-list-1">
@@ -103,7 +103,7 @@ const createSiteWaypointTemplate = (waypointDefault) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}" pattern="[0-9]*">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>

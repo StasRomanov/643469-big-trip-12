@@ -1,12 +1,19 @@
 import SiteTripEvent from "../view/site-trip-event";
 import SiteEditEventTemplate from "../view/site-edit-event";
-import {defaultWaypoint, KeyboardKey, MAX_OFFERS_IN_VIEW_MODE, RenderPosition, WaypointMode} from "../const";
+import {
+  defaultWaypoint,
+  KeyboardKey,
+  MAX_OFFERS_IN_VIEW_MODE,
+  RenderPosition,
+  TRANSFER_TYPE,
+  WaypointMode,
+} from "../const";
 import {remove, render, replace} from "../util/render-function";
 import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
-import {getOffers, shuffle, updateWaypoints} from "../util/data-function";
+import {getCapitalizedWord, getOffers, shuffle, updateWaypoints} from "../util/data-function";
 import SiteWaypointTemplate from "../view/site-waypoint";
 
 export default class Waypoint {
@@ -190,7 +197,7 @@ export default class Waypoint {
     const text = element.getElement().querySelector(`.event__label`);
     this._avatarInput = element.getElement().querySelector(`.event__type-toggle`);
     img.setAttribute(`src`, `img/icons/${travelType}.png`);
-    text.textContent = `${travelType[0].toUpperCase() + travelType.slice(1)} to`;
+    text.textContent = `${getCapitalizedWord(travelType)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(travelType)) !== -1 ? `to` : `in`}`;
     this._avatarInput.setAttribute(`data-type`, travelType);
     this._updateOffers(travelType, element);
   }

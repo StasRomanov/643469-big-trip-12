@@ -1,6 +1,8 @@
 import SiteEditEventTemplate from "./site-edit-event";
 import moment from "moment";
 import he from "he";
+import {TRANSFER_TYPE} from "../const";
+import {getCapitalizedWord} from "../util/data-function";
 
 const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, id} = waypoint;
@@ -13,7 +15,7 @@ const createSiteTripEvent = (waypoint) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} to ${he.encode(town)}</h3>
+      <h3 class="event__title">${getCapitalizedWord(type)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(type)) !== -1 ? `to` : `in`} ${he.encode(town)}</h3>
 
       <div class="event__schedule">
         <p class="event__time">
