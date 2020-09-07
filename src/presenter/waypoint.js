@@ -20,6 +20,7 @@ export default class Waypoint {
   constructor(offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
     this._documentKeydownListener = this._documentKeydownListener.bind(this);
+    this._onDocumentKeydown = this._onDocumentKeydown.bind(this);
     this._position = position;
     this._newWaypoint = new SiteWaypointTemplate();
     this._mainWrapper = document.querySelector(`.page-main`);
@@ -109,7 +110,11 @@ export default class Waypoint {
     }
     if (mode === WaypointMode.VIEW && id === this._waypoint.id) {
       this._waypointElement = new SiteTripEvent(this._waypoint);
-      replace(this._waypointElement, this._waypointEdit);
+      try {
+        replace(this._waypointElement, this._waypointEdit);
+      } catch (e) {
+        replace(this._waypointElement, this._mainWrapper.querySelector(`.event--edit`));
+      }
       this._renderBonusOptionViewMode();
     }
   }
@@ -151,6 +156,7 @@ export default class Waypoint {
     if (evt.code === KeyboardKey.ESCAPE) {
       this._replaceWaypointMode();
       this._setNormalModeListener();
+      document.removeEventListener(`keydown`, this._onDocumentKeydown);
     }
   }
 

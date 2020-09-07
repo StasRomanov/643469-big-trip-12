@@ -103,7 +103,7 @@ const createSiteWaypointTemplate = (waypointDefault) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}" pattern="[0-9]*">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="" pattern="[0-9]*" placeholder="${price}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
