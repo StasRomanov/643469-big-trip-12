@@ -70,5 +70,5 @@ const createTravelInfo = (array, mock, count = 5) => {
   return array;
 };
 
-waypoints = createTravelInfo(waypoints, travel);
+waypoints = createTravelInfo(waypoints, travel, 2);
 export {waypoints};

@@ -172,5 +172,9 @@ export default class TravelDaysList {
       waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
     });
   }
+
+  destroyAll() {
+    this._mainWrapper.querySelector(`.trip-events`).remove();
+  }
 }
 
