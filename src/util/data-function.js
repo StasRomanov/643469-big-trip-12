@@ -1,11 +1,8 @@
 import moment from "moment";
-import {MAX_TOWN_IN_HEADER} from "../const";
+import {MAX_TOWN_IN_HEADER, TRANSFER_TYPE} from "../const";
 
 export const getCapitalizedWord = (str) => {
-  if (typeof str === `string`) {
-    return str[0].toUpperCase() + str.slice(1);
-  }
-  return str;
+  return str[0].toUpperCase() + str.slice(1);
 };
 
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
@@ -114,4 +111,8 @@ export const updateItem = (items, update) => {
 
 export const removeItem = (items, update) => {
   return items.filter((item) => item.id !== update.id);
+};
+
+export const getEventTypeLabel = (type) => {
+  return `${getCapitalizedWord(type)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(type)) !== -1 ? `to` : `in`}`;
 };

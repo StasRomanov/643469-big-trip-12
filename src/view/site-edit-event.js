@@ -1,11 +1,10 @@
 import Abstract from "./abstract";
-import {MouseKey, TOWNS, TRANSFER_TYPE} from "../const";
+import {MouseKey, TOWNS} from "../const";
 import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
-
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
-import {getCapitalizedWord} from "../util/data-function";
+import {getEventTypeLabel} from "../util/data-function";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, startTime, endTime, important, id} = waypoint;
@@ -85,9 +84,9 @@ const createSiteEditEventTemplate = (waypoint) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          ${getCapitalizedWord(type)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(type)) !== -1 ? `to` : `in`}
+          ${getEventTypeLabel(type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1" autocomplete="off">
         <datalist id="destination-list-1">
         ${TOWNS.map((townName) => `<option value="${townName}"></option>`).join(``)}
         </datalist>
@@ -110,7 +109,7 @@ const createSiteEditEventTemplate = (waypoint) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}" pattern="[0-9]*">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}" pattern="[0-9]*">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -284,8 +283,6 @@ export default class SiteEditEventTemplate extends Abstract {
     const target = evt.target;
     if (target.classList.contains(`event__type-input`)) {
       const targetValue = target.getAttribute(`value`);
-      // console.log(this.getElement().querySelector(`.event__label`));
-      // this.getElement().querySelector(`.event__label`).textContent = `${getCapitalizedWord(targetValue)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(targetValue)) !== -1 ? `to` : `in`}`;
       this._callback.travelTypeChange(targetValue);
     }
   }
