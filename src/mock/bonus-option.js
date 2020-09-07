@@ -1,4 +1,4 @@
-export const bonusOptionMock = [
+export const bonusOptions = [
   {
     type: `taxi`,
     offers: [

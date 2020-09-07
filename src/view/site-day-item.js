@@ -1,12 +1,12 @@
 import Abstract from "./abstract";
 import moment from "moment";
 
-const createSiteDayItem = (waypoint) => {
-  const {day, date} = waypoint;
+const createSiteDayItem = (dayCount, waypoint) => {
+  const {startTime} = waypoint;
   return `<li class="trip-days__item  day">
       <div class="day__info">
-        <span class="day__counter">${day + 1}</span>
-        <time class="day__date" datetime="2019-03-18">${moment(date).format(`MMMM DD`)}</time>
+        <span class="day__counter">${dayCount}</span>
+        <time class="day__date" datetime="2019-03-18">${moment(startTime).format(`MMMM DD`)}</time>
       </div>
 
       <ul class="trip-events__list"></ul>
@@ -14,12 +14,13 @@ const createSiteDayItem = (waypoint) => {
 };
 
 export default class SiteDayItem extends Abstract {
-  constructor(waypoint) {
+  constructor(dayCount, waypoint) {
     super();
     this._waypoint = waypoint;
+    this._dayCount = dayCount;
   }
 
   getTemplate() {
-    return createSiteDayItem(this._waypoint);
+    return createSiteDayItem(this._dayCount, this._waypoint);
   }
 }

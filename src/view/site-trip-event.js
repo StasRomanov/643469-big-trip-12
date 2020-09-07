@@ -1,6 +1,7 @@
 import SiteEditEventTemplate from "./site-edit-event";
 import moment from "moment";
 import he from "he";
+import {getEventTypeLabel} from "../util/data-function";
 
 const createSiteTripEvent = (waypoint) => {
   const {type, town, startTime, endTime, differenceTime, id} = waypoint;
@@ -13,7 +14,7 @@ const createSiteTripEvent = (waypoint) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} to ${he.encode(town)}</h3>
+      <h3 class="event__title">${getEventTypeLabel(type)} ${he.encode(town)}</h3>
 
       <div class="event__schedule">
         <p class="event__time">

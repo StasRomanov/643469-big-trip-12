@@ -18,7 +18,23 @@ const createSiteFilterTemplate = () =>
   </form>`;
 
 export default class SiteFilterTemplate extends Abstract {
+  constructor() {
+    super();
+    this._addFilterChangeListener = this._addFilterChangeListener.bind(this);
+  }
+
   getTemplate() {
     return createSiteFilterTemplate();
+  }
+
+  setFilterChangeListener(callback) {
+    this._callback.setFilterChange = callback;
+    this.getElement().addEventListener(`change`, this._addFilterChangeListener);
+  }
+
+  _addFilterChangeListener(evt) {
+    const target = evt.target;
+    const targetValue = target.value;
+    this._callback.setFilterChange(targetValue);
   }
 }

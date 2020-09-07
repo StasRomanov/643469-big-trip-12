@@ -22,3 +22,34 @@ export const KeyboardKey = {
 export const MAX_OFFERS_IN_VIEW_MODE = 3;
 
 export const MAX_TOWN_IN_HEADER = 3;
+
+export const defaultWaypoint = {
+  price: 0,
+  type: `Bus`,
+  town: `Chamonix`,
+  startTime: new Date(),
+  endTime: new Date(),
+};
+
+export const SortType = {
+  DEFAULT: `default`,
+  TIME: `time`,
+  PRICE: `price`,
+};
+
+export const FilterType = {
+  DEFAULT: `everything`,
+  FUTURE: `future`,
+  PAST: `past`,
+};
+
+export const TOWNS = [
+  `Saint Petersburg`,
+  `Amsterdam`,
+  `Geneva`,
+  `Chamonix`,
+];
+
+export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+
+export const EVENT_TYPE = [`Check-in`, `Sightseeing`, `Restaurant`];

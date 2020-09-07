@@ -1,10 +1,10 @@
 import Abstract from "./abstract";
-import {MouseKey} from "../const";
+import {MouseKey, TOWNS} from "../const";
 import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
-
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
+import {getEventTypeLabel} from "../util/data-function";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, startTime, endTime, important, id} = waypoint;
@@ -84,13 +84,11 @@ const createSiteEditEventTemplate = (waypoint) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          ${type} to
+          ${getEventTypeLabel(type)}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(town)}" list="destination-list-1" autocomplete="off">
         <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
+        ${TOWNS.map((townName) => `<option value="${townName}"></option>`).join(``)}
         </datalist>
       </div>
 
@@ -111,7 +109,7 @@ const createSiteEditEventTemplate = (waypoint) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}" pattern="[0-9]*">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -145,6 +143,7 @@ export default class SiteEditEventTemplate extends Abstract {
     super();
     this._dropBoxOpen = false;
     this._datepickerStart = null;
+    this._datepickerEnd = null;
     this._currentEditData = Object.assign({}, waypoint);
     this._waypoint = Object.assign({}, waypoint);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -155,6 +154,7 @@ export default class SiteEditEventTemplate extends Abstract {
     this._waypointTownChangeHandler = this._waypointTownChangeHandler.bind(this);
     this._dueDateStartChangeHandler = this._dueDateStartChangeHandler.bind(this);
     this._dueDateEndChangeHandler = this._dueDateEndChangeHandler.bind(this);
+    this._waypointDeleteChangeHandler = this._waypointDeleteChangeHandler.bind(this);
   }
 
   setImportantMarkClickHandler(callback) {
@@ -168,8 +168,13 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   saveData() {
+    const photos = [];
     const bonusOptions = [];
-    const importantMode = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    const id = this.getElement().getAttribute(`data-id`);
+    let important = false;
+    if (this.getElement().querySelector(`.event__favorite-checkbox`)) {
+      important = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+    }
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
     const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
     const town = this.getElement().querySelector(`.event__input--destination`).value;
@@ -179,7 +184,10 @@ export default class SiteEditEventTemplate extends Abstract {
     const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
     const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
     const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
-    const offersDescription = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+    const description = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+    this.getElement().querySelectorAll(`.event__photo`).forEach((item) => {
+      photos.push(item.getAttribute(`src`));
+    });
 
     offers.forEach((bonusOptionItem, index) => {
       bonusOptions.push({
@@ -190,13 +198,15 @@ export default class SiteEditEventTemplate extends Abstract {
     });
     return {
       bonusOptions,
-      importantMode,
+      important,
       price,
       type,
       town,
-      offersDescription,
+      description,
       startTime,
       endTime,
+      id,
+      photos,
     };
   }
 
@@ -239,6 +249,11 @@ export default class SiteEditEventTemplate extends Abstract {
     this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._waypointTownChangeHandler);
   }
 
+  setWaypointDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._waypointDeleteChangeHandler);
+  }
+
   _formSubmitHandler(evt) {
     evt.preventDefault();
     this._callback.formSubmit();
@@ -261,7 +276,6 @@ export default class SiteEditEventTemplate extends Abstract {
     if (target.classList.contains(`event__type-toggle`)) {
       this._dropBoxOpen = !this._dropBoxOpen;
     }
-    this.saveData();
     this._callback.travelTypeChange(this._currentEditData, target);
   }
 
@@ -274,7 +288,14 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   _waypointTownChangeHandler() {
-    this._callback.townChange();
+    if (TOWNS.indexOf(this.getElement().querySelector(`.event__input--destination`).value) === -1) {
+      this.getElement().querySelector(`.event__input--destination`).setCustomValidity(`Выбранный город отсутствует в списке`);
+      this.getElement().querySelector(`.event__save-btn`).setAttribute(`disable`, `true`);
+    } else {
+      this.getElement().querySelector(`.event__input--destination`).setCustomValidity(``);
+      this.getElement().querySelector(`.event__save-btn`).removeAttribute(`disable`);
+      this._callback.townChange();
+    }
   }
 
   _setDatepickerStart() {
@@ -323,5 +344,9 @@ export default class SiteEditEventTemplate extends Abstract {
 
   _dueDateEndChangeHandler(selectedDates) {
     this.getElement().querySelector(`#event-end-time-1`).setAttribute(`data-time`, selectedDates[0]);
+  }
+
+  _waypointDeleteChangeHandler() {
+    this._callback.deleteClick();
   }
 }

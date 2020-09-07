@@ -1,20 +1,12 @@
-import {travelDays} from "./mock/data";
+import {waypoints} from "./mock/data";
 import TravelDaysList from "./presenter/travel-day";
-import {RenderPosition} from "./const";
-import SiteMenu from "./view/site-menu";
-import {render} from "./util/render-function";
-import SiteFilterHeaderTemplate from "./view/site-filter-header";
-import SiteFilterTemplate from "./view/site-filter";
+import Header from "./presenter/header";
+import Waypoints from "./model/waypoints";
 
-const headerWrapper = document.querySelector(`.trip-main`);
-const filterWrapper = headerWrapper.querySelector(`.trip-main__trip-controls`);
-const renderDemo = new TravelDaysList();
+const waypointModel = new Waypoints();
+waypointModel.setWaypoint(waypoints);
+const header = new Header(waypointModel);
+const daysList = new TravelDaysList(waypointModel, header);
 
-const renderFilter = () => {
-  render(headerWrapper, new SiteMenu(travelDays), RenderPosition.AFTERBEGIN);
-  render(filterWrapper, new SiteFilterHeaderTemplate());
-  render(filterWrapper, new SiteFilterTemplate());
-};
-
-renderFilter();
-renderDemo.init(travelDays);
+header.init();
+daysList.init();
