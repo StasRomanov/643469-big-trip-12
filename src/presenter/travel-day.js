@@ -31,6 +31,7 @@ export default class TravelDaysList {
     this._dayRenderWaypoints(this._waypoints.getWaypoint(), this._waypoints);
     this._header.setAddWaypointButtonClickListener(() => {
       if (this._currentSortType !== SortType.DEFAULT) {
+        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
         this._sortDefault(this._waypoints.getWaypoint());
       }
       const waypoint = new Waypoint(bonusOptions, this._waypoints.getWaypoint()[0], this._waypoints);
@@ -57,6 +58,7 @@ export default class TravelDaysList {
       this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
       switch (filterType) {
         case FilterType.DEFAULT:
+          this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
           this._sortDefault(this._waypoints.getWaypoint());
           return;
         case FilterType.FUTURE:
@@ -85,6 +87,7 @@ export default class TravelDaysList {
   _onSortWrapperChange(sortType) {
     switch (sortType) {
       case `event`:
+        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
         this._sortDefault(this._waypoints.getWaypoint());
         break;
       case `time`:
