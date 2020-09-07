@@ -4,33 +4,13 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import {ChartType, TRANSFER_TYPE, TypeEmoji} from "../const";
 import {getTimeDifference, getTimeDuration} from "../util/data-function";
 
-const createSiteStats = () => {
-  return `
-  <section class="statistics">
-    <h2 class="visually-hidden">Trip statistics</h2>
-
-    <div class="statistics__item statistics__item--money">
-      <canvas class="statistics__chart  statistics__chart--money" width="900"></canvas>
-    </div>
-
-    <div class="statistics__item statistics__item--transport">
-      <canvas class="statistics__chart  statistics__chart--transport" width="900"></canvas>
-    </div>
-
-    <div class="statistics__item statistics__item--time-spend">
-      <canvas class="statistics__chart  statistics__chart--time" width="900"></canvas>
-    </div>
-  </section>
-`;
-};
-
 export default class SiteStats extends Abstract {
-  constructor(points) {
+  constructor(waypoints) {
     super();
     this._moneyChart = null;
     this._timeSpendChart = null;
     this._timeSpendChart = null;
-    this._data = this._createData(points);
+    this._chartData = this._createChartData(waypoints);
     this._setCharts();
   }
 
@@ -105,9 +85,9 @@ export default class SiteStats extends Abstract {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
-        labels: this._data[text].labels,
+        labels: this._chartData[text].labels,
         datasets: [{
-          data: this._data[text].data,
+          data: this._chartData[text].data,
           backgroundColor: `#ffffff`,
           hoverBackgroundColor: `#ffffff`,
           anchor: `start`,
@@ -167,39 +147,37 @@ export default class SiteStats extends Abstract {
     });
   }
 
-  _createData(points) {
+  _createChartData(waypoints) {
     const transportTypes = TRANSFER_TYPE;
-    const chartSlipt = {
+    const chartMap = {
       [ChartType.MONEY]: {},
       [ChartType.TRANSPORT]: {},
       [ChartType.TIME_SPENT]: {}
     };
 
-    points.forEach((point) => {
-      if (chartSlipt[ChartType.MONEY][point.type]) {
-        chartSlipt[ChartType.MONEY][point.type] += point.price;
+    waypoints.forEach((waypoint) => {
+      if (chartMap[ChartType.MONEY][waypoint.type]) {
+        chartMap[ChartType.MONEY][waypoint.type] += waypoint.price;
       } else {
-        chartSlipt[ChartType.MONEY][point.type] = point.price;
+        chartMap[ChartType.MONEY][waypoint.type] = waypoint.price;
       }
 
-      if (chartSlipt[ChartType.TRANSPORT][point.type]) {
-        chartSlipt[ChartType.TRANSPORT][point.type]++;
+      if (chartMap[ChartType.TRANSPORT][waypoint.type]) {
+        chartMap[ChartType.TRANSPORT][waypoint.type]++;
       } else {
-        if (transportTypes.includes(point.type)) {
-          chartSlipt[ChartType.TRANSPORT][point.type] = 1;
+        if (transportTypes.includes(waypoint.type)) {
+          chartMap[ChartType.TRANSPORT][waypoint.type] = 1;
         }
       }
 
-      if (chartSlipt[ChartType.TIME_SPENT][point.type]) {
-        chartSlipt[ChartType.TIME_SPENT][point.type] += getTimeDifference(point.startTime, point.endTime, true);
-        console.log(chartSlipt[ChartType.TIME_SPENT][point.type]);
-        console.log(getTimeDifference(point.startTime, point.endTime, true));
+      if (chartMap[ChartType.TIME_SPENT][waypoint.type]) {
+        chartMap[ChartType.TIME_SPENT][waypoint.type] += getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       } else {
-        chartSlipt[ChartType.TIME_SPENT][point.type] = getTimeDifference(point.startTime, point.endTime, true);
+        chartMap[ChartType.TIME_SPENT][waypoint.type] = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       }
     });
 
-    return Object.entries(chartSlipt).map(([key, items]) => {
+    return Object.entries(chartMap).map(([key, items]) => {
       items = [...Object.entries(items)].sort((a, b) => b[1] - a[1]).reduce((result, [name, value]) => {
         result.labels.push(`${TypeEmoji.get(name)} ${name.toUpperCase()}`);
         result.data.push(value);

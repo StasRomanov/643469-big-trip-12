@@ -4,20 +4,18 @@ import {ChartType, TRANSFER_TYPE, TypeEmoji} from "../const";
 import {getTimeDifference} from "../util/data-function";
 
 export default class Stats {
-  constructor(waypointModel, daysList) {
-    this._presenter = daysList;
-    this._pointsModel = waypointModel;
+  constructor(waypointsModel, daysList) {
+    this._listPresenter = daysList;
+    this._waypointsModel = waypointsModel;
     this._statisticsComponent = null;
-    console.log(waypointModel.getWaypoint());
   }
 
   init() {
     if (this._statisticsComponent !== null) {
       this.destroy();
     }
-
-    this._presenter.destroyAll();
-    this._statisticsComponent = new SiteStats(this._pointsModel.getWaypoint());
+    this._listPresenter.destroyAll();
+    this._statisticsComponent = new SiteStats(this._waypointsModel.getWaypoint());
     render(document.querySelector(`.page-body__page-main`), this._statisticsComponent);
   }
 
@@ -27,48 +25,48 @@ export default class Stats {
   }
 
   _getMoneyData() {
-    const pointTypes = {};
+    const waypointTypes = {};
 
-    this._pointsModel.getWaypoint().forEach((point) => {
-      if (pointTypes[point.type]) {
-        pointTypes[point.type] += point.price;
+    this._waypointsModel.getWaypoint().forEach((waypoint) => {
+      if (waypointTypes[waypoint.type]) {
+        waypointTypes[waypoint.type] += waypoint.price;
       } else {
-        pointTypes[point.type] = point.price;
+        waypointTypes[waypoint.type] = waypoint.price;
       }
     });
 
-    return this._getFormattedStructure(pointTypes, ChartType.MONEY);
+    return this._getFormattedStructure(waypointTypes, ChartType.MONEY);
   }
 
   _getTransportData() {
     const transportTypes = TRANSFER_TYPE;
-    const pointsTransport = {};
+    const waypointsTransport = {};
 
-    this._pointsModel.getWaypoint().forEach((point) => {
-      if (pointsTransport[point.type]) {
-        pointsTransport[point.type]++;
+    this._waypointsModel.getWaypoint().forEach((waypoint) => {
+      if (waypointsTransport[waypoint.type]) {
+        waypointsTransport[waypoint.type]++;
       } else {
-        if (transportTypes.includes(point.type)) {
-          pointsTransport[point.type] = 1;
+        if (transportTypes.includes(waypoint.type)) {
+          waypointsTransport[waypoint.type] = 1;
         }
       }
     });
 
-    return this._getFormattedStructure(pointsTransport, ChartType.TRANSPORT);
+    return this._getFormattedStructure(waypointsTransport, ChartType.TRANSPORT);
   }
 
   _getTimeSpentData() {
-    const pointTypes = {};
+    const waypointTypes = {};
 
-    this._pointsModel.getWaypoint().forEach((point) => {
-      if (pointTypes[point.type]) {
-        pointTypes[point.type] += getTimeDifference(point.startTime, point.endTime);
+    this._waypointsModel.getWaypoint().forEach((waypoint) => {
+      if (waypointTypes[waypoint.type]) {
+        waypointTypes[waypoint.type] += getTimeDifference(waypoint.startTime, waypoint.endTime);
       } else {
-        pointTypes[point.type] = getTimeDifference(point.startTime, point.endTime);
+        waypointTypes[waypoint.type] = getTimeDifference(waypoint.startTime, waypoint.endTime);
       }
     });
 
-    return this._getFormattedStructure(pointTypes, ChartType.TIME_SPENT);
+    return this._getFormattedStructure(waypointTypes, ChartType.TIME_SPENT);
   }
 
   _getFormattedStructure(items, name) {
