@@ -33,21 +33,6 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   }
 };
 
-export const getTimeDuration = (interval) => {
-  const duration = moment.duration(interval);
-
-  return [
-    [duration.days(), `D`],
-    [duration.hours(), `H`],
-    [duration.minutes(), `M`],
-  ]
-    .map(([number, letter]) => {
-      return number ? `${String(number).padStart(2, `0`)}${letter}` : ``;
-    })
-    .filter(Boolean)
-    .join(` `);
-};
-
 export const shuffle = (arr) => {
   let j;
   let temp;

@@ -2,15 +2,15 @@ import Abstract from "./abstract";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {ChartType, TRANSFER_TYPE, TypeEmoji} from "../const";
-import {getTimeDifference, getTimeDuration} from "../util/data-function";
+import {getTimeDifference} from "../util/data-function";
 
 export default class SiteStats extends Abstract {
   constructor(waypoints) {
     super();
+    this._chartData = this._createChartData(waypoints);
     this._moneyChart = null;
     this._timeSpendChart = null;
     this._timeSpendChart = null;
-    this._chartData = this._createChartData(waypoints);
     this._setCharts();
   }
 
@@ -40,17 +40,9 @@ export default class SiteStats extends Abstract {
   }
 
   _removeCharts() {
-    if (this._moneyChart !== null) {
-      this._moneyChart = null;
-    }
-
-    if (this._timeSpendChart !== null) {
-      this._timeSpendChart = null;
-    }
-
-    if (this._timeSpendChart !== null) {
-      this._timeSpendChart = null;
-    }
+    this._moneyChart = null;
+    this._timeSpendChart = null;
+    this._timeSpendChart = null;
   }
 
   _setCharts() {
@@ -76,7 +68,7 @@ export default class SiteStats extends Abstract {
     this._timeSpendChart = this._renderChart(
         timeSpendCtx,
         ChartType.TIME_SPENT,
-        (val) => `${getTimeDuration(val)}`
+        (val) => `${getTimeDifference(new Date(0), new Date(val))}`
     );
   }
 
@@ -171,9 +163,9 @@ export default class SiteStats extends Abstract {
       }
 
       if (chartMap[ChartType.TIME_SPENT][waypoint.type]) {
-        chartMap[ChartType.TIME_SPENT][waypoint.type] += getTimeDifference(waypoint.startTime, waypoint.endTime, true);
+        chartMap[ChartType.TIME_SPENT][waypoint.type] += Number(getTimeDifference(waypoint.startTime, waypoint.endTime, true));
       } else {
-        chartMap[ChartType.TIME_SPENT][waypoint.type] = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
+        chartMap[ChartType.TIME_SPENT][waypoint.type] = Number(getTimeDifference(waypoint.startTime, waypoint.endTime, true));
       }
     });
 

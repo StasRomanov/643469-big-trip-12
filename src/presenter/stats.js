@@ -60,9 +60,9 @@ export default class Stats {
 
     this._waypointsModel.getWaypoint().forEach((waypoint) => {
       if (waypointTypes[waypoint.type]) {
-        waypointTypes[waypoint.type] += getTimeDifference(waypoint.startTime, waypoint.endTime);
+        waypointTypes[waypoint.type] += getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       } else {
-        waypointTypes[waypoint.type] = getTimeDifference(waypoint.startTime, waypoint.endTime);
+        waypointTypes[waypoint.type] = getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       }
     });
 
