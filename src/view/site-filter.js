@@ -1,4 +1,5 @@
 import Abstract from "./abstract";
+import {FilterType} from "../const";
 
 const createSiteFilterTemplate = () =>
   `<form class="trip-filters" action="#" method="get">
@@ -36,5 +37,22 @@ export default class SiteFilterTemplate extends Abstract {
     const target = evt.target;
     const targetValue = target.value;
     this._callback.setFilterChange(targetValue);
+  }
+
+  disableFilters() {
+    this.getElement().querySelectorAll(`.trip-filters__filter-input`).forEach((item) => item.setAttribute(`disabled`, `true`));
+  }
+
+  enableFilters() {
+    this.getElement().querySelectorAll(`.trip-filters__filter-input`).forEach((item) => item.removeAttribute(`disabled`));
+  }
+
+  setFilterDefault() {
+    this.getElement().querySelectorAll(`.trip-filters__filter-input`).forEach((item) =>{
+      if (item.value === FilterType.DEFAULT) {
+        item.checked = true;
+      }
+      item.removeAttribute(`disabled`);
+    });
   }
 }

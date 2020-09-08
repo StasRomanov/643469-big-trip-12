@@ -74,6 +74,8 @@ export default class TravelDaysList {
       }
     };
     this._header.destroyWaypoints = () => {
+      this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
+      this._sortDefault(this._waypoints.getWaypoint());
       this.destroyAll();
     };
     this._header.destroyStats = () => {
@@ -188,7 +190,9 @@ export default class TravelDaysList {
   }
 
   destroyStats() {
-    this._mainWrapper.querySelector(`.statistics`).remove();
+    if (this._mainWrapper.querySelector(`.statistics`)) {
+      this._mainWrapper.querySelector(`.statistics`).remove();
+    }
   }
 }
 

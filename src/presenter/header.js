@@ -27,11 +27,14 @@ export default class Header extends abstract {
     render(filterWrapper, this._siteFilterHeaderTemplate);
     render(filterWrapper, this._siteFilterTemplate);
     this._siteFilterHeaderTemplate.setStatsClickListener(() => {
+      this._siteFilterTemplate.setFilterDefault();
+      this._siteFilterTemplate.disableFilters();
       this._mainWrapper.querySelector(`.page-body__container`).classList.add(`trip-main--hidden`);
       this._callback.destroyWaypointsAll();
       this._stats.init();
     });
     this._siteFilterHeaderTemplate.setTableClickListener(() => {
+      this._siteFilterTemplate.enableFilters();
       this._mainWrapper.querySelector(`.page-body__container`).classList.remove(`trip-main--hidden`);
       this._callback.destroyStats();
       this._travelDayPresenter.init();
