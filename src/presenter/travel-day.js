@@ -73,6 +73,15 @@ export default class TravelDaysList {
           return;
       }
     };
+    this._header.destroyWaypoints = () => {
+      this.destroyAll();
+    };
+    this._header.destroyStats = () => {
+      this.destroyStats();
+    };
+    this._header.renderTable = () => {
+      this.init();
+    };
   }
 
   _noWaypointRender() {
@@ -174,7 +183,12 @@ export default class TravelDaysList {
   }
 
   destroyAll() {
-    this._mainWrapper.querySelector(`.trip-events`).remove();
+    this._mainWrapper.querySelector(`.trip-events__trip-sort`).remove();
+    this._mainWrapper.querySelector(`.trip-days`).remove();
+  }
+
+  destroyStats() {
+    this._mainWrapper.querySelector(`.statistics`).remove();
   }
 }
 

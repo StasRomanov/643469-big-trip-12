@@ -4,8 +4,7 @@ import {ChartType, TRANSFER_TYPE, TypeEmoji} from "../const";
 import {getTimeDifference} from "../util/data-function";
 
 export default class Stats {
-  constructor(waypointsModel, daysList) {
-    this._listPresenter = daysList;
+  constructor(waypointsModel) {
     this._waypointsModel = waypointsModel;
     this._statisticsComponent = null;
   }
@@ -14,7 +13,6 @@ export default class Stats {
     if (this._statisticsComponent !== null) {
       this.destroy();
     }
-    this._listPresenter.destroyAll();
     this._statisticsComponent = new SiteStats(this._waypointsModel.getWaypoint());
     render(document.querySelector(`.page-body__page-main`), this._statisticsComponent);
   }
