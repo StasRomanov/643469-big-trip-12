@@ -179,8 +179,14 @@ export default class TravelDaysList {
       }
       const waypoint = new Waypoint(bonusOptions, item, waypointsModel);
       waypoint.renderWaypoint();
+      const currentDay = this._mainWrapper.querySelectorAll(`.trip-days__item`)[this._mainWrapper.querySelectorAll(`.trip-days__item`).length - 1];
       this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
       waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
+      waypoint.removeDay = () => {
+        if (!(currentDay.querySelectorAll(`.trip-events__item`).length)) {
+          currentDay.remove();
+        }
+      };
     });
   }
 
