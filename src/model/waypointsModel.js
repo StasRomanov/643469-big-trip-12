@@ -1,7 +1,7 @@
 import Observer from "../util/observer";
 import {getTimeDifference, removeItem, updateItem} from "../util/data-function";
 
-export default class Waypoints extends Observer {
+export default class WaypointsModel extends Observer {
   constructor() {
     super();
     this._waypoints = [];
@@ -31,4 +31,11 @@ export default class Waypoints extends Observer {
   deleteWaypoint(update) {
     this._waypoints = removeItem(this._waypoints, update);
   }
+
+  // static updateToClient(waypoint) {
+  //   const adaptedWaypoint = Object.assign({},
+  //     waypoint,
+  //
+  //     );
+  // }
 }
