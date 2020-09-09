@@ -4,7 +4,7 @@ import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
-import {getEventTypeLabel} from "../util/data-function";
+import {getCapitalizedWord, getEventTypeLabel} from "../util/data-function";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, startTime, endTime, important, id} = waypoint;
@@ -176,8 +176,8 @@ export default class SiteEditEventTemplate extends Abstract {
       important = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     }
     const price = Number(this.getElement().querySelector(`.event__input--price`).value);
-    const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
-    const town = this.getElement().querySelector(`.event__input--destination`).value;
+    const type = getCapitalizedWord(this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`));
+    const town = getCapitalizedWord(this.getElement().querySelector(`.event__input--destination`).value);
     const startTime = this.getElement().querySelector(`#event-start-time-1`).getAttribute(`data-time`);
     const endTime = this.getElement().querySelector(`#event-end-time-1`).getAttribute(`data-time`);
     const offers = this.getElement().querySelectorAll(`.event__offer-selector`);

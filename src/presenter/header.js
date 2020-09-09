@@ -10,7 +10,6 @@ export default class Header extends abstract {
   constructor(waypointsModel, statsPresenter) {
     super();
     this._stats = statsPresenter;
-    this._waypoint = waypointsModel.getWaypoint()[0];
     this._header = document.querySelector(`.page-header`);
     this._mainWrapper = document.querySelector(`.page-body__page-main`);
     this._siteMenu = new SiteMenu(waypointsModel.getWaypoint());
