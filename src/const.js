@@ -72,3 +72,8 @@ export const ChartType = {
   TRANSPORT: `TRANSPORT`,
   TIME_SPENT: `TIME SPENT`,
 };
+
+export const PageType = {
+  TABLE: `table`,
+  STATS: `stats`,
+};

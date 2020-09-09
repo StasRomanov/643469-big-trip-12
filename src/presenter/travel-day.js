@@ -75,10 +75,12 @@ export default class TravelDaysList {
     };
     this._header.destroyWaypoints = () => {
       this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
+      this._headerWrapper.classList.add(`trip-main__event-add-btn--hidden`);
       this._sortDefault(this._waypoints.getWaypoint());
       this.destroyAll();
     };
     this._header.destroyStats = () => {
+      this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
       this.destroyStats();
     };
     this._header.renderTable = () => {
