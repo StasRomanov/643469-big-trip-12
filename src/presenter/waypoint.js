@@ -43,6 +43,10 @@ export default class Waypoint {
     this._callback.resetNewWaypointBtn = callback;
   }
 
+  set removeDay(callback) {
+    this._callback.removeDay = callback;
+  }
+
   renderWaypoint(mode = WaypointMode.VIEW) {
     let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
     if (this._position === RenderPosition.BEFOREEND) {
@@ -229,6 +233,7 @@ export default class Waypoint {
     this._waypoints.deleteWaypoint(this._waypoint);
     this._waypointEdit.getElement().remove();
     this._waypointElement.getElement().remove();
+    this._callback.removeDay();
   }
 
   _documentKeydownListener(evt) {

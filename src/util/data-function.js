@@ -114,5 +114,5 @@ export const removeItem = (items, update) => {
 };
 
 export const getEventTypeLabel = (type) => {
-  return `${getCapitalizedWord(type)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(type)) !== -1 ? `to` : `in`}`;
+  return `${getCapitalizedWord(type)} ${TRANSFER_TYPE.includes(getCapitalizedWord(type)) ? `to` : `in`}`;
 };
