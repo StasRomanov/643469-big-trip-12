@@ -339,11 +339,11 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   _dueDateStartChangeHandler(selectedDates) {
-    this.getElement().querySelector(`#event-start-time-1`).setAttribute(`data-time`, selectedDates[0]);
+    this.getElement().querySelector(`#event-start-time-1`).setAttribute(`data-time`, selectedDates[0].toISOString());
   }
 
   _dueDateEndChangeHandler(selectedDates) {
-    this.getElement().querySelector(`#event-end-time-1`).setAttribute(`data-time`, selectedDates[0]);
+    this.getElement().querySelector(`#event-end-time-1`).setAttribute(`data-time`, selectedDates[0].toISOString());
   }
 
   _waypointDeleteChangeHandler() {
