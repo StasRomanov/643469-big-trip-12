@@ -3,6 +3,19 @@ import moment from "moment";
 import {getSimilarWaypointInfo} from "../util/data-function";
 
 const createSiteMenuTemplate = (waypoints) => {
+  if (!waypoints.length) {
+    return `<section class="trip-main__trip-info  trip-info">
+            <div class="trip-info__main">
+              <h1 class="trip-info__title"></h1>
+
+              <p class="trip-info__dates"></p>
+            </div>
+
+            <p class="trip-info__cost">
+               <span class="trip-info__cost-value"></span>
+            </p>
+          </section>`;
+  }
   let allMoney = 0;
   for (let waypoint of waypoints) {
     allMoney += waypoint.price;

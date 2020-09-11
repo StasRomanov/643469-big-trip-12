@@ -29,6 +29,9 @@ export default class Waypoint {
     this._offersAll = offers;
     this._waypoint = waypoint;
     this._callback = {};
+    if (this._waypoint === undefined) {
+      this._waypoint = defaultWaypoint;
+    }
   }
 
   set renderAllWaypointsInViewMode(callback) {
@@ -45,6 +48,10 @@ export default class Waypoint {
 
   set removeDay(callback) {
     this._callback.removeDay = callback;
+  }
+
+  set renderDayWrappers(callback) {
+    this._callback.renderDayWrappers = callback;
   }
 
   renderWaypoint(mode = WaypointMode.VIEW) {
@@ -76,9 +83,12 @@ export default class Waypoint {
   }
 
   renderNewWaypoint() {
+    if (!(this._mainWrapper.querySelector(`.trip-events__list`))) {
+      this._callback.renderDayWrappers();
+    }
     render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
-    this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint, true);
-    this._renderDestinationAndPhotoEditMode(this._waypoint.destination, this._newWaypoint);
+    this._renderBonusOptionEditMode(defaultWaypoint, this._newWaypoint, true);
+    this._renderDestinationAndPhotoEditMode(defaultWaypoint.destination, this._newWaypoint);
     this._newWaypoint.setSaveButtonSubmitHandler(() => {
       this._waypoints.addWaypoint(this._newWaypoint.saveData());
       remove(this._newWaypoint);

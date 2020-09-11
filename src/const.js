@@ -29,6 +29,30 @@ export const defaultWaypoint = {
   town: `Chamonix`,
   startTime: new Date(),
   endTime: new Date(),
+  destination: {
+    description: `Chamonix, is a beautiful city, a true asian pearl, with crowded streets.`,
+    town: `Chamonix`,
+    photos: [
+      {
+        src: `http://picsum.photos/300/200?r=0.0762563005163317`,
+        description: `Chamonix parliament building`
+      }
+    ]
+  },
+  bonusOptions: {
+    type: `taxi`,
+    offers: [
+      {
+        name: `Upgrade to a business class`,
+        price: 120,
+        used: false,
+      }, {
+        name: `Choose the radio station`,
+        price: 60,
+        used: false,
+      }
+    ]
+  }
 };
 
 export const SortType = {
