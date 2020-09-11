@@ -1,5 +1,5 @@
 import moment from "moment";
-import {MAX_TOWN_IN_HEADER, TRANSFER_TYPE} from "../const";
+import {HOURS_IN_DAY, MAX_TOWN_IN_HEADER, MIN_IN_HOUR, TRANSFER_TYPE} from "../const";
 
 export const getCapitalizedWord = (str) => {
   return str[0].toUpperCase() + str.slice(1);
@@ -24,12 +24,14 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   if (msMode) {
     return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
-    const days = moment(endTime).format(`D`) - moment(startTime).format(`D`) > 0 ?
-      `${moment(endTime).format(`D`) - moment(startTime).format(`D`)}D` : ``;
-    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm[M]`);
-    const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
-    const min = timeDifference.split(` `)[1];
-    return `${days} ${hours} ${min}`;
+    const duration = moment.duration(moment(endTime).diff(moment(startTime)));
+    let day = Math.floor(duration.asDays());
+    let hours = Math.floor(duration.asHours()) - day * HOURS_IN_DAY;
+    let min = Math.floor(duration.asMinutes()) - hours * MIN_IN_HOUR;
+    day = day > 0 ? `${day}D` : ``;
+    hours = hours > 0 || day > 0 ? `${hours}H` : ``;
+    min = min > 0 || hours > 0 || day > 0 ? `${min}M` : ``;
+    return `${day} ${hours} ${min}`;
   }
 };
 

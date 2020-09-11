@@ -47,21 +47,22 @@ export default class WaypointsModel extends Observer {
             photos: waypoint.destination.pictures,
             name: waypoint.destination.name,
             description: waypoint.destination.description
-          }
+          },
+          differenceTime: getTimeDifference(waypoint.date_from, waypoint.date_to).toUpperCase(),
+          differenceTimeMs: getTimeDifference(waypoint.date_from, waypoint.date_to, true),
         }
     );
+    adaptedWaypoint.bonusOptions.forEach((item) => {
+      item.used = false;
+      item.name = item.title;
+      delete item.title;
+    });
     delete adaptedWaypoint.destination.pictures;
     delete adaptedWaypoint.date_to;
     delete adaptedWaypoint.date_from;
     delete adaptedWaypoint.is_favorite;
     delete adaptedWaypoint.offers;
     delete adaptedWaypoint.base_price;
-
-    adaptedWaypoint.bonusOptions.forEach((item) => {
-      item.used = false;
-      item.name = item.title;
-      delete item.title;
-    });
     return adaptedWaypoint;
   }
 
