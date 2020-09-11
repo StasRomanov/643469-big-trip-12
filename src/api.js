@@ -1,4 +1,5 @@
 import WaypointsModel from "./model/waypointsModel";
+import OffersModel from "./model/offersModel";
 
 const Method = {
   GET: `GET`,
@@ -18,37 +19,44 @@ export default class Api {
     this._authorization = authorization;
   }
 
-  getTasks() {
-    return this._load({url: `tasks`})
+  getWaypoints() {
+    return this._load({url: `points`})
       .then(Api.toJSON)
-      .then((tasks) => tasks.map(WaypointsModel.adaptToClient));
+      .then((waypoints) => waypoints.map(WaypointsModel.updateToClient));
   }
 
-  updateTask(task) {
+  getOffers() {
+    return this._load({url: `offers`}).then(Api.toJSON)
+    .then((offers) => offers.map(OffersModel.updateToClient));
+
+    // .then((tasks) => console.log(tasks));
+  }
+
+  updateWaypoint(waypoint) {
     return this._load({
-      url: `tasks/${task.id}`,
+      url: `points/${waypoint.id}`,
       method: Method.PUT,
-      body: JSON.stringify(WaypointsModel.adaptToServer(task)),
+      body: JSON.stringify(WaypointsModel.adaptToServer(waypoint)),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(Api.toJSON)
-      .then(WaypointsModel.adaptToClient);
+      .then(WaypointsModel.updateToClient);
   }
 
-  addTask(task) {
+  addWaypoint(waypoint) {
     return this._load({
-      url: `tasks`,
+      url: `points`,
       method: Method.POST,
-      body: JSON.stringify(WaypointsModel.adaptToServer(task)),
+      body: JSON.stringify(WaypointsModel.adaptToServer(waypoint)),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(Api.toJSON)
-      .then(WaypointsModel.adaptToClient);
+      .then(WaypointsModel.updateToClient);
   }
 
-  deleteTask(task) {
+  deleteWaypoint(waypoint) {
     return this._load({
-      url: `tasks/${task.id}`,
+      url: `points/${waypoint.id}`,
       method: Method.DELETE
     });
   }

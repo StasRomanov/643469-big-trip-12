@@ -1,7 +1,7 @@
 import Abstract from "./abstract";
 
 const createSiteEventPhotoTemplate = (photo) => {
-  return `<img class="event__photo" src="${photo}" alt="Event photo">`;
+  return `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`;
 };
 
 export default class SiteEventPhotoTemplate extends Abstract {

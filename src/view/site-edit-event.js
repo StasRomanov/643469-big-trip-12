@@ -184,7 +184,7 @@ export default class SiteEditEventTemplate extends Abstract {
     const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
     const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
     const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
-    const description = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`).split(`.,`).map((value) => value + `.`);
+    const description = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`);
     this.getElement().querySelectorAll(`.event__photo`).forEach((item) => {
       photos.push(item.getAttribute(`src`));
     });

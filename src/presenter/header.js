@@ -7,7 +7,7 @@ import abstract from "../view/abstract";
 import TravelDaysList from "./travel-day";
 
 export default class Header extends abstract {
-  constructor(waypointsModel, statsPresenter) {
+  constructor(waypointsModel, statsPresenter, offersModel) {
     super();
     this._stats = statsPresenter;
     this._waypoint = waypointsModel.getWaypoint()[0];
@@ -16,7 +16,7 @@ export default class Header extends abstract {
     this._siteMenu = new SiteMenu(waypointsModel.getWaypoint());
     this._siteFilterHeaderTemplate = new SitePagesTemplate();
     this._siteFilterTemplate = new SiteFilterTemplate();
-    this._travelDayPresenter = new TravelDaysList(waypointsModel, this);
+    this._travelDayPresenter = new TravelDaysList(waypointsModel, this, offersModel);
     this._addWaypointButtonClickListener = this._addWaypointButtonClickListener.bind(this);
   }
 

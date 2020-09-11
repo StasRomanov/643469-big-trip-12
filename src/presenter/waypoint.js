@@ -26,7 +26,7 @@ export default class Waypoint {
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._waypoints = waypointsModel;
-    this._offersAll = offers.slice();
+    this._offersAll = offers;
     this._waypoint = waypoint;
     this._callback = {};
   }
@@ -179,10 +179,10 @@ export default class Waypoint {
     }
   }
 
-  _renderDestinationAndPhotoEditMode(description = this._waypoint.description, element = this._waypointEdit) {
+  _renderDestinationAndPhotoEditMode(description = this._waypoint.destination.description, element = this._waypointEdit) {
     this._waypointDestination = new SiteWaypointDestinationTemplate(description);
     render(element.getElement().querySelector(`.event__details`), this._waypointDestination);
-    this._waypoint.photos.forEach((item) => {
+    this._waypoint.destination.photos.forEach((item) => {
       render(this._waypointDestination.getElement().querySelector(`.event__photos-tape`), new SiteEventPhotoTemplate(item));
     });
   }

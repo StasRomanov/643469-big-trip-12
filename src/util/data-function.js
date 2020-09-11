@@ -37,7 +37,7 @@ export const shuffle = (arr) => {
   let j;
   let temp;
   let array = arr.slice();
-  array.forEach(function (item, index) {
+  array.forEach((item, index) => {
     j = Math.floor(Math.random() * (index + 1));
     temp = array[j];
     array[j] = item;

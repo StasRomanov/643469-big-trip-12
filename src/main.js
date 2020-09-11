@@ -1,14 +1,26 @@
-import {waypoints} from "./mock/data";
 import TravelDaysList from "./presenter/travel-day";
 import Header from "./presenter/header";
 import WaypointsModel from "./model/waypointsModel";
 import Stats from "./presenter/stats";
+import Api from "./api";
+import OffersModel from "./model/offersModel";
 
 const waypointModel = new WaypointsModel();
-waypointModel.setWaypoint(waypoints);
-const stats = new Stats(waypointModel);
-const header = new Header(waypointModel, stats);
-const daysList = new TravelDaysList(waypointModel, header);
+const offersModel = new OffersModel();
+const END_POINT = `https://12.ecmascript.pages.academy/big-trip/`;
+const AUTHORIZATION = `Basic hS2sd3789mwl1sa2j`;
+const api = new Api(END_POINT, AUTHORIZATION);
+api.getOffers().then((offers) => {
+  offersModel.setOffers(offers);
+  api.getWaypoints().then((waypoints) => {
+    waypointModel.setWaypoint(waypoints);
+    const stats = new Stats(waypointModel);
+    const header = new Header(waypointModel, stats, offersModel);
+    const daysList = new TravelDaysList(waypointModel, header, offersModel);
 
-header.init();
-daysList.init();
+    header.init();
+    daysList.init();
+  });
+});
+
+
