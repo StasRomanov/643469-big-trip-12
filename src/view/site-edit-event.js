@@ -168,46 +168,44 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   saveData() {
-    const photos = [];
-    const bonusOptions = [];
-    const id = this.getElement().getAttribute(`data-id`);
-    let important = false;
+    const updateWaypoint = {
+      id: this.getElement().getAttribute(`data-id`),
+      bonusOptions: [],
+      destination: {
+        description: this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`),
+        name: this.getElement().querySelector(`.event__input--destination`).value,
+        photos: [],
+      },
+      important: false,
+      price: Number(this.getElement().querySelector(`.event__input--price`).value),
+      type: this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`),
+      town: this.getElement().querySelector(`.event__input--destination`).value,
+      startTime: this.getElement().querySelector(`#event-start-time-1`).getAttribute(`data-time`),
+      endTime: this.getElement().querySelector(`#event-end-time-1`).getAttribute(`data-time`),
+      description: this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`),
+    };
     if (this.getElement().querySelector(`.event__favorite-checkbox`)) {
-      important = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+      updateWaypoint.important = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
     }
-    const price = Number(this.getElement().querySelector(`.event__input--price`).value);
-    const type = this.getElement().querySelector(`.event__type-toggle`).getAttribute(`data-type`);
-    const town = this.getElement().querySelector(`.event__input--destination`).value;
-    const startTime = this.getElement().querySelector(`#event-start-time-1`).getAttribute(`data-time`);
-    const endTime = this.getElement().querySelector(`#event-end-time-1`).getAttribute(`data-time`);
     const offers = this.getElement().querySelectorAll(`.event__offer-selector`);
     const offersName = this.getElement().querySelectorAll(`.event__offer-title`);
     const offersPrice = this.getElement().querySelectorAll(`.event__offer-price`);
     const offersChecked = this.getElement().querySelectorAll(`.event__offer-checkbox`);
-    const description = this.getElement().querySelector(`.event__destination-description`).getAttribute(`data-description`);
     this.getElement().querySelectorAll(`.event__photo`).forEach((item) => {
-      photos.push(item.getAttribute(`src`));
+      updateWaypoint.destination.photos.push({
+        src: item.getAttribute(`src`),
+        description: item.getAttribute(`alt`),
+      });
     });
 
     offers.forEach((bonusOptionItem, index) => {
-      bonusOptions.push({
+      updateWaypoint.bonusOptions.push({
         name: offersName[index].textContent,
         price: offersPrice[index].textContent,
         used: offersChecked[index].checked,
       });
     });
-    return {
-      bonusOptions,
-      important,
-      price,
-      type,
-      town,
-      description,
-      startTime,
-      endTime,
-      id,
-      photos,
-    };
+    return updateWaypoint;
   }
 
   getTemplate() {

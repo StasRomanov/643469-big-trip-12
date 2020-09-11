@@ -76,10 +76,9 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.type = newWaypoint.type;
   oldWaypoints.town = newWaypoint.town;
   oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
-  oldWaypoints.description = newWaypoint.description;
+  oldWaypoints.destination = newWaypoint.destination;
   oldWaypoints.startTime = newWaypoint.startTime;
   oldWaypoints.endTime = newWaypoint.endTime;
-  oldWaypoints.photos = newWaypoint.photos;
   oldWaypoints.differenceTime = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime).toUpperCase();
   oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
 };

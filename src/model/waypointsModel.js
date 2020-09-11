@@ -45,7 +45,6 @@ export default class WaypointsModel extends Observer {
           town: waypoint.destination.name,
           destination: {
             photos: waypoint.destination.pictures,
-            name: waypoint.destination.name,
             description: waypoint.destination.description
           },
           differenceTime: getTimeDifference(waypoint.date_from, waypoint.date_to).toUpperCase(),
@@ -65,29 +64,4 @@ export default class WaypointsModel extends Observer {
     delete adaptedWaypoint.base_price;
     return adaptedWaypoint;
   }
-
-  // static adaptToServer(waypoint) {
-  //   const adaptedTask = Object.assign(
-  //       {},
-  //       waypoint,
-  //       {
-  //         "date_to": waypoint.endTime instanceof Date ? waypoint.endTime.toISOString() : null,
-  //         "date_from": waypoint.startTime instanceof Date ? waypoint.startTime.toISOString() : null,
-  //         "is_favorite": waypoint.important,
-  //         "base_price": waypoint.price,
-  //         "type": waypoint.type.toLowerCase(),
-  //         "offers": waypoint.bonusOptions,
-  //       }
-  //   );
-  //
-  //   delete adaptedTask.dueDate;
-  //   delete adaptedTask.isArchive;
-  //   delete adaptedTask.isFavorite;
-  //   delete adaptedTask.repeating;
-  //   adaptedTask.offers.forEach((item) => {
-  //     delete item.used;
-  //   });
-  //
-  //   return adaptedTask;
-  // }
 }
