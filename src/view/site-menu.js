@@ -33,7 +33,7 @@ const createSiteMenuTemplate = (waypoints) => {
   const similarWaypointInfo = getSimilarWaypointInfo(waypoints);
   return `<section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">${first.town} &mdash; ${similarWaypointInfo.status ? similarWaypointInfo.items[1] : `...`} &mdash; ${last.town}</h1>
+      <h1 class="trip-info__title">${first.town} &mdash; ${similarWaypointInfo.status ? similarWaypointInfo.items.length : `...`} &mdash; ${last.town}</h1>
         <p class="trip-info__dates">${first.month} ${first.day}&nbsp;&mdash;&nbsp;${first.month === last.month ? `` : last.month} ${last.day}</p>
     </div>
       <p class="trip-info__cost">

@@ -15,6 +15,7 @@ import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
 import {getCapitalizedWord, getOffers, getWaypointDestination, updateWaypoints} from "../util/data-function";
 import SiteWaypointTemplate from "../view/site-waypoint";
+import Header from "./header";
 
 export default class Waypoint {
   constructor(offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
@@ -93,6 +94,7 @@ export default class Waypoint {
       this._waypoints.addWaypoint(this._newWaypoint.saveData());
       remove(this._newWaypoint);
       this._callback.renderNewWaypointView();
+      Header.updateHeader(this._waypoints.getWaypoints());
     });
     this._newWaypoint.setCancelButtonClickHandler(() => {
       remove(this._newWaypoint);
@@ -144,6 +146,7 @@ export default class Waypoint {
     });
     this._waypointEdit.setFormSubmitHandler(() => {
       updateWaypoints(this._waypoint, this._waypointEdit.saveData());
+      Header.updateHeader(this._waypoints.getWaypoints());
       this._replaceWaypointMode();
       this._setNormalModeListener();
     });

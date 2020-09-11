@@ -11,7 +11,7 @@ export default class WaypointsModel extends Observer {
     this._waypoints = waypoint.slice();
   }
 
-  getWaypoint() {
+  getWaypoints() {
     return this._waypoints;
   }
 

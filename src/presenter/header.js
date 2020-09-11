@@ -9,11 +9,12 @@ import TravelDaysList from "./travel-day";
 export default class Header extends abstract {
   constructor(waypointsModel, statsPresenter, offersModel) {
     super();
+    this._waypointsModel = waypointsModel;
     this._stats = statsPresenter;
-    this._waypoint = waypointsModel.getWaypoint()[0];
+    this._waypoint = waypointsModel.getWaypoints()[0];
     this._header = document.querySelector(`.page-header`);
     this._mainWrapper = document.querySelector(`.page-body__page-main`);
-    this._siteMenu = new SiteMenu(waypointsModel.getWaypoint());
+    this._siteMenu = new SiteMenu(waypointsModel.getWaypoints());
     this._siteFilterHeaderTemplate = new SitePagesTemplate();
     this._siteFilterTemplate = new SiteFilterTemplate();
     this._travelDayPresenter = new TravelDaysList(waypointsModel, this, offersModel);
@@ -70,5 +71,10 @@ export default class Header extends abstract {
     if (evt.button === MouseKey.LEFT) {
       this._callback.addWaypointButtonClick();
     }
+  }
+
+  static updateHeader(waypoints) {
+    document.querySelector(`.trip-main__trip-info`).remove();
+    render(document.querySelector(`.trip-main`), new SiteMenu(waypoints), RenderPosition.AFTERBEGIN);
   }
 }

@@ -29,13 +29,13 @@ export default class TravelDaysList {
   }
 
   _renderDay() {
-    this._dayRenderWaypoints(this._waypoints.getWaypoint(), this._waypoints);
+    this._dayRenderWaypoints(this._waypoints.getWaypoints(), this._waypoints);
     this._header.setAddWaypointButtonClickListener(() => {
       if (this._currentSortType !== SortType.DEFAULT) {
-        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
-        this._sortDefault(this._waypoints.getWaypoint());
+        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoints()));
+        this._sortDefault(this._waypoints.getWaypoints());
       }
-      const waypoint = new Waypoint(this._bonusOptions.getOffers(), this._waypoints.getWaypoint()[0], this._waypoints);
+      const waypoint = new Waypoint(this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints);
       waypoint.renderDayWrappers = () => {
         this._destroyNoWaypointMessage();
         this._renderWrappers();
@@ -50,38 +50,38 @@ export default class TravelDaysList {
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
       };
       waypoint.renderNewWaypointInViewMode = () => {
-        const newWaypoint = new Waypoint(this._bonusOptions.getOffers(), this._waypoints.getWaypoint()[0], this._waypoints, RenderPosition.AFTERBEGIN);
+        const newWaypoint = new Waypoint(this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, RenderPosition.AFTERBEGIN);
         newWaypoint.renderWaypoint();
         this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
         newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
         this._newWaypointBtn.classList.remove(`trip-main__event-add-btn--hidden`);
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
-        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
-        this._sortDefault(this._waypoints.getWaypoint());
+        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoints()));
+        this._sortDefault(this._waypoints.getWaypoints());
       };
     });
     this._header.renderFilterWaypoints = (filterType) => {
       this._newWaypointBtn.classList.remove(`trip-main__event-add-btn--hidden`);
       switch (filterType) {
         case FilterType.DEFAULT:
-          this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
-          this._sortDefault(this._waypoints.getWaypoint());
+          this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoints()));
+          this._sortDefault(this._waypoints.getWaypoints());
           return;
         case FilterType.FUTURE:
-          this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoint());
+          this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoints());
           this._sortDefault(this._filterWaypoints);
           this._newWaypointBtn.classList.add(`trip-main__event-add-btn--hidden`);
           return;
         case FilterType.PAST:
-          this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoint());
+          this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoints());
           this._sortDefault(this._filterWaypoints);
           this._newWaypointBtn.classList.add(`trip-main__event-add-btn--hidden`);
           return;
       }
     };
     this._header.destroyWaypoints = () => {
-      this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
-      this._sortDefault(this._waypoints.getWaypoint());
+      this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoints()));
+      this._sortDefault(this._waypoints.getWaypoints());
       this.destroyAll();
     };
     this._header.destroyStats = () => {
@@ -104,8 +104,8 @@ export default class TravelDaysList {
   _onSortWrapperChange(sortType) {
     switch (sortType) {
       case `event`:
-        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoint()));
-        this._sortDefault(this._waypoints.getWaypoint());
+        this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoints()));
+        this._sortDefault(this._waypoints.getWaypoints());
         break;
       case `time`:
         this._sortTime();
@@ -154,12 +154,12 @@ export default class TravelDaysList {
 
   _sortTime() {
     this._currentSortType = SortType.TIME;
-    this._sort(getTimeSortWaypoints(this._waypoints.getWaypoint()));
+    this._sort(getTimeSortWaypoints(this._waypoints.getWaypoints()));
   }
 
   _sortPrice() {
     this._currentSortType = SortType.PRICE;
-    this._sort(getPriceSortWaypoints(this._waypoints.getWaypoint()));
+    this._sort(getPriceSortWaypoints(this._waypoints.getWaypoints()));
   }
 
   _dayRenderWaypoints(waypoints, waypointsModel) {
