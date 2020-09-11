@@ -43,12 +43,7 @@ export const FilterType = {
   PAST: `past`,
 };
 
-export const TOWNS = [
-  `Saint Petersburg`,
-  `Amsterdam`,
-  `Geneva`,
-  `Chamonix`,
-];
+export const TOWNS = [];
 
 export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
 
@@ -76,3 +71,5 @@ export const ChartType = {
 export const MIN_IN_HOUR = 60;
 
 export const HOURS_IN_DAY = 24;
+
+export const DESTINATION_ALL = [];

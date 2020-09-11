@@ -13,7 +13,7 @@ import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
-import {getCapitalizedWord, getOffers, shuffle, updateWaypoints} from "../util/data-function";
+import {getCapitalizedWord, getOffers, getWaypointDestination, updateWaypoints} from "../util/data-function";
 import SiteWaypointTemplate from "../view/site-waypoint";
 
 export default class Waypoint {
@@ -78,7 +78,7 @@ export default class Waypoint {
   renderNewWaypoint() {
     render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
     this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint, true);
-    this._renderDestinationAndPhotoEditMode(this._waypoint.description, this._newWaypoint);
+    this._renderDestinationAndPhotoEditMode(this._waypoint.destination, this._newWaypoint);
     this._newWaypoint.setSaveButtonSubmitHandler(() => {
       this._waypoints.addWaypoint(this._newWaypoint.saveData());
       remove(this._newWaypoint);
@@ -179,10 +179,10 @@ export default class Waypoint {
     }
   }
 
-  _renderDestinationAndPhotoEditMode(description = this._waypoint.destination.description, element = this._waypointEdit) {
-    this._waypointDestination = new SiteWaypointDestinationTemplate(description);
+  _renderDestinationAndPhotoEditMode(destination = this._waypoint.destination, element = this._waypointEdit) {
+    this._waypointDestination = new SiteWaypointDestinationTemplate(destination.description);
     render(element.getElement().querySelector(`.event__details`), this._waypointDestination);
-    this._waypoint.destination.photos.forEach((item) => {
+    destination.photos.forEach((item) => {
       render(this._waypointDestination.getElement().querySelector(`.event__photos-tape`), new SiteEventPhotoTemplate(item));
     });
   }
@@ -197,9 +197,9 @@ export default class Waypoint {
   }
 
   _replaceDestinationAndPhotoEditMode(element = this._waypointEdit) {
-    const descriptionShuffle = shuffle(this._waypoint.description);
+    const waypointDescription = getWaypointDestination(element.getElement().querySelector(`.event__input--destination`).value);
     remove(this._waypointDestination);
-    this._renderDestinationAndPhotoEditMode(descriptionShuffle, element);
+    this._renderDestinationAndPhotoEditMode(waypointDescription, element);
   }
 
   _updateTravelType(travelType, element = this._waypointEdit) {

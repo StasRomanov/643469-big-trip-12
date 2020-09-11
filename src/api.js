@@ -1,5 +1,6 @@
 import WaypointsModel from "./model/waypointsModel";
 import OffersModel from "./model/offersModel";
+import DestinationModel from "./model/destinationModel";
 
 const Method = {
   GET: `GET`,
@@ -27,9 +28,12 @@ export default class Api {
 
   getOffers() {
     return this._load({url: `offers`}).then(Api.toJSON)
-    .then((offers) => offers.map(OffersModel.updateToClient));
+      .then((offers) => offers.map(OffersModel.updateToClient));
+  }
 
-    // .then((tasks) => console.log(tasks));
+  getDestinations() {
+    return this._load({url: `destinations`}).then(Api.toJSON)
+      .then((destinations) => destinations.map(DestinationModel.updateToClient));
   }
 
   updateWaypoint(waypoint) {
