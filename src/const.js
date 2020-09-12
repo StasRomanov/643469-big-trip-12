@@ -108,3 +108,8 @@ export const PageType = {
   TABLE: `table`,
   STATS: `stats`,
 };
+
+export const PageType = {
+  TABLE: `table`,
+  STATS: `stats`,
+};
