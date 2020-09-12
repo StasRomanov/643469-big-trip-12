@@ -4,7 +4,7 @@ import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
-import {getEventTypeLabel} from "../util/data-function";
+import {getCapitalizedWord, getEventTypeLabel} from "../util/data-function";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, startTime, endTime, important, id} = waypoint;

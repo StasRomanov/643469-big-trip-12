@@ -1,18 +1,19 @@
 import Abstract from "./abstract";
-import {MouseKey} from "../const";
+import {MouseKey, PageType} from "../const";
 
 const createSitePagesTemplate = () => {
   return `<nav class="trip-controls__trip-tabs  trip-tabs">
-    <a class="trip-tabs__btn trip-tabs__btn--active" href="#">Table</a>
-    <a class="trip-tabs__btn" href="#">Stats</a>
+    <a class="trip-tabs__btn trip-tabs__btn--active" href="#" data-type="table">Table</a>
+    <a class="trip-tabs__btn" href="#" data-type="stats">Stats</a>
   </nav>`;
 };
 
 export default class SitePagesTemplate extends Abstract {
   constructor() {
     super();
-    this._tableButton = this.getElement().querySelectorAll(`.trip-tabs__btn`)[0];
-    this._statsButton = this.getElement().querySelectorAll(`.trip-tabs__btn`)[1];
+    this._buttons = Array.from(this.getElement().querySelectorAll(`.trip-tabs__btn`));
+    this._tableButton = this._buttons.find((item) => item.getAttribute(`data-type`) === PageType.TABLE);
+    this._statsButton = this._buttons.find((item) => item.getAttribute(`data-type`) === PageType.STATS);
     this._tableClickListener = this._tableClickListener.bind(this);
     this._statsClickListener = this._statsClickListener.bind(this);
   }
