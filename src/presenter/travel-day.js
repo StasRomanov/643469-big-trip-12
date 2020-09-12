@@ -86,7 +86,6 @@ export default class TravelDaysList {
       this.destroyAll();
     };
     this._header.destroyStats = () => {
-      this._headerWrapper.classList.remove(`trip-main__event-add-btn--hidden`);
       this.destroyStats();
     };
     this._header.renderTable = () => {
@@ -223,4 +222,3 @@ export default class TravelDaysList {
     }
   }
 }
-
