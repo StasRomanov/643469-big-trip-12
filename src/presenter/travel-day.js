@@ -121,7 +121,7 @@ export default class TravelDaysList {
     this.clearWaypoint();
     this._observerViewMode.destroyObserver();
     sortTravelWaypoints.forEach((value) => {
-      const waypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), value, this._waypoints, this._api);
+      const waypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), value, this._waypoints);
       this._observerViewMode.addObserver(waypoint.onRollupButtonEditClickHandler);
       waypoint.renderWaypointMode(this._allDays.querySelector(`.trip-events__list`), WaypointMode.VIEW);
       waypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
