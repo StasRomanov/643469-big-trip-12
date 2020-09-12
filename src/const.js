@@ -97,3 +97,9 @@ export const MIN_IN_HOUR = 60;
 export const HOURS_IN_DAY = 24;
 
 export const DESTINATION_ALL = [];
+
+export const DownloadStatus = {
+  OK: `download all data`,
+  ERROR: `not all data loaded`,
+  FATAL_ERROR: `main data not load`,
+};

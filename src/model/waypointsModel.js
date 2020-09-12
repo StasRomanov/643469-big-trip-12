@@ -1,5 +1,6 @@
 import Observer from "../util/observer";
 import {getCapitalizedWord, getTimeDifference, removeItem, updateItem} from "../util/data-function";
+import Header from "../presenter/header";
 
 export default class WaypointsModel extends Observer {
   constructor() {
@@ -30,6 +31,7 @@ export default class WaypointsModel extends Observer {
 
   deleteWaypoint(update) {
     this._waypoints = removeItem(this._waypoints, update);
+    Header.updateHeader(this._waypoints);
   }
 
   static updateToClient(waypoint) {
@@ -62,6 +64,32 @@ export default class WaypointsModel extends Observer {
     delete adaptedWaypoint.is_favorite;
     delete adaptedWaypoint.offers;
     delete adaptedWaypoint.base_price;
+    return adaptedWaypoint;
+  }
+
+  static updateToServer(waypoint) {
+    const adaptedWaypoint = Object.assign({},
+        waypoint,
+        {
+          "date_from": waypoint.startTime,
+          "date_to": waypoint.endTime,
+          "is_favorite": waypoint.important,
+          "base_price": Number(waypoint.price),
+          "offers": waypoint.bonusOptions,
+          "type": waypoint.type.toLowerCase(),
+          "destination": {
+            "pictures": waypoint.destination.photos,
+            "description": waypoint.destination.description,
+            "name": waypoint.town,
+          }
+        }
+    );
+    adaptedWaypoint.offers.forEach((item) => {
+      item.title = item.name;
+      item.price = Number(item.price);
+      delete item.used;
+      delete item.name;
+    });
     return adaptedWaypoint;
   }
 }

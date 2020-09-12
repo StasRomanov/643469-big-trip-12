@@ -40,7 +40,7 @@ export default class Api {
     return this._load({
       url: `points/${waypoint.id}`,
       method: Method.PUT,
-      body: JSON.stringify(WaypointsModel.adaptToServer(waypoint)),
+      body: JSON.stringify(WaypointsModel.updateToServer(waypoint)),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(Api.toJSON)
@@ -51,7 +51,7 @@ export default class Api {
     return this._load({
       url: `points`,
       method: Method.POST,
-      body: JSON.stringify(WaypointsModel.adaptToServer(waypoint)),
+      body: JSON.stringify(WaypointsModel.updateToServer(waypoint)),
       headers: new Headers({"Content-Type": `application/json`})
     })
       .then(Api.toJSON)
