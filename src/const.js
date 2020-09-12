@@ -102,11 +102,6 @@ export const DownloadStatus = {
   OK: `download all data`,
   ERROR: `not all data loaded`,
   FATAL_ERROR: `main data not load`,
-}
-
-export const PageType = {
-  TABLE: `table`,
-  STATS: `stats`,
 };
 
 export const PageType = {
