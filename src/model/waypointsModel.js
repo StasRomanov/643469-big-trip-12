@@ -90,6 +90,12 @@ export default class WaypointsModel extends Observer {
       delete item.used;
       delete item.name;
     });
+    delete adaptedWaypoint.startTime;
+    delete adaptedWaypoint.endTime;
+    delete adaptedWaypoint.important;
+    delete adaptedWaypoint.price;
+    delete adaptedWaypoint.bonusOptions;
+    delete adaptedWaypoint.town;
     return adaptedWaypoint;
   }
 }
