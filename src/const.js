@@ -29,6 +29,30 @@ export const defaultWaypoint = {
   town: `Chamonix`,
   startTime: new Date(),
   endTime: new Date(),
+  destination: {
+    description: `Chamonix, is a beautiful city, a true asian pearl, with crowded streets.`,
+    town: `Chamonix`,
+    photos: [
+      {
+        src: `http://picsum.photos/300/200?r=0.0762563005163317`,
+        description: `Chamonix parliament building`
+      }
+    ]
+  },
+  bonusOptions: {
+    type: `taxi`,
+    offers: [
+      {
+        name: `Upgrade to a business class`,
+        price: 120,
+        used: false,
+      }, {
+        name: `Choose the radio station`,
+        price: 60,
+        used: false,
+      }
+    ]
+  }
 };
 
 export const SortType = {
@@ -43,12 +67,7 @@ export const FilterType = {
   PAST: `past`,
 };
 
-export const TOWNS = [
-  `Saint Petersburg`,
-  `Amsterdam`,
-  `Geneva`,
-  `Chamonix`,
-];
+export const TOWNS = [];
 
 export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
 
@@ -71,6 +90,18 @@ export const ChartType = {
   MONEY: `MONEY`,
   TRANSPORT: `TRANSPORT`,
   TIME_SPENT: `TIME SPENT`,
+};
+
+export const MIN_IN_HOUR = 60;
+
+export const HOURS_IN_DAY = 24;
+
+export const DESTINATION_ALL = [];
+
+export const DownloadStatus = {
+  OK: `download all data`,
+  ERROR: `not all data loaded`,
+  FATAL_ERROR: `main data not load`,
 };
 
 export const PageType = {

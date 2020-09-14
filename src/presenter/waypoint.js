@@ -13,22 +13,27 @@ import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
-import {getCapitalizedWord, getOffers, shuffle, updateWaypoints} from "../util/data-function";
+import {getCapitalizedWord, getOffers, getWaypointDestination, updateWaypoints} from "../util/data-function";
 import SiteWaypointTemplate from "../view/site-waypoint";
+import Header from "./header";
 
 export default class Waypoint {
-  constructor(offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
+  constructor(api, offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
     this._documentKeydownListener = this._documentKeydownListener.bind(this);
     this._onDocumentKeydown = this._onDocumentKeydown.bind(this);
     this._position = position;
+    this._api = api;
     this._newWaypoint = new SiteWaypointTemplate();
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._waypoints = waypointsModel;
-    this._offersAll = offers.slice();
+    this._offersAll = offers;
     this._waypoint = waypoint;
     this._callback = {};
+    if (this._waypoint === undefined) {
+      this._waypoint = defaultWaypoint;
+    }
   }
 
   set renderAllWaypointsInViewMode(callback) {
@@ -45,6 +50,10 @@ export default class Waypoint {
 
   set removeDay(callback) {
     this._callback.removeDay = callback;
+  }
+
+  set renderDayWrappers(callback) {
+    this._callback.renderDayWrappers = callback;
   }
 
   renderWaypoint(mode = WaypointMode.VIEW) {
@@ -76,13 +85,21 @@ export default class Waypoint {
   }
 
   renderNewWaypoint() {
+    if (!(this._mainWrapper.querySelector(`.trip-events__list`))) {
+      this._callback.renderDayWrappers();
+    }
     render(this._mainWrapper.querySelector(`.trip-events__list`), this._newWaypoint, RenderPosition.AFTERBEGIN);
-    this._renderBonusOptionEditMode(this._waypoint, this._newWaypoint, true);
-    this._renderDestinationAndPhotoEditMode(this._waypoint.description, this._newWaypoint);
+    this._renderBonusOptionEditMode(defaultWaypoint, this._newWaypoint, true);
+    this._renderDestinationAndPhotoEditMode(defaultWaypoint.destination, this._newWaypoint);
     this._newWaypoint.setSaveButtonSubmitHandler(() => {
-      this._waypoints.addWaypoint(this._newWaypoint.saveData());
-      remove(this._newWaypoint);
-      this._callback.renderNewWaypointView();
+      this._api.addWaypoint((this._newWaypoint.saveData())).then((response) => {
+        this._waypoints.addWaypoint(response);
+        remove(this._newWaypoint);
+        this._callback.renderNewWaypointView();
+        Header.updateHeader(this._waypoints.getWaypoints());
+      }).catch((response) => {
+        throw new Error(response);
+      });
     });
     this._newWaypoint.setCancelButtonClickHandler(() => {
       remove(this._newWaypoint);
@@ -133,9 +150,16 @@ export default class Waypoint {
       this._setNormalModeListener();
     });
     this._waypointEdit.setFormSubmitHandler(() => {
-      updateWaypoints(this._waypoint, this._waypointEdit.saveData());
-      this._replaceWaypointMode();
-      this._setNormalModeListener();
+      this._api.updateWaypoint(this._waypointEdit.saveData()).then((response) => {
+        updateWaypoints(this._waypoint, response);
+        Header.updateHeader(this._waypoints.getWaypoints());
+        this._replaceWaypointMode();
+        this._setNormalModeListener();
+      }).catch((response) => {
+        this._replaceWaypointMode();
+        this._setNormalModeListener();
+        throw new Error(response);
+      });
     });
     document.addEventListener(`keydown`, this._onDocumentKeydown);
   }
@@ -179,10 +203,10 @@ export default class Waypoint {
     }
   }
 
-  _renderDestinationAndPhotoEditMode(description = this._waypoint.description, element = this._waypointEdit) {
-    this._waypointDestination = new SiteWaypointDestinationTemplate(description);
+  _renderDestinationAndPhotoEditMode(destination = this._waypoint.destination, element = this._waypointEdit) {
+    this._waypointDestination = new SiteWaypointDestinationTemplate(destination.description);
     render(element.getElement().querySelector(`.event__details`), this._waypointDestination);
-    this._waypoint.photos.forEach((item) => {
+    destination.photos.forEach((item) => {
       render(this._waypointDestination.getElement().querySelector(`.event__photos-tape`), new SiteEventPhotoTemplate(item));
     });
   }
@@ -197,9 +221,9 @@ export default class Waypoint {
   }
 
   _replaceDestinationAndPhotoEditMode(element = this._waypointEdit) {
-    const descriptionShuffle = shuffle(this._waypoint.description);
+    const waypointDescription = getWaypointDestination(element.getElement().querySelector(`.event__input--destination`).value);
     remove(this._waypointDestination);
-    this._renderDestinationAndPhotoEditMode(descriptionShuffle, element);
+    this._renderDestinationAndPhotoEditMode(waypointDescription, element);
   }
 
   _updateTravelType(travelType, element = this._waypointEdit) {
@@ -230,10 +254,14 @@ export default class Waypoint {
   }
 
   _removeWaypoint() {
-    this._waypoints.deleteWaypoint(this._waypoint);
-    this._waypointEdit.getElement().remove();
-    this._waypointElement.getElement().remove();
-    this._callback.removeDay();
+    this._api.deleteWaypoint(this._waypoint).then(() => {
+      this._waypoints.deleteWaypoint(this._waypoint);
+      this._waypointEdit.getElement().remove();
+      this._waypointElement.getElement().remove();
+      this._callback.removeDay();
+    }).catch((response) => {
+      throw new Error(response);
+    });
   }
 
   _documentKeydownListener(evt) {

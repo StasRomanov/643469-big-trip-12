@@ -7,15 +7,17 @@ import abstract from "../view/abstract";
 import TravelDaysList from "./travel-day";
 
 export default class Header extends abstract {
-  constructor(waypointsModel, statsPresenter) {
+  constructor(waypointsModel, statsPresenter, offersModel, api) {
     super();
+    this._api = api;
+    this._waypointsModel = waypointsModel;
     this._stats = statsPresenter;
     this._header = document.querySelector(`.page-header`);
     this._mainWrapper = document.querySelector(`.page-body__page-main`);
-    this._siteMenu = new SiteMenu(waypointsModel.getWaypoint());
+    this._siteMenu = new SiteMenu(waypointsModel.getWaypoints());
     this._siteFilterHeaderTemplate = new SitePagesTemplate();
     this._siteFilterTemplate = new SiteFilterTemplate();
-    this._travelDayPresenter = new TravelDaysList(waypointsModel, this);
+    this._travelDayPresenter = new TravelDaysList(waypointsModel, this, offersModel, this._api);
     this._addWaypointButtonClickListener = this._addWaypointButtonClickListener.bind(this);
   }
 
@@ -30,12 +32,14 @@ export default class Header extends abstract {
       this._siteFilterTemplate.disableFilters();
       this._mainWrapper.querySelector(`.page-body__container`).classList.add(`trip-main--hidden`);
       this._callback.destroyWaypointsAll();
+      this._header.querySelector(`.trip-main__event-add-btn`).setAttribute(`disabled`, `true`);
       this._stats.init();
     });
     this._siteFilterHeaderTemplate.setTableClickListener(() => {
       this._siteFilterTemplate.enableFilters();
       this._mainWrapper.querySelector(`.page-body__container`).classList.remove(`trip-main--hidden`);
       this._callback.destroyStats();
+      this._header.querySelector(`.trip-main__event-add-btn`).removeAttribute(`disabled`);
       this._travelDayPresenter.init();
     });
     this._siteFilterTemplate.setFilterChangeListener((type) => {
@@ -69,5 +73,10 @@ export default class Header extends abstract {
     if (evt.button === MouseKey.LEFT) {
       this._callback.addWaypointButtonClick();
     }
+  }
+
+  static updateHeader(waypoints) {
+    document.querySelector(`.trip-main__trip-info`).remove();
+    render(document.querySelector(`.trip-main`), new SiteMenu(waypoints), RenderPosition.AFTERBEGIN);
   }
 }

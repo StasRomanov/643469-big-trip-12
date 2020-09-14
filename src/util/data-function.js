@@ -1,5 +1,5 @@
 import moment from "moment";
-import {MAX_TOWN_IN_HEADER, TRANSFER_TYPE} from "../const";
+import {DESTINATION_ALL, HOURS_IN_DAY, MAX_TOWN_IN_HEADER, MIN_IN_HOUR, TRANSFER_TYPE} from "../const";
 
 export const getCapitalizedWord = (str) => {
   return str[0].toUpperCase() + str.slice(1);
@@ -24,12 +24,18 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   if (msMode) {
     return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   } else {
-    const days = moment(endTime).format(`D`) - moment(startTime).format(`D`) > 0 ?
-      `${moment(endTime).format(`D`) - moment(startTime).format(`D`)}D` : ``;
-    const timeDifference = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`HH mm[M]`);
-    const hours = Number(timeDifference.split(` `)[0]) > 0 ? timeDifference.split(` `)[0] + `H` : ``;
-    const min = timeDifference.split(` `)[1];
-    return `${days} ${hours} ${min}`;
+    if (moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`) > 0) {
+      const duration = moment.duration(moment(endTime).diff(moment(startTime)));
+      let day = Math.floor(duration.asDays());
+      let hours = Math.floor(duration.asHours());
+      let min = Math.floor(duration.asMinutes());
+      day = day > 0 ? `${day}D`.padStart(3, `0`) : ``;
+      hours = hours >= HOURS_IN_DAY ? `${hours % HOURS_IN_DAY}H`.padStart(3, `0`) : `${hours !== 0 ? `${hours}H`.padStart(3, `0`) : ``}`;
+      min = min >= MIN_IN_HOUR ? `${min % MIN_IN_HOUR}M`.padStart(3, `0`) : `${min}M`.padStart(3, `0`);
+      return `${day} ${hours} ${min}`;
+    } else {
+      return `00M`;
+    }
   }
 };
 
@@ -37,7 +43,7 @@ export const shuffle = (arr) => {
   let j;
   let temp;
   let array = arr.slice();
-  array.forEach(function (item, index) {
+  array.forEach((item, index) => {
     j = Math.floor(Math.random() * (index + 1));
     temp = array[j];
     array[j] = item;
@@ -70,10 +76,9 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.type = newWaypoint.type;
   oldWaypoints.town = newWaypoint.town;
   oldWaypoints.bonusOptions = newWaypoint.bonusOptions;
-  oldWaypoints.description = newWaypoint.description;
+  oldWaypoints.destination = newWaypoint.destination;
   oldWaypoints.startTime = newWaypoint.startTime;
   oldWaypoints.endTime = newWaypoint.endTime;
-  oldWaypoints.photos = newWaypoint.photos;
   oldWaypoints.differenceTime = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime).toUpperCase();
   oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
 };
@@ -115,4 +120,8 @@ export const removeItem = (items, update) => {
 
 export const getEventTypeLabel = (type) => {
   return `${getCapitalizedWord(type)} ${TRANSFER_TYPE.includes(getCapitalizedWord(type)) ? `to` : `in`}`;
+};
+
+export const getWaypointDestination = (town) => {
+  return DESTINATION_ALL.find((item) => item.town === town);
 };

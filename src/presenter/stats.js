@@ -13,7 +13,7 @@ export default class Stats {
     if (this._statisticsComponent !== null) {
       this.destroy();
     }
-    this._statisticsComponent = new SiteStats(this._waypointsModel.getWaypoint());
+    this._statisticsComponent = new SiteStats(this._waypointsModel.getWaypoints());
     render(document.querySelector(`.page-body__page-main`), this._statisticsComponent);
   }
 
@@ -25,7 +25,7 @@ export default class Stats {
   _getMoneyData() {
     const waypointTypes = {};
 
-    this._waypointsModel.getWaypoint().forEach((waypoint) => {
+    this._waypointsModel.getWaypoints().forEach((waypoint) => {
       if (waypointTypes[waypoint.type]) {
         waypointTypes[waypoint.type] += waypoint.price;
       } else {
@@ -40,7 +40,7 @@ export default class Stats {
     const transportTypes = TRANSFER_TYPE;
     const waypointsTransport = {};
 
-    this._waypointsModel.getWaypoint().forEach((waypoint) => {
+    this._waypointsModel.getWaypoints().forEach((waypoint) => {
       if (waypointsTransport[waypoint.type]) {
         waypointsTransport[waypoint.type]++;
       } else {
@@ -56,7 +56,7 @@ export default class Stats {
   _getTimeSpentData() {
     const waypointTypes = {};
 
-    this._waypointsModel.getWaypoint().forEach((waypoint) => {
+    this._waypointsModel.getWaypoints().forEach((waypoint) => {
       if (waypointTypes[waypoint.type]) {
         waypointTypes[waypoint.type] += getTimeDifference(waypoint.startTime, waypoint.endTime, true);
       } else {
