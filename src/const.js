@@ -108,3 +108,7 @@ export const PageType = {
   TABLE: `table`,
   STATS: `stats`,
 };
+
+export const ERROR_STYLE = `
+    animation: shake 0.6s;
+`;

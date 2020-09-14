@@ -92,13 +92,20 @@ export default class Waypoint {
     this._renderBonusOptionEditMode(defaultWaypoint, this._newWaypoint, true);
     this._renderDestinationAndPhotoEditMode(defaultWaypoint.destination, this._newWaypoint);
     this._newWaypoint.setSaveButtonSubmitHandler(() => {
+      this._newWaypoint.disableAll();
+      this._newWaypoint.setSavingMode();
+      this._newWaypoint.removeErrorMode();
       this._api.addWaypoint((this._newWaypoint.saveData())).then((response) => {
+        this._newWaypoint.setSavingMode(false);
+        this._newWaypoint.disableAll(false);
         this._waypoints.addWaypoint(response);
         remove(this._newWaypoint);
         this._callback.renderNewWaypointView();
         Header.updateHeader(this._waypoints.getWaypoints());
-      }).catch((response) => {
-        throw new Error(response);
+      }).catch(() => {
+        this._newWaypoint.setSavingMode(false);
+        this._newWaypoint.disableAll(false);
+        this._newWaypoint.setErrorMode();
       });
     });
     this._newWaypoint.setCancelButtonClickHandler(() => {
@@ -150,15 +157,20 @@ export default class Waypoint {
       this._setNormalModeListener();
     });
     this._waypointEdit.setFormSubmitHandler(() => {
+      this._waypointEdit.disableAll();
+      this._waypointEdit.setSavingMode();
+      this._waypointEdit.removeErrorMode();
       this._api.updateWaypoint(this._waypointEdit.saveData()).then((response) => {
+        this._waypointEdit.setSavingMode(false);
+        this._waypointEdit.disableAll(false);
         updateWaypoints(this._waypoint, response);
         Header.updateHeader(this._waypoints.getWaypoints());
         this._replaceWaypointMode();
         this._setNormalModeListener();
-      }).catch((response) => {
-        this._replaceWaypointMode();
-        this._setNormalModeListener();
-        throw new Error(response);
+      }).catch(() => {
+        this._waypointEdit.setSavingMode(false);
+        this._waypointEdit.disableAll(false);
+        this._waypointEdit.setErrorMode();
       });
     });
     document.addEventListener(`keydown`, this._onDocumentKeydown);
@@ -254,13 +266,20 @@ export default class Waypoint {
   }
 
   _removeWaypoint() {
+    this._waypointEdit.disableAll();
+    this._waypointEdit.setRemovingMode();
+    this._waypointEdit.removeErrorMode();
     this._api.deleteWaypoint(this._waypoint).then(() => {
+      this._waypointEdit.disableAll(false);
+      this._waypointEdit.setRemovingMode(false);
       this._waypoints.deleteWaypoint(this._waypoint);
       this._waypointEdit.getElement().remove();
       this._waypointElement.getElement().remove();
       this._callback.removeDay();
-    }).catch((response) => {
-      throw new Error(response);
+    }).catch(() => {
+      this._waypointEdit.setSavingMode(false);
+      this._waypointEdit.disableAll(false);
+      this._waypointEdit.setErrorMode();
     });
   }
 

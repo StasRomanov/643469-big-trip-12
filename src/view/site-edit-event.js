@@ -1,5 +1,5 @@
 import Abstract from "./abstract";
-import {MouseKey, TOWNS} from "../const";
+import {ERROR_STYLE, MouseKey, TOWNS} from "../const";
 import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
@@ -346,5 +346,51 @@ export default class SiteEditEventTemplate extends Abstract {
 
   _waypointDeleteChangeHandler() {
     this._callback.deleteClick();
+  }
+
+  disableAll(toggle = true) {
+    this._fields = [
+      this.getElement().querySelector(`.event__type-toggle`),
+      this.getElement().querySelector(`.event__save-btn`),
+      this.getElement().querySelector(`.event__reset-btn`),
+    ];
+    this.getElement().querySelectorAll(`.event__input`).forEach((item) => {
+      this._fields.push(item);
+    });
+    this.getElement().querySelectorAll(`.event__offer-checkbox`).forEach((item) => {
+      this._fields.push(item);
+    });
+    if (this.getElement().querySelector(`#event-favorite-1`)) {
+      this._fields.push(this.getElement().querySelector(`#event-favorite-1`));
+    }
+    if (toggle) {
+      this._fields.forEach((item) => item.setAttribute(`disabled`, `true`));
+    } else {
+      this._fields.forEach((item) => item.removeAttribute(`disabled`));
+    }
+  }
+
+  setSavingMode(toggle = true) {
+    if (toggle) {
+      this.getElement().querySelector(`.event__save-btn`).textContent = `Saving…`;
+    } else {
+      this.getElement().querySelector(`.event__save-btn`).textContent = `Save`;
+    }
+  }
+
+  setRemovingMode(toggle = true) {
+    if (toggle) {
+      this.getElement().querySelector(`.event__reset-btn`).textContent = `Deleting…`;
+    } else {
+      this.getElement().querySelector(`.event__reset-btn`).textContent = `Delete`;
+    }
+  }
+
+  removeErrorMode() {
+    this.getElement().removeAttribute(`style`);
+  }
+
+  setErrorMode() {
+    this.getElement().setAttribute(`style`, ERROR_STYLE);
   }
 }
