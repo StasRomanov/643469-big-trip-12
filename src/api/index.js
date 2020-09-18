@@ -1,17 +1,23 @@
-import WaypointsModel from "./model/waypointsModel";
-import OffersModel from "./model/offersModel";
-import DestinationModel from "./model/destinationModel";
+import WaypointsModel from "../model/waypointsModel";
+import OffersModel from "../model/offersModel";
+import DestinationModel from "../model/destinationModel";
 
 const Method = {
   GET: `GET`,
   PUT: `PUT`,
   POST: `POST`,
-  DELETE: `DELETE`
+  DELETE: `DELETE`,
 };
 
 const SuccessHTTPStatusRange = {
   MIN: 200,
-  MAX: 299
+  MAX: 299,
+};
+
+export const DataStatus = {
+  WAYPOINTS: true,
+  OFFERS: true,
+  DESTINATION: true,
 };
 
 export default class Api {
@@ -23,17 +29,30 @@ export default class Api {
   getWaypoints() {
     return this._load({url: `points`})
       .then(Api.toJSON)
-      .then((waypoints) => waypoints.map(WaypointsModel.updateToClient));
+      .then((waypoints) => waypoints.map(WaypointsModel.updateToClient)).catch(() => {
+        DataStatus.WAYPOINTS = false;
+        return [];
+      });
   }
 
   getOffers() {
     return this._load({url: `offers`}).then(Api.toJSON)
-      .then((offers) => offers.map(OffersModel.updateToClient));
+      .then((offers) => offers.map(OffersModel.updateToClient)).catch(() => {
+        DataStatus.OFFERS = false;
+        return [];
+      });
   }
 
   getDestinations() {
     return this._load({url: `destinations`}).then(Api.toJSON)
-      .then((destinations) => destinations.map(DestinationModel.updateToClient));
+      .then((destinations) => destinations.map(DestinationModel.updateToClient)).catch(() => {
+        DataStatus.DESTINATION = false;
+        return [];
+      });
+  }
+
+  getAllData() {
+    return Promise.all([this.getWaypoints(), this.getDestinations(), this.getOffers()]);
   }
 
   updateWaypoint(waypoint) {
@@ -63,6 +82,16 @@ export default class Api {
       url: `points/${waypoint.id}`,
       method: Method.DELETE
     });
+  }
+
+  sync(data) {
+    return this._load({
+      url: `points/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON);
   }
 
   _load({

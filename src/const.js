@@ -1,22 +1,22 @@
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
 };
 
 export const WaypointMode = {
   VIEW: `view`,
-  EDIT: `edit`
+  EDIT: `edit`,
 };
 
 export const MouseKey = {
   LEFT: 0,
   WHEEL: 1,
-  RIGHT: 2
+  RIGHT: 2,
 };
 
 export const KeyboardKey = {
   ESCAPE: `Escape`,
-  ENTER: `Enter`
+  ENTER: `Enter`,
 };
 
 export const MAX_OFFERS_IN_VIEW_MODE = 3;
@@ -35,7 +35,7 @@ export const defaultWaypoint = {
     photos: [
       {
         src: `http://picsum.photos/300/200?r=0.0762563005163317`,
-        description: `Chamonix parliament building`
+        description: `Chamonix parliament building`,
       }
     ]
   },
@@ -109,6 +109,4 @@ export const PageType = {
   STATS: `stats`,
 };
 
-export const ERROR_STYLE = `
-    animation: shake 0.6s;
-`;
+export const ERROR_STYLE = `animation: shake 0.6s;`;
