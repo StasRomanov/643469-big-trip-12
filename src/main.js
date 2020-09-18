@@ -34,46 +34,6 @@ let currentStatus = DownloadStatus.OK;
 render(document.querySelector(`.trip-events`), new SiteLoading());
 document.querySelector(`.trip-main__event-add-btn`).setAttribute(`disabled`, `true`);
 
-// apiWithProvider.getDestinations().then((destination) => {
-//   destination.forEach((item) => {
-//     TOWNS.push(item.town);
-//     DESTINATION_ALL.push(item);
-//   });
-// }).catch((e) => {
-//   currentStatus = DownloadStatus.FATAL_ERROR;
-//   throw new Error(`towns not load (${e})`);
-// });
-//
-// apiWithProvider.getOffers().then((offers) => {
-//   offersModel.setOffers(offers);
-// }).catch((e) => {
-//   currentStatus = DownloadStatus.FATAL_ERROR;
-//   throw new Error(`offers not load (${e})`);
-// });
-
-// apiWithProvider.getWaypoints().then((waypoints) => {
-//   if (currentStatus !== DownloadStatus.FATAL_ERROR) {
-//     waypointModel.setWaypoint(waypoints);
-//     const stats = new Stats(waypointModel);
-//     const header = new Header(waypointModel, stats, offersModel, apiWithProvider);
-//     const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
-//
-//     header.init();
-//     daysList.init();
-//   }
-// }).catch(() => {
-//   if (currentStatus !== DownloadStatus.FATAL_ERROR) {
-//     currentStatus = DownloadStatus.ERROR;
-//     waypointModel.setWaypoint([]);
-//     const stats = new Stats(waypointModel);
-//     const header = new Header(waypointModel, stats, offersModel);
-//     const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
-//
-//     header.init();
-//     daysList.init();
-//   }
-// });
-
 apiWithProvider.getAllData()
   .then((data) => {
     return {
@@ -122,38 +82,6 @@ apiWithProvider.getAllData()
     header.init();
     daysList.init();
   });
-// .catch((e) => {
-//   currentStatus = DownloadStatus.FATAL_ERROR;
-//   throw new Error(`towns not load (${e})`);
-// })
-// .then((offers) => {
-//   offersModel.setOffers(offers);
-// }).catch((e) => {
-//   currentStatus = DownloadStatus.FATAL_ERROR;
-//   throw new Error(`offers not load (${e})`);
-// })
-// .then((waypoints) => {
-//   if (currentStatus !== DownloadStatus.FATAL_ERROR) {
-//     waypointModel.setWaypoint(waypoints);
-//     const stats = new Stats(waypointModel);
-//     const header = new Header(waypointModel, stats, offersModel, apiWithProvider);
-//     const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
-//
-//     header.init();
-//     daysList.init();
-//   }
-// }).catch(() => {
-//   if (currentStatus !== DownloadStatus.FATAL_ERROR) {
-//     currentStatus = DownloadStatus.ERROR;
-//     waypointModel.setWaypoint([]);
-//     const stats = new Stats(waypointModel);
-//     const header = new Header(waypointModel, stats, offersModel);
-//     const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
-//
-//     header.init();
-//     daysList.init();
-//   }
-// });
 
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`./sw.js`)
