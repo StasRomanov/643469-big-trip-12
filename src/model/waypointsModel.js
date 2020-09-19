@@ -42,7 +42,7 @@ export default class WaypointsModel extends Observer {
           endTime: waypoint.date_to,
           important: waypoint.is_favorite,
           price: waypoint.base_price,
-          bonusOptions: waypoint.offers,
+          bonusOptions: [],
           type: getCapitalizedWord(waypoint.type),
           town: waypoint.destination.name,
           destination: {
@@ -53,9 +53,12 @@ export default class WaypointsModel extends Observer {
           differenceTimeMs: getTimeDifference(waypoint.date_from, waypoint.date_to, true),
         }
     );
-    adaptedWaypoint.bonusOptions.forEach((item) => {
-      item.used = false;
-      item.name = item.title;
+    waypoint.offers.forEach((item) => {
+      adaptedWaypoint.bonusOptions.push({
+        "used": false,
+        "name": item.title,
+        "price": item.price,
+      });
       delete item.title;
     });
     delete adaptedWaypoint.destination.pictures;
@@ -75,7 +78,7 @@ export default class WaypointsModel extends Observer {
           "date_to": waypoint.endTime,
           "is_favorite": waypoint.important,
           "base_price": Number(waypoint.price),
-          "offers": waypoint.bonusOptions,
+          "offers": [],
           "type": waypoint.type.toLowerCase(),
           "destination": {
             "pictures": waypoint.destination.photos,
@@ -84,11 +87,11 @@ export default class WaypointsModel extends Observer {
           }
         }
     );
-    adaptedWaypoint.offers.forEach((item) => {
-      item.title = item.name;
-      item.price = Number(item.price);
-      delete item.used;
-      delete item.name;
+    waypoint.bonusOptions.forEach((item) => {
+      adaptedWaypoint.offers.push({
+        "title": String(item.name),
+        "price": Number(item.price),
+      });
     });
     delete adaptedWaypoint.startTime;
     delete adaptedWaypoint.endTime;

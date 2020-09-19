@@ -27,7 +27,9 @@ export default class Provider {
     if (Provider.isOnline()) {
       return this._api.getAllData()
         .then((allData) => {
-          const waypoints = createStoreStructure(allData[0]);
+          const cloneData = allData[0].slice();
+          let a = cloneData.map(WaypointsModel.updateToServer);
+          const waypoints = createStoreStructure(a);
           this._waypointsStore.setItems(waypoints);
 
           const destinations = Object.assign(
