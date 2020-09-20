@@ -9,6 +9,7 @@ import Waypoint from "./waypoint";
 import Observer from "../util/observer";
 import moment from "moment";
 import {getFutureWaypointsFilter, getPastWaypointsFilter} from "../util/filter-data-function";
+import Header from "./header";
 
 export default class TravelDaysList {
   constructor(waypointsModel, headerPresenter, offersModel, api) {
@@ -31,12 +32,13 @@ export default class TravelDaysList {
 
   _renderDay() {
     this._dayRenderWaypoints(getDefaultSortWaypoints(this._waypoints.getWaypoints()), this._waypoints);
+    Header.updateFilter(this._waypoints.getWaypoints());
     this._header.setAddWaypointButtonClickListener(() => {
       if (this._currentSortType !== SortType.DEFAULT) {
         this._waypoints.setWaypoint(getDefaultSortWaypoints(this._waypoints.getWaypoints()));
         this._sortDefault(this._waypoints.getWaypoints());
       }
-      const waypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, this._api);
+      const waypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints);
       waypoint.renderDayWrappers = () => {
         this._destroyNoWaypointMessage();
         this._renderWrappers();
@@ -51,7 +53,7 @@ export default class TravelDaysList {
         this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
       };
       waypoint.renderNewWaypointInViewMode = () => {
-        const newWaypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, RenderPosition.AFTERBEGIN, this._api);
+        const newWaypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, RenderPosition.AFTERBEGIN);
         newWaypoint.renderWaypoint();
         this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
         newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
@@ -166,6 +168,7 @@ export default class TravelDaysList {
   _dayRenderWaypoints(waypoints, waypointsModel) {
     if (!waypoints.length) {
       this._noWaypointRender();
+      Header.updateFilter(waypoints);
       return;
     }
     let day = null;

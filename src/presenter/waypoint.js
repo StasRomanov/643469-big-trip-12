@@ -102,6 +102,7 @@ export default class Waypoint {
         remove(this._newWaypoint);
         this._callback.renderNewWaypointView();
         Header.updateHeader(this._waypoints.getWaypoints());
+        Header.updateFilter(this._waypoints.getWaypoints());
       }).catch(() => {
         this._newWaypoint.setSavingMode(false);
         this._newWaypoint.disableAll(false);
@@ -165,6 +166,7 @@ export default class Waypoint {
         this._waypointEdit.disableAll(false);
         updateWaypoints(this._waypoint, response);
         Header.updateHeader(this._waypoints.getWaypoints());
+        Header.updateFilter(this._waypoints.getWaypoints());
         this._replaceWaypointMode();
         this._setNormalModeListener();
       }).catch(() => {
@@ -273,6 +275,8 @@ export default class Waypoint {
       this._waypointEdit.disableAll(false);
       this._waypointEdit.setRemovingMode(false);
       this._waypoints.deleteWaypoint(this._waypoint);
+      Header.updateHeader(this._waypoints.getWaypoints());
+      Header.updateFilter(this._waypoints.getWaypoints());
       this._waypointEdit.getElement().remove();
       this._waypointElement.getElement().remove();
       this._callback.removeDay();

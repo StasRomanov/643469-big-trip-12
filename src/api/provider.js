@@ -46,11 +46,11 @@ export default class Provider {
         });
     }
 
-    const storeEvents = Object.values(this._waypointsStore.getItems());
+    const storeWaypoints = Object.values(this._waypointsStore.getItems());
     const storeDestinations = Object.values(this._storeDestinations.getItems());
     const storeOffers = Object.values(this._storeOffers.getItems());
 
-    return Promise.resolve([storeEvents, storeDestinations, storeOffers]);
+    return Promise.resolve([storeWaypoints, storeDestinations, storeOffers]);
   }
 
   updateWaypoint(waypoint) {
@@ -67,29 +67,29 @@ export default class Provider {
     return Promise.resolve(waypoint);
   }
 
-  addWaypoint(task) {
+  addWaypoint(waypoint) {
     if (Provider.isOnline()) {
-      return this._api.addWaypoint(task)
-        .then((newTask) => {
-          this._waypointsStore.setItem(newTask.id, WaypointsModel.updateToServer(newTask));
-          return newTask;
+      return this._api.addWaypoint(waypoint)
+        .then((newWaypoint) => {
+          this._waypointsStore.setItem(newWaypoint.id, WaypointsModel.updateToServer(newWaypoint));
+          return newWaypoint;
         });
     }
-    const localNewTaskId = nanoid();
-    const localNewTask = Object.assign({}, task, {id: localNewTaskId});
+    const localNewWaypointId = nanoid();
+    const localNewWaypoint = Object.assign({}, waypoint, {id: localNewWaypointId});
 
-    this._waypointsStore.setItem(localNewTask.id, WaypointsModel.updateToServer(localNewTask));
+    this._waypointsStore.setItem(localNewWaypoint.id, WaypointsModel.updateToServer(localNewWaypoint));
 
-    return Promise.resolve(localNewTask);
+    return Promise.resolve(localNewWaypoint);
   }
 
-  deleteWaypoint(task) {
+  deleteWaypoint(waypoint) {
     if (Provider.isOnline()) {
-      return this._api.deleteWaypoint(task)
-        .then(() => this._waypointsStore.removeItem(task.id));
+      return this._api.deleteWaypoint(waypoint)
+        .then(() => this._waypointsStore.removeItem(waypoint.id));
     }
 
-    this._waypointsStore.removeItem(task.id);
+    this._waypointsStore.removeItem(waypoint.id);
 
     return Promise.resolve();
   }

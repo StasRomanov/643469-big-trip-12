@@ -5,6 +5,7 @@ import SitePagesTemplate from "../view/site-pages";
 import SiteFilterTemplate from "../view/site-filter";
 import abstract from "../view/abstract";
 import TravelDaysList from "./travel-day";
+import {getFutureWaypointsFilter, getPastWaypointsFilter} from "../util/filter-data-function";
 
 export default class Header extends abstract {
   constructor(waypointsModel, statsPresenter, offersModel, api) {
@@ -78,5 +79,18 @@ export default class Header extends abstract {
   static updateHeader(waypoints) {
     document.querySelector(`.trip-main__trip-info`).remove();
     render(document.querySelector(`.trip-main`), new SiteMenu(waypoints), RenderPosition.AFTERBEGIN);
+  }
+
+  static updateFilter(waypoints) {
+    const pastFilter = document.querySelector(`#filter-past`);
+    const futureFilter = document.querySelector(`#filter-future`);
+    pastFilter.removeAttribute(`disabled`);
+    futureFilter.removeAttribute(`disabled`);
+    if (!(getFutureWaypointsFilter(waypoints).length)) {
+      futureFilter.setAttribute(`disabled`, `true`);
+    }
+    if (!(getPastWaypointsFilter(waypoints).length)) {
+      pastFilter.setAttribute(`disabled`, `true`);
+    }
   }
 }

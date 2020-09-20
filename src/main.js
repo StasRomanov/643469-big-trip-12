@@ -14,7 +14,7 @@ import {DataStatus} from "./api";
 const waypointModel = new WaypointsModel();
 const offersModel = new OffersModel();
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
-const AUTHORIZATION = `Basic lhikgjfhd`;
+const AUTHORIZATION = `Basic lhikytgthigjfhd`;
 const STORE_PREFIX = `big_trip_web-localstorage`;
 const DataType = {
   WAYPOINTS: `waypoints`,
