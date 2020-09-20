@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat/Montserrat-Regular.ttf") format("ttf");
+  font-weight: normal;
+}
+
 html {
   height: 100%; }
 
