@@ -55,7 +55,7 @@ export default class WaypointsModel extends Observer {
     );
     waypoint.offers.forEach((item) => {
       adaptedWaypoint.bonusOptions.push({
-        "used": false,
+        "used": item.used !== undefined ? item.used : false,
         "name": item.title,
         "price": item.price,
       });
@@ -89,8 +89,9 @@ export default class WaypointsModel extends Observer {
     );
     waypoint.bonusOptions.forEach((item) => {
       adaptedWaypoint.offers.push({
-        "title": String(item.name),
+        "title": item.name,
         "price": Number(item.price),
+        "used": item.used,
       });
     });
     delete adaptedWaypoint.startTime;
