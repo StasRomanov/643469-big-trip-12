@@ -13,7 +13,13 @@ import SiteEventTemplate from "../view/site-event";
 import SiteEventTitleTemplate from "../view/site-event-title";
 import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
 import SiteEventPhotoTemplate from "../view/site-event-photo";
-import {getCapitalizedWord, getOffers, getWaypointDestination, updateWaypoints} from "../util/data-function";
+import {
+  getCapitalizedWord,
+  getOffers,
+  getWaypointDestination,
+  updateWaypointImportantStatus,
+  updateWaypoints,
+} from "../util/data-function";
 import SiteWaypointTemplate from "../view/site-waypoint";
 import Header from "./header";
 
@@ -156,6 +162,9 @@ export default class Waypoint {
     this._waypointEdit.setRollupButtonClickHandler(() => {
       this._replaceWaypointMode();
       this._setNormalModeListener();
+    });
+    this._waypointEdit.setImportantMarkClickHandler((important) => {
+      updateWaypointImportantStatus(this._waypoint, important);
     });
     this._waypointEdit.setFormSubmitHandler(() => {
       this._waypointEdit.disableAll();

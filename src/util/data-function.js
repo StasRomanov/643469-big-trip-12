@@ -83,6 +83,10 @@ export const updateWaypoints = (oldWaypoints, newWaypoint) => {
   oldWaypoints.differenceTimeMs = getTimeDifference(newWaypoint.startTime, newWaypoint.endTime, true).toUpperCase();
 };
 
+export const updateWaypointImportantStatus = (oldWaypoints, importantStatus) => {
+  oldWaypoints.important = importantStatus;
+};
+
 export const getSimilarWaypointInfo = (waypoints) => {
   let townsList = [];
   let townChangeCount = 0;

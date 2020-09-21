@@ -264,8 +264,9 @@ export default class SiteEditEventTemplate extends Abstract {
   }
 
   _importantMarkClickHandler(evt) {
-    if (evt.button === MouseKey.LEFT) {
-      this._callback.importantMarkClick();
+    if (evt.button === MouseKey.LEFT && this.getElement().querySelector(`.event__favorite-checkbox`)) {
+      const importantStatusDefault = this.getElement().querySelector(`.event__favorite-checkbox`).checked;
+      this._callback.importantMarkClick(!importantStatusDefault);
     }
   }
 
