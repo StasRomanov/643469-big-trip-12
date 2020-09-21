@@ -1,7 +1,7 @@
 import Abstract from "./abstract";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import {ChartType, TRANSFER_TYPE, TypeEmoji} from "../const";
+import {ChartType, TRANSFER_TYPES, TypeEmoji} from "../const";
 import {getTimeDifference} from "../util/data-function";
 
 export default class SiteStats extends Abstract {
@@ -140,7 +140,7 @@ export default class SiteStats extends Abstract {
   }
 
   _createChartData(waypoints) {
-    const transportTypes = TRANSFER_TYPE;
+    const transportTypes = TRANSFER_TYPES;
     const chartMap = {
       [ChartType.MONEY]: {},
       [ChartType.TRANSPORT]: {},

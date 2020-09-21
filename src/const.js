@@ -69,9 +69,9 @@ export const FilterType = {
 
 export const TOWNS = [];
 
-export const TRANSFER_TYPE = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+export const TRANSFER_TYPES = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
 
-export const EVENT_TYPE = [`Check-in`, `Sightseeing`, `Restaurant`];
+export const EVENT_TYPES = [`Check-in`, `Sightseeing`, `Restaurant`];
 
 export const TypeEmoji = new Map([
   [`Taxi`, `🚕`],
@@ -96,7 +96,7 @@ export const MIN_IN_HOUR = 60;
 
 export const HOURS_IN_DAY = 24;
 
-export const DESTINATION_ALL = [];
+export const DESTINATIONS_ALL = [];
 
 export const DownloadStatus = {
   OK: `download all data`,

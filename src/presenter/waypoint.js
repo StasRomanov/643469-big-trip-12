@@ -5,7 +5,7 @@ import {
   KeyboardKey,
   MAX_OFFERS_IN_VIEW_MODE,
   RenderPosition,
-  TRANSFER_TYPE,
+  TRANSFER_TYPES,
   WaypointMode,
 } from "../const";
 import {remove, render, replace} from "../util/render-function";
@@ -267,7 +267,7 @@ export default class Waypoint {
     const text = element.getElement().querySelector(`.event__label`);
     this._avatarInput = element.getElement().querySelector(`.event__type-toggle`);
     img.setAttribute(`src`, `img/icons/${travelType}.png`);
-    text.textContent = `${getCapitalizedWord(travelType)} ${TRANSFER_TYPE.indexOf(getCapitalizedWord(travelType)) !== -1 ? `to` : `in`}`;
+    text.textContent = `${getCapitalizedWord(travelType)} ${TRANSFER_TYPES.indexOf(getCapitalizedWord(travelType)) !== -1 ? `to` : `in`}`;
     this._avatarInput.setAttribute(`data-type`, travelType);
     this._updateOffers(travelType, element);
   }

@@ -4,7 +4,7 @@ import WaypointsModel from "./model/waypointsModel";
 import Stats from "./presenter/stats";
 import Api from "./api/index";
 import OffersModel from "./model/offersModel";
-import {DESTINATION_ALL, DownloadStatus, TOWNS} from "./const";
+import {DESTINATIONS_ALL, DownloadStatus, TOWNS} from "./const";
 import {render} from "./util/render-function";
 import SiteLoading from "./view/site-loading";
 import Provider from "./api/provider";
@@ -45,7 +45,7 @@ apiWithProvider.getAllData()
   .then((data) => {
     data.destination.forEach((item) => {
       TOWNS.push(item.town);
-      DESTINATION_ALL.push(item);
+      DESTINATIONS_ALL.push(item);
     });
     return data;
   })

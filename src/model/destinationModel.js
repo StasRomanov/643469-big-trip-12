@@ -4,15 +4,15 @@ import {removeItem, updateItem} from "../util/data-function";
 export default class DestinationModel extends Observer {
   constructor() {
     super();
-    this._destination = [];
+    this._destinations = [];
   }
 
   setDestinations(destination) {
-    this._destination = destination.slice();
+    this._destinations = destination.slice();
   }
 
   getDestinations() {
-    return this._destination;
+    return this._destinations;
   }
 
   static updateToClient(destination) {
@@ -29,17 +29,17 @@ export default class DestinationModel extends Observer {
   }
 
   updateDestination(update) {
-    this._destination = updateItem(this._destination, update);
+    this._destinations = updateItem(this._destinations, update);
   }
 
   addDestination(update) {
-    this._destination = [
+    this._destinations = [
       update,
-      ...this._destination
+      ...this._destinations
     ];
   }
 
   deleteDestinations(update) {
-    this._destination = removeItem(this._destination, update);
+    this._destinations = removeItem(this._destinations, update);
   }
 }

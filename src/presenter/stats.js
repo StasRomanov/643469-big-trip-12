@@ -1,6 +1,6 @@
 import {remove, render} from "../util/render-function";
 import SiteStats from "../view/site-stats";
-import {ChartType, TRANSFER_TYPE, TypeEmoji} from "../const";
+import {ChartType, TRANSFER_TYPES, TypeEmoji} from "../const";
 import {getTimeDifference} from "../util/data-function";
 
 export default class Stats {
@@ -37,7 +37,7 @@ export default class Stats {
   }
 
   _getTransportData() {
-    const transportTypes = TRANSFER_TYPE;
+    const transportTypes = TRANSFER_TYPES;
     const waypointsTransport = {};
 
     this._waypointsModel.getWaypoints().forEach((waypoint) => {

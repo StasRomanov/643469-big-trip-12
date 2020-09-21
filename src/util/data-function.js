@@ -1,24 +1,11 @@
 import moment from "moment";
-import {DESTINATION_ALL, HOURS_IN_DAY, MAX_TOWN_IN_HEADER, MIN_IN_HOUR, TRANSFER_TYPE} from "../const";
+import {DESTINATIONS_ALL, HOURS_IN_DAY, MAX_TOWN_IN_HEADER, MIN_IN_HOUR, TRANSFER_TYPES} from "../const";
 
 export const getCapitalizedWord = (str) => {
   return str[0].toUpperCase() + str.slice(1);
 };
 
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
-
-export const getRandomDate = (day, count = 10) => {
-  const dateArr = [];
-  for (let i = 0; i < count * 2; i++) {
-    const currentDate = new Date();
-    currentDate.setMonth(3);
-    currentDate.setDate(18 + day);
-    currentDate.setHours(getRandomInteger(0, 23));
-    currentDate.setMinutes(getRandomInteger(0, 60));
-    dateArr.push(currentDate);
-  }
-  return dateArr;
-};
 
 export const getTimeDifference = (startTime, endTime, msMode = false) => {
   if (msMode) {
@@ -123,9 +110,9 @@ export const removeItem = (items, update) => {
 };
 
 export const getEventTypeLabel = (type) => {
-  return `${getCapitalizedWord(type)} ${TRANSFER_TYPE.includes(getCapitalizedWord(type)) ? `to` : `in`}`;
+  return `${getCapitalizedWord(type)} ${TRANSFER_TYPES.includes(getCapitalizedWord(type)) ? `to` : `in`}`;
 };
 
 export const getWaypointDestination = (town) => {
-  return DESTINATION_ALL.find((item) => item.town === town);
+  return DESTINATIONS_ALL.find((item) => item.town === town);
 };
