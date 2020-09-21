@@ -84,14 +84,7 @@ apiWithProvider.getAllData()
   });
 
 window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`./sw.js`)
-    .then(() => {
-      // eslint-disable-next-line no-console
-      console.log(`ServiceWorker available`);
-    }).catch(() => {
-    // eslint-disable-next-line no-console
-      console.error(`ServiceWorker isn't available`);
-    });
+  navigator.serviceWorker.register(`./sw.js`);
 });
 
 window.addEventListener(`online`, () => {
