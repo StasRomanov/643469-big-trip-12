@@ -223,6 +223,9 @@ export default class TravelDaysList {
       waypoint.removeDay = () => {
         if (!(currentDay.querySelectorAll(`.trip-events__item`).length)) {
           currentDay.remove();
+          this._mainWrapper.querySelectorAll(`.day__counter`).forEach((dayNumber, index) => {
+            dayNumber.textContent = String(index + 1);
+          });
         }
       };
       waypoint.resetTable = () => {
