@@ -21,26 +21,31 @@ export default class Provider {
     this._waypointsStore = waypointsStore;
     this._storeDestinations = destinationStore;
     this._storeOffers = offersStore;
+    this._allDataIndex = {
+      WAYPOINTS: 0,
+      DESTINATION: 1,
+      OFFERS: 2,
+    };
   }
 
   getAllData() {
     if (Provider.isOnline()) {
       return this._api.getAllData()
         .then((allData) => {
-          const cloneData = allData[0].slice();
-          let a = cloneData.map(WaypointsModel.updateToServer);
-          const waypoints = createStoreStructure(a);
+          const cloneData = allData[this._allDataIndex.WAYPOINTS].slice();
+          const cloneDataAsServerStructure = cloneData.map(WaypointsModel.updateToServer);
+          const waypoints = createStoreStructure(cloneDataAsServerStructure);
           this._waypointsStore.setItems(waypoints);
 
           const destinations = Object.assign(
               {},
-              allData[1].slice().map((item) => {
+              allData[this._allDataIndex.DESTINATION].slice().map((item) => {
                 return Object.assign({}, item);
               })
           );
           this._storeDestinations.setItems(destinations);
 
-          const offers = Object.assign({}, allData[2]);
+          const offers = Object.assign({}, allData[this._allDataIndex.OFFERS]);
           this._storeOffers.setItems(offers);
           return allData;
         });
