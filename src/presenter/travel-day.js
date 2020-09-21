@@ -225,12 +225,18 @@ export default class TravelDaysList {
           currentDay.remove();
         }
       };
+      waypoint.resetTable = () => {
+        this._dayRenderWaypoints(waypoints, waypointsModel);
+      };
     });
   }
 
   _renderWrappers() {
     if (this._sortWrapper.querySelector(`.trip-days`)) {
       this._sortWrapper.querySelector(`.trip-days`).remove();
+    }
+    if (this._sortWrapper.querySelector(`.trip-events__trip-sort`)) {
+      this._sortWrapper.querySelector(`.trip-events__trip-sort`).remove();
     }
     const siteSortFilterTemplate = new SiteSortFilterTemplate();
     const siteDayListTemplate = new SiteDayListTemplate();

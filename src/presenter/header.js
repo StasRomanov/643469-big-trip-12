@@ -93,8 +93,4 @@ export default class Header extends abstract {
       pastFilter.setAttribute(`disabled`, `true`);
     }
   }
-  //
-  // get currentFilter() {
-  //   return Array.from(this._siteFilterTemplate.getElement().querySelectorAll(`.trip-filters__filter-input`)).find((item) => item.checked).value;
-  // }
 }

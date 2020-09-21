@@ -62,6 +62,10 @@ export default class Waypoint {
     this._callback.renderDayWrappers = callback;
   }
 
+  set resetTable(callback) {
+    this._callback.resetTable = callback;
+  }
+
   renderWaypoint(mode = WaypointMode.VIEW) {
     let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
     if (this._position === RenderPosition.BEFOREEND) {
@@ -186,6 +190,7 @@ export default class Waypoint {
         Header.updateFilter(this._waypoints.getWaypoints());
         this._replaceWaypointMode();
         this._setNormalModeListener();
+        this._callback.resetTable();
       }).catch(() => {
         this._waypointEdit.setSavingMode(false);
         this._waypointEdit.disableAll(false);
