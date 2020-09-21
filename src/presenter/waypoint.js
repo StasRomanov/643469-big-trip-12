@@ -165,6 +165,14 @@ export default class Waypoint {
     });
     this._waypointEdit.setImportantMarkClickHandler((important) => {
       updateWaypointImportantStatus(this._waypoint, important);
+      this._api.updateWaypoint(this._waypoint).then(() => {
+        this._waypointEdit.setSavingMode(false);
+        this._waypointEdit.disableAll(false);
+      }).catch(() => {
+        this._waypointEdit.setSavingMode(false);
+        this._waypointEdit.disableAll(false);
+        this._waypointEdit.setErrorMode();
+      });
     });
     this._waypointEdit.setFormSubmitHandler(() => {
       this._waypointEdit.disableAll();
