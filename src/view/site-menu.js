@@ -17,7 +17,7 @@ const createSiteMenuTemplate = (waypoints) => {
           </section>`;
   }
   let allMoney = 0;
-  for (let waypoint of waypoints) {
+  for (const waypoint of waypoints) {
     allMoney += waypoint.price;
   }
   const first = {

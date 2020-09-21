@@ -234,7 +234,7 @@ export default class Waypoint {
       item.innerHTML = ``;
     });
     const lastBonusOptionWrapper = element.getElement().querySelector(`.event__available-offers`);
-    for (let bonusOption of bonusOptions) {
+    for (const bonusOption of bonusOptions) {
       render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
     }
   }

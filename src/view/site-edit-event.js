@@ -308,8 +308,7 @@ export default class SiteEditEventTemplate extends Abstract {
         {
           defaultDate: this._waypoint.startTime,
           enableTime: true,
-          // eslint-disable-next-line camelcase
-          time_24hr: true,
+          [`time_24hr`]: true,
           altFormat: `F j, Y`,
           dateFormat: `d/m/y H:i`,
           onChange: this._dueDateStartChangeHandler,
@@ -328,8 +327,7 @@ export default class SiteEditEventTemplate extends Abstract {
         {
           defaultDate: this._waypoint.endTime,
           enableTime: true,
-          // eslint-disable-next-line camelcase
-          time_24hr: true,
+          [`time_24hr`]: true,
           altFormat: `F j, Y`,
           dateFormat: `d/m/y H:i`,
           onChange: this._dueDateEndChangeHandler,

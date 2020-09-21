@@ -42,7 +42,7 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
 export const shuffle = (arr) => {
   let j;
   let temp;
-  let array = arr.slice();
+  const array = arr.slice();
   array.forEach((item, index) => {
     j = Math.floor(Math.random() * (index + 1));
     temp = array[j];
@@ -88,7 +88,7 @@ export const updateWaypointImportantStatus = (oldWaypoints, importantStatus) => 
 };
 
 export const getSimilarWaypointInfo = (waypoints) => {
-  let townsList = [];
+  const townsList = [];
   let townChangeCount = 0;
   let currentTown = null;
   waypoints.forEach((item) => {
