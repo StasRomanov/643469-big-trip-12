@@ -1,7 +1,7 @@
 import {getRandomInteger} from "./util/data-function";
 
-const MAX_OFFER_PRICE = 1000;
-const MIN_OFFER_PRICE = 10;
+export const MAX_OFFER_PRICE = 1000;
+export const MIN_OFFER_PRICE = 10;
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
