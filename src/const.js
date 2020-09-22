@@ -113,3 +113,5 @@ export const PageType = {
 };
 
 export const ERROR_STYLE = `animation: shake 0.6s;`;
+
+export const BAR_HEIGHT = 55;

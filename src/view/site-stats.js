@@ -1,7 +1,7 @@
 import Abstract from "./abstract";
 import Chart from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import {ChartType, TRANSFER_TYPES, TypeEmoji} from "../const";
+import {BAR_HEIGHT, ChartType, TRANSFER_TYPES, TypeEmoji} from "../const";
 import {getTimeDifference} from "../util/data-function";
 
 export default class SiteStats extends Abstract {
@@ -50,7 +50,6 @@ export default class SiteStats extends Abstract {
     const moneyCtx = this.getElement().querySelector(`.statistics__chart--money`);
     const transportCtx = this.getElement().querySelector(`.statistics__chart--transport`);
     const timeSpendCtx = this.getElement().querySelector(`.statistics__chart--time`);
-    const BAR_HEIGHT = 55;
     moneyCtx.height = BAR_HEIGHT * 6;
     transportCtx.height = BAR_HEIGHT * 4;
     timeSpendCtx.height = BAR_HEIGHT * 4;

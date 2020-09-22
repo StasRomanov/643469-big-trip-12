@@ -26,8 +26,8 @@ import Header from "./header";
 export default class Waypoint {
   constructor(api, offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
-    this._documentKeydownListener = this._documentKeydownListener.bind(this);
-    this._onDocumentKeydown = this._onDocumentKeydown.bind(this);
+    this._onDocumentKeydownEscHandler = this._onDocumentKeydownEscHandler.bind(this);
+    this._onDocumentKeydownHandler = this._onDocumentKeydownHandler.bind(this);
     this._position = position;
     this._api = api;
     this._newWaypoint = new SiteWaypoint();
@@ -123,7 +123,7 @@ export default class Waypoint {
       remove(this._newWaypoint);
       this._callback.resetNewWaypointBtn();
     });
-    document.addEventListener(`keydown`, this._documentKeydownListener);
+    document.addEventListener(`keydown`, this._onDocumentKeydownEscHandler);
     this._newWaypoint.setTravelTypeChangeHandler((travelType) => this._updateTravelType(travelType, this._newWaypoint));
     this._newWaypoint.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode(this._newWaypoint));
     this._newWaypoint._setDatepickerStart();
@@ -197,7 +197,7 @@ export default class Waypoint {
         this._waypointEdit.setErrorMode();
       });
     });
-    document.addEventListener(`keydown`, this._onDocumentKeydown);
+    document.addEventListener(`keydown`, this._onDocumentKeydownHandler);
   }
 
   _setNormalModeListener() {
@@ -213,14 +213,14 @@ export default class Waypoint {
       this._replaceWaypointMode();
       this._setNormalModeListener();
     });
-    document.removeEventListener(`keydown`, this._onDocumentKeydown);
+    document.removeEventListener(`keydown`, this._onDocumentKeydownHandler);
   }
 
-  _onDocumentKeydown(evt) {
+  _onDocumentKeydownHandler(evt) {
     if (evt.code === KeyboardKey.ESCAPE) {
       this._replaceWaypointMode();
       this._setNormalModeListener();
-      document.removeEventListener(`keydown`, this._onDocumentKeydown);
+      document.removeEventListener(`keydown`, this._onDocumentKeydownHandler);
     }
   }
 
@@ -309,11 +309,11 @@ export default class Waypoint {
     });
   }
 
-  _documentKeydownListener(evt) {
+  _onDocumentKeydownEscHandler(evt) {
     if (evt.code === KeyboardKey.ESCAPE) {
       remove(this._newWaypoint);
       this._callback.resetNewWaypointBtn();
-      document.removeEventListener(`keydown`, this._documentKeydownListener);
+      document.removeEventListener(`keydown`, this._onDocumentKeydownEscHandler);
     }
   }
 }
