@@ -229,8 +229,8 @@ export default class Waypoint {
     if (defaultMode) {
       bonusOptions = getOffers(defaultWaypoint.type, this._offersAll);
     }
-    const bonusOptionWrapper = element.getElement().querySelectorAll(`.event__available-offers`);
-    bonusOptionWrapper.forEach((item) => {
+    const bonusOptionsWrappers = element.getElement().querySelectorAll(`.event__available-offers`);
+    bonusOptionsWrappers.forEach((item) => {
       item.innerHTML = ``;
     });
     const lastBonusOptionWrapper = element.getElement().querySelector(`.event__available-offers`);
