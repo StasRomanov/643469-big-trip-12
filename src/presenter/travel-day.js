@@ -51,7 +51,7 @@ export default class TravelDaysList {
       waypoint.renderNewWaypoint();
       waypoint.resetNewWaypointBtn = () => {
         this._newWaypointBtn.removeAttribute(`disabled`);
-        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
+        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
       };
       waypoint.renderNewWaypointInViewMode = () => {
         const newWaypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, RenderPosition.AFTERBEGIN);
