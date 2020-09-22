@@ -39,10 +39,7 @@ export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
 
 export const getOffers = (waypointType, offers) => {
-  let filterOffers = offers.filter((item) => {
-    return item.type.toLowerCase() === waypointType.toLowerCase();
-  });
-  filterOffers = filterOffers[0].offers;
+  const filterOffers = offers.find((item) => item.type.toLowerCase() === waypointType.toLowerCase()).offers;
   filterOffers.forEach((item) => {
     item.name = getCapitalizedWord(item.name);
     item.used = getRandomBoolean();
