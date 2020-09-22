@@ -26,19 +26,6 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
   }
 };
 
-export const shuffle = (arr) => {
-  let j;
-  let temp;
-  const array = arr.slice();
-  array.forEach((item, index) => {
-    j = Math.floor(Math.random() * (index + 1));
-    temp = array[j];
-    array[j] = item;
-    array[index] = temp;
-  });
-  return array;
-};
-
 export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
 export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
