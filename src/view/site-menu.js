@@ -1,6 +1,7 @@
 import Abstract from "./abstract";
 import moment from "moment";
 import {getSimilarWaypointInfo} from "../util/data-function";
+import {getDefaultSortWaypoints} from "../util/sort-data-function";
 
 const createSiteMenuTemplate = (waypoints) => {
   if (!waypoints.length) {
@@ -29,8 +30,8 @@ const createSiteMenuTemplate = (waypoints) => {
     town: waypoints[0].town,
   };
   const last = {
-    day: moment(waypoints[waypoints.length - 1].startTime).format(`D`),
-    month: moment(waypoints[waypoints.length - 1].startTime).format(`MMM`),
+    day: moment(waypoints[waypoints.length - 1].endTime).format(`D`),
+    month: moment(waypoints[waypoints.length - 1].endTime).format(`MMM`),
     town: waypoints[waypoints.length - 1].town,
   };
   const similarWaypointInfo = getSimilarWaypointInfo(waypoints);
@@ -52,6 +53,6 @@ export default class SiteMenu extends Abstract {
   }
 
   getTemplate() {
-    return createSiteMenuTemplate(this._waypoints);
+    return createSiteMenuTemplate(getDefaultSortWaypoints(this._waypoints));
   }
 }
