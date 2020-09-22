@@ -68,12 +68,9 @@ export default class Waypoint {
   }
 
   renderWaypoint(mode = WaypointMode.VIEW) {
-    let trimEventItem = this._sortWrapper.querySelectorAll(`.trip-events__list`);
-    if (this._position === RenderPosition.BEFOREEND) {
-      trimEventItem = trimEventItem[trimEventItem.length - 1];
-    } else {
-      trimEventItem = trimEventItem[0];
-    }
+    const trimEventItem = this._position === RenderPosition.BEFOREEND ?
+      this._sortWrapper.querySelectorAll(`.trip-events__list`)[this._sortWrapper.querySelectorAll(`.trip-events__list`).length - 1] :
+      this._sortWrapper.querySelectorAll(`.trip-events__list`)[0];
     this.renderWaypointMode(trimEventItem, mode);
   }
 
