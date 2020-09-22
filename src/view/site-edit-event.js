@@ -157,14 +157,8 @@ export default class SiteEditEvent extends Abstract {
     this._waypointDeleteChangeHandler = this._waypointDeleteChangeHandler.bind(this);
   }
 
-  setImportantMarkClickHandler(callback) {
-    this._callback.importantMarkClick = callback;
-    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
-  }
-
-  setTravelTypeChangeHandler(callback) {
-    this._callback.travelTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
+  getTemplate() {
+    return createSiteEditEventTemplate(this._waypoint);
   }
 
   saveData() {
@@ -208,23 +202,50 @@ export default class SiteEditEvent extends Abstract {
     return updateWaypoint;
   }
 
-  getTemplate() {
-    return createSiteEditEventTemplate(this._waypoint);
+  disableAll(toggle = true) {
+    this._fields = [
+      this.getElement().querySelector(`.event__type-toggle`),
+      this.getElement().querySelector(`.event__save-btn`),
+      this.getElement().querySelector(`.event__reset-btn`),
+    ];
+    this.getElement().querySelectorAll(`.event__input`).forEach((item) => {
+      this._fields.push(item);
+    });
+    this.getElement().querySelectorAll(`.event__offer-checkbox`).forEach((item) => {
+      this._fields.push(item);
+    });
+    if (this.getElement().querySelector(`#event-favorite-1`)) {
+      this._fields.push(this.getElement().querySelector(`#event-favorite-1`));
+    }
+    if (toggle) {
+      this._fields.forEach((item) => item.setAttribute(`disabled`, `true`));
+    } else {
+      this._fields.forEach((item) => item.removeAttribute(`disabled`));
+    }
   }
 
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
+  setSavingMode(toggle = true) {
+    if (toggle) {
+      this.getElement().querySelector(`.event__save-btn`).textContent = `Saving…`;
+    } else {
+      this.getElement().querySelector(`.event__save-btn`).textContent = `Save`;
+    }
   }
 
-  setRollupButtonClickHandler(callback) {
-    this._callback.rollupButtonClick = callback;
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
+  setRemovingMode(toggle = true) {
+    if (toggle) {
+      this.getElement().querySelector(`.event__reset-btn`).textContent = `Deleting…`;
+    } else {
+      this.getElement().querySelector(`.event__reset-btn`).textContent = `Delete`;
+    }
   }
 
-  setWaypointEditInputHandler(callback) {
-    this._callback.travelTypeChange = callback;
-    this.getElement().addEventListener(`change`, this._waypointEditInputHandler);
+  removeErrorMode() {
+    this.getElement().removeAttribute(`style`);
+  }
+
+  setErrorMode() {
+    this.getElement().setAttribute(`style`, ERROR_STYLE);
   }
 
   removeFormSubmitHandler(callback) {
@@ -235,21 +256,6 @@ export default class SiteEditEvent extends Abstract {
   removeRollupButtonClickHandler(callback) {
     this._callback.rollupButtonClick = callback;
     this.getElement().querySelector(`.event__rollup-btn`).removeEventListener(`click`, this._rollupButtonClickHandler);
-  }
-
-  removeImportantMarkClickHandler(callback) {
-    this._callback.importantMarkClick = callback;
-    this.getElement().querySelector(`.event__favorite-icon`).removeEventListener(`click`, this._importantMarkClickHandler);
-  }
-
-  setWaypointTownChangeHandler(callback) {
-    this._callback.townChange = callback;
-    this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._waypointTownChangeHandler);
-  }
-
-  setWaypointDeleteClickHandler(callback) {
-    this._callback.deleteClick = callback;
-    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._waypointDeleteChangeHandler);
   }
 
   _formSubmitHandler(evt) {
@@ -359,49 +365,33 @@ export default class SiteEditEvent extends Abstract {
     this._callback.deleteClick();
   }
 
-  disableAll(toggle = true) {
-    this._fields = [
-      this.getElement().querySelector(`.event__type-toggle`),
-      this.getElement().querySelector(`.event__save-btn`),
-      this.getElement().querySelector(`.event__reset-btn`),
-    ];
-    this.getElement().querySelectorAll(`.event__input`).forEach((item) => {
-      this._fields.push(item);
-    });
-    this.getElement().querySelectorAll(`.event__offer-checkbox`).forEach((item) => {
-      this._fields.push(item);
-    });
-    if (this.getElement().querySelector(`#event-favorite-1`)) {
-      this._fields.push(this.getElement().querySelector(`#event-favorite-1`));
-    }
-    if (toggle) {
-      this._fields.forEach((item) => item.setAttribute(`disabled`, `true`));
-    } else {
-      this._fields.forEach((item) => item.removeAttribute(`disabled`));
-    }
+  setImportantMarkClickHandler(callback) {
+    this._callback.importantMarkClick = callback;
+    this.getElement().querySelector(`.event__favorite-icon`).addEventListener(`click`, this._importantMarkClickHandler);
   }
 
-  setSavingMode(toggle = true) {
-    if (toggle) {
-      this.getElement().querySelector(`.event__save-btn`).textContent = `Saving…`;
-    } else {
-      this.getElement().querySelector(`.event__save-btn`).textContent = `Save`;
-    }
+  setTravelTypeChangeHandler(callback) {
+    this._callback.travelTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._travelTypeChangeHandler);
   }
 
-  setRemovingMode(toggle = true) {
-    if (toggle) {
-      this.getElement().querySelector(`.event__reset-btn`).textContent = `Deleting…`;
-    } else {
-      this.getElement().querySelector(`.event__reset-btn`).textContent = `Delete`;
-    }
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().addEventListener(`submit`, this._formSubmitHandler);
   }
 
-  removeErrorMode() {
-    this.getElement().removeAttribute(`style`);
+  setRollupButtonClickHandler(callback) {
+    this._callback.rollupButtonClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupButtonClickHandler);
   }
 
-  setErrorMode() {
-    this.getElement().setAttribute(`style`, ERROR_STYLE);
+  setWaypointTownChangeHandler(callback) {
+    this._callback.townChange = callback;
+    this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._waypointTownChangeHandler);
+  }
+
+  setWaypointDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._waypointDeleteChangeHandler);
   }
 }

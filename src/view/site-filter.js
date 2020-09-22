@@ -28,17 +28,6 @@ export default class SiteFilter extends Abstract {
     return createSiteFilterTemplate();
   }
 
-  setFilterChangeListener(callback) {
-    this._callback.setFilterChange = callback;
-    this.getElement().addEventListener(`change`, this._addFilterChangeListener);
-  }
-
-  _addFilterChangeListener(evt) {
-    const target = evt.target;
-    const targetValue = target.value;
-    this._callback.setFilterChange(targetValue);
-  }
-
   disableFilters() {
     this.getElement().querySelectorAll(`.trip-filters__filter-input`).forEach((item) => item.setAttribute(`disabled`, `true`));
   }
@@ -54,5 +43,16 @@ export default class SiteFilter extends Abstract {
       }
       item.removeAttribute(`disabled`);
     });
+  }
+
+  _addFilterChangeListener(evt) {
+    const target = evt.target;
+    const targetValue = target.value;
+    this._callback.setFilterChange(targetValue);
+  }
+
+  setFilterChangeListener(callback) {
+    this._callback.setFilterChange = callback;
+    this.getElement().addEventListener(`change`, this._addFilterChangeListener);
   }
 }
