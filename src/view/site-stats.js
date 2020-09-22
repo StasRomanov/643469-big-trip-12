@@ -9,7 +9,7 @@ export default class SiteStats extends Abstract {
     super();
     this._chartData = this._createChartData(waypoints);
     this._moneyChart = null;
-    this._timeSpendChart = null;
+    this._transportChart = null;
     this._timeSpendChart = null;
     this._setCharts();
   }
@@ -41,7 +41,7 @@ export default class SiteStats extends Abstract {
 
   _removeCharts() {
     this._moneyChart = null;
-    this._timeSpendChart = null;
+    this._transportChart = null;
     this._timeSpendChart = null;
   }
 

@@ -1,5 +1,4 @@
 import Observer from "../util/observer";
-import {removeItem, updateItem} from "../util/data-function";
 
 export default class OffersModel extends Observer {
   constructor() {
@@ -23,20 +22,5 @@ export default class OffersModel extends Observer {
           delete item.title;
         })
     );
-  }
-
-  updateOffer(update) {
-    this._offers = updateItem(this._offers, update);
-  }
-
-  addOffer(update) {
-    this._offers = [
-      update,
-      ...this._offers
-    ];
-  }
-
-  deleteOffers(update) {
-    this._offers = removeItem(this._offers, update);
   }
 }
