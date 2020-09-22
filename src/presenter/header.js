@@ -3,11 +3,11 @@ import SiteMenu from "../view/site-menu";
 import {MouseKey, RenderPosition} from "../const";
 import SitePagesTemplate from "../view/site-pages";
 import SiteFilterTemplate from "../view/site-filter";
-import abstract from "../view/abstract";
+import Abstract from "../view/abstract";
 import TravelDaysList from "./travel-day";
 import {getFutureWaypointsFilter, getPastWaypointsFilter} from "../util/filter-data-function";
 
-export default class Header extends abstract {
+export default class Header extends Abstract {
   constructor(waypointsModel, statsPresenter, offersModel, api) {
     super();
     this._api = api;
