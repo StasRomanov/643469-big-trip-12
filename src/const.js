@@ -1,3 +1,8 @@
+import {getRandomInteger} from "./util/data-function";
+
+const MAX_OFFER_PRICE = 1000;
+const MIN_OFFER_PRICE = 10;
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,
@@ -44,11 +49,11 @@ export const defaultWaypoint = {
     offers: [
       {
         name: `Upgrade to a business class`,
-        price: 120,
+        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE),
         used: false,
       }, {
         name: `Choose the radio station`,
-        price: 60,
+        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE),
         used: false,
       }
     ]
@@ -70,8 +75,6 @@ export const FilterType = {
 export const TOWNS = [];
 
 export const TRANSFER_TYPES = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
-
-export const EVENT_TYPES = [`Check-in`, `Sightseeing`, `Restaurant`];
 
 export const TypeEmoji = new Map([
   [`Taxi`, `🚕`],

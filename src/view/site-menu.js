@@ -19,6 +19,9 @@ const createSiteMenuTemplate = (waypoints) => {
   let allMoney = 0;
   for (const waypoint of waypoints) {
     allMoney += waypoint.price;
+    waypoint.bonusOptions.forEach((item) => {
+      allMoney += item.used ? item.price : 0;
+    });
   }
   const first = {
     day: moment(waypoints[0].startTime).format(`D`),

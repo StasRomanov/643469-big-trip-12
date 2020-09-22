@@ -314,6 +314,7 @@ export default class SiteEditEventTemplate extends Abstract {
           onChange: this._dueDateStartChangeHandler,
         }
     );
+    this._datepickerStart.set(`maxDate`, this._getEndDate());
   }
 
   _setDatepickerEnd() {
@@ -333,14 +334,25 @@ export default class SiteEditEventTemplate extends Abstract {
           onChange: this._dueDateEndChangeHandler,
         }
     );
+    this._datepickerEnd.set(`minDate`, this._getStartDate());
   }
 
   _dueDateStartChangeHandler(selectedDates) {
     this.getElement().querySelector(`#event-start-time-1`).setAttribute(`data-time`, selectedDates[0].toISOString());
+    this._datepickerEnd.set(`minDate`, selectedDates[0].toISOString());
   }
 
   _dueDateEndChangeHandler(selectedDates) {
     this.getElement().querySelector(`#event-end-time-1`).setAttribute(`data-time`, selectedDates[0].toISOString());
+    this._datepickerStart.set(`maxDate`, selectedDates[0].toISOString());
+  }
+
+  _getEndDate() {
+    return this.getElement().querySelector(`#event-end-time-1`).getAttribute(`data-time`);
+  }
+
+  _getStartDate() {
+    return this.getElement().querySelector(`#event-start-time-1`).getAttribute(`data-time`);
   }
 
   _waypointDeleteChangeHandler() {
