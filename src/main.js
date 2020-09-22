@@ -55,12 +55,7 @@ apiWithProvider.getAllData()
   .then((data) => {
     if (DataStatus.OFFERS && DataStatus.DESTINATION) {
       waypointModel.setWaypoint(data.waypoints);
-      const stats = new Stats(waypointModel);
-      const header = new Header(waypointModel, stats, offersModel, apiWithProvider);
-      const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
-
-      header.init();
-      daysList.init();
+      pageRender();
       DataStatus.WAYPOINTS = true;
     }
   }).catch((e) => {
@@ -74,13 +69,17 @@ apiWithProvider.getAllData()
     }
     currentStatus = DownloadStatus.ERROR;
     waypointModel.setWaypoint([]);
-    const stats = new Stats(waypointModel);
-    const header = new Header(waypointModel, stats, offersModel);
-    const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
-
-    header.init();
-    daysList.init();
+    pageRender();
   });
+
+const pageRender = () => {
+  const stats = new Stats(waypointModel);
+  const header = new Header(waypointModel, stats, offersModel);
+  const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
+
+  header.init();
+  daysList.init();
+};
 
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`./sw.js`);

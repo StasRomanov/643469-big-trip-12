@@ -1,6 +1,7 @@
 import Observer from "../util/observer";
 import {getCapitalizedWord, getTimeDifference, removeItem, updateItem} from "../util/data-function";
 import Header from "../presenter/header";
+import {getDefaultSortWaypoints} from "../util/sort-data-function";
 
 export default class WaypointsModel extends Observer {
   constructor() {
@@ -10,6 +11,10 @@ export default class WaypointsModel extends Observer {
 
   setWaypoint(waypoint) {
     this._waypoints = waypoint.slice();
+  }
+
+  setWaypointAsDefaultSort(waypoint) {
+    this._waypoints = getDefaultSortWaypoints(waypoint.slice());
   }
 
   getWaypoints() {

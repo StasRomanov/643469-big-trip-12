@@ -16,10 +16,11 @@ export const getCapitalizedWord = (str) => {
 export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
 
 export const getTimeDifference = (startTime, endTime, msMode = false) => {
+  const timeInMs = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   if (msMode) {
-    return moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
+    return timeInMs;
   } else {
-    if (moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`) > 0) {
+    if (timeInMs > 0) {
       const duration = moment.duration(moment(endTime).diff(moment(startTime)));
       let day = Math.floor(duration.asDays());
       let hours = Math.floor(duration.asHours());

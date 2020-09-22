@@ -6,6 +6,7 @@ import {
   MAX_OFFERS_IN_VIEW_MODE,
   RenderPosition,
   TRANSFER_TYPES,
+  WaypointAction,
   WaypointMode,
 } from "../const";
 import {remove, render, replace} from "../util/render-function";
@@ -114,9 +115,7 @@ export default class Waypoint {
         Header.updateHeader(this._waypoints.getWaypoints());
         Header.updateFilter(this._waypoints.getWaypoints());
       }).catch(() => {
-        this._newWaypoint.setSavingMode(false);
-        this._newWaypoint.disableAll(false);
-        this._newWaypoint.setErrorMode();
+        this._errorMode(WaypointAction.SAVE, this._newWaypoint);
       });
     });
     this._newWaypoint.setCancelButtonClickHandler(() => {
@@ -128,6 +127,11 @@ export default class Waypoint {
     this._newWaypoint.setWaypointTownChangeHandler(() => this._replaceDestinationAndPhotoEditMode(this._newWaypoint));
     this._newWaypoint._setDatepickerStart();
     this._newWaypoint._setDatepickerEnd();
+  }
+
+  onRollupButtonEditClickHandler() {
+    this._replaceWaypointMode();
+    this._setNormalModeListener();
   }
 
   _replaceWaypointMode(mode = WaypointMode.VIEW) {
@@ -173,9 +177,7 @@ export default class Waypoint {
         this._waypointEdit.setSavingMode(false);
         this._waypointEdit.disableAll(false);
       }).catch(() => {
-        this._waypointEdit.setSavingMode(false);
-        this._waypointEdit.disableAll(false);
-        this._waypointEdit.setErrorMode();
+        this._errorMode(WaypointAction.SAVE);
       });
     });
     this._waypointEdit.setFormSubmitHandler(() => {
@@ -192,9 +194,7 @@ export default class Waypoint {
         this._setNormalModeListener();
         this._callback.resetTable();
       }).catch(() => {
-        this._waypointEdit.setSavingMode(false);
-        this._waypointEdit.disableAll(false);
-        this._waypointEdit.setErrorMode();
+        this._errorMode(WaypointAction.SAVE);
       });
     });
     document.addEventListener(`keydown`, this._onDocumentKeydownHandler);
@@ -279,9 +279,14 @@ export default class Waypoint {
     this._renderBonusOptionEditMode(updateWaypoint, element);
   }
 
-  onRollupButtonEditClickHandler() {
-    this._replaceWaypointMode();
-    this._setNormalModeListener();
+  _errorMode(toggle = WaypointAction.SAVE, waypointMode = this._waypointEdit) {
+    if (toggle === WaypointAction.REMOVE) {
+      waypointMode.setRemovingMode(false);
+    } else {
+      waypointMode.setSavingMode(false);
+    }
+    waypointMode.disableAll(false);
+    waypointMode.setErrorMode();
   }
 
   _onRollupButtonViewClickHandler() {
@@ -294,8 +299,8 @@ export default class Waypoint {
     this._waypointEdit.setRemovingMode();
     this._waypointEdit.removeErrorMode();
     this._api.deleteWaypoint(this._waypoint).then(() => {
-      this._waypointEdit.disableAll(false);
-      this._waypointEdit.setRemovingMode(false);
+      this._waypointEdit.disableAll(true);
+      this._waypointEdit.setRemovingMode(true);
       this._waypoints.deleteWaypoint(this._waypoint);
       Header.updateHeader(this._waypoints.getWaypoints());
       Header.updateFilter(this._waypoints.getWaypoints());
@@ -303,9 +308,7 @@ export default class Waypoint {
       this._waypointElement.getElement().remove();
       this._callback.removeDay();
     }).catch(() => {
-      this._waypointEdit.setSavingMode(false);
-      this._waypointEdit.disableAll(false);
-      this._waypointEdit.setErrorMode();
+      this._errorMode();
     });
   }
 
