@@ -1,10 +1,10 @@
 import {render} from "../util/render-function";
 import SiteMenu from "../view/site-menu";
 import {MouseKey, RenderPosition} from "../const";
-import SitePagesTemplate from "../view/site-pages";
-import SiteFilterTemplate from "../view/site-filter";
+import SitePages from "../view/site-pages";
+import SiteFilter from "../view/site-filter";
 import Abstract from "../view/abstract";
-import TravelDaysList from "./travel-day";
+import TravelDaysList from "./travel-day-list";
 import {getFutureWaypointsFilter, getPastWaypointsFilter} from "../util/filter-data-function";
 
 export default class Header extends Abstract {
@@ -16,8 +16,8 @@ export default class Header extends Abstract {
     this._header = document.querySelector(`.page-header`);
     this._mainWrapper = document.querySelector(`.page-body__page-main`);
     this._siteMenu = new SiteMenu(waypointsModel.getWaypoints());
-    this._siteFilterHeaderTemplate = new SitePagesTemplate();
-    this._siteFilterTemplate = new SiteFilterTemplate();
+    this._siteFilterHeaderTemplate = new SitePages();
+    this._siteFilterTemplate = new SiteFilter();
     this._travelDayPresenter = new TravelDaysList(waypointsModel, this, offersModel, this._api);
     this._addWaypointButtonClickListener = this._addWaypointButtonClickListener.bind(this);
   }

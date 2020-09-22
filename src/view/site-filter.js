@@ -18,7 +18,7 @@ const createSiteFilterTemplate = () =>
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>`;
 
-export default class SiteFilterTemplate extends Abstract {
+export default class SiteFilter extends Abstract {
   constructor() {
     super();
     this._addFilterChangeListener = this._addFilterChangeListener.bind(this);

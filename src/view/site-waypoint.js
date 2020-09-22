@@ -1,7 +1,7 @@
 import {getEventTypeLabel, getId} from "../util/data-function";
 import he from "he";
 import moment from "moment";
-import SiteEditEventTemplate from "./site-edit-event";
+import SiteEditEvent from "./site-edit-event";
 import {defaultWaypoint, MouseKey, TOWNS} from "../const";
 
 const createSiteWaypointTemplate = (waypointDefault) => {
@@ -120,7 +120,7 @@ const createSiteWaypointTemplate = (waypointDefault) => {
   </form>`;
 };
 
-export default class SiteWaypointTemplate extends SiteEditEventTemplate {
+export default class SiteWaypoint extends SiteEditEvent {
   constructor() {
     super();
     this._saveButtonClickHandler = this._saveButtonClickHandler.bind(this);

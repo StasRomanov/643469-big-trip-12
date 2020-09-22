@@ -9,7 +9,7 @@ const createSiteEventTitleTemplate = (option) => {
  </li>`;
 };
 
-export default class SiteEventTitleTemplate extends Abstract {
+export default class SiteEventTitle extends Abstract {
   constructor(option) {
     super();
     this._option = option;

@@ -32,7 +32,7 @@ const createSiteSortFilterTemplate = () =>
     <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
   </form>`;
 
-export default class SiteSortFilterTemplate extends Abstract {
+export default class SiteSortFilter extends Abstract {
   constructor() {
     super();
     this._onSortChange = this._onSortChange.bind(this);

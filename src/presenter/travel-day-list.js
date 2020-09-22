@@ -2,8 +2,8 @@ import SiteDayItem from "../view/site-day-item";
 import SiteNoWaypointMessage from "../view/site-no-waypoint-message";
 import {render} from "../util/render-function";
 import {defaultWaypoint, FilterType, RenderPosition, SortType, WaypointMode} from "../const";
-import SiteDayListTemplate from "../view/site-day-list";
-import SiteSortFilterTemplate from "../view/site-sort-filter";
+import SiteDayList from "../view/site-day-list";
+import SiteSortFilter from "../view/site-sort-filter";
 import {getDefaultSortWaypoints, getPriceSortWaypoints, getTimeSortWaypoints} from "../util/sort-data-function";
 import Waypoint from "./waypoint";
 import Observer from "../util/observer";
@@ -103,7 +103,7 @@ export default class TravelDaysList {
     if (this._sortWrapper.querySelector(`.trip-days`)) {
       render(this._sortWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
     } else {
-      render(this._sortWrapper, new SiteDayListTemplate());
+      render(this._sortWrapper, new SiteDayList());
       render(this._sortWrapper.querySelector(`.trip-days`), new SiteNoWaypointMessage());
     }
   }
@@ -241,8 +241,8 @@ export default class TravelDaysList {
     if (this._sortWrapper.querySelector(`.trip-events__trip-sort`)) {
       this._sortWrapper.querySelector(`.trip-events__trip-sort`).remove();
     }
-    const siteSortFilterTemplate = new SiteSortFilterTemplate();
-    const siteDayListTemplate = new SiteDayListTemplate();
+    const siteSortFilterTemplate = new SiteSortFilter();
+    const siteDayListTemplate = new SiteDayList();
     render(this._sortWrapper, siteSortFilterTemplate);
     render(this._sortWrapper, siteDayListTemplate);
     siteSortFilterTemplate.setSortChangeListener((sortType) => {

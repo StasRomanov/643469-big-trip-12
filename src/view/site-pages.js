@@ -8,7 +8,7 @@ const createSitePagesTemplate = () => {
   </nav>`;
 };
 
-export default class SitePagesTemplate extends Abstract {
+export default class SitePages extends Abstract {
   constructor() {
     super();
     this._buttons = Array.from(this.getElement().querySelectorAll(`.trip-tabs__btn`));

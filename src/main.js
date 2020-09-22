@@ -1,15 +1,14 @@
-import TravelDaysList from "./presenter/travel-day";
+import TravelDaysList from "./presenter/travel-day-list";
 import Header from "./presenter/header";
 import WaypointsModel from "./model/waypointsModel";
 import Stats from "./presenter/stats";
-import Api from "./api/index";
+import Api, {DataStatus} from "./api/api";
 import OffersModel from "./model/offersModel";
 import {DESTINATIONS_ALL, DownloadStatus, TOWNS} from "./const";
 import {render} from "./util/render-function";
 import SiteLoading from "./view/site-loading";
 import Provider from "./api/provider";
 import Store from "./api/store";
-import {DataStatus} from "./api";
 
 const waypointModel = new WaypointsModel();
 const offersModel = new OffersModel();

@@ -138,7 +138,7 @@ const createSiteEditEventTemplate = (waypoint) => {
   </form>`;
 };
 
-export default class SiteEditEventTemplate extends Abstract {
+export default class SiteEditEvent extends Abstract {
   constructor(waypoint) {
     super();
     this._dropBoxOpen = false;

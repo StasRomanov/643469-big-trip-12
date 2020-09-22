@@ -1,5 +1,5 @@
 import SiteTripEvent from "../view/site-trip-event";
-import SiteEditEventTemplate from "../view/site-edit-event";
+import SiteEditEvent from "../view/site-edit-event";
 import {
   defaultWaypoint,
   KeyboardKey,
@@ -9,10 +9,10 @@ import {
   WaypointMode,
 } from "../const";
 import {remove, render, replace} from "../util/render-function";
-import SiteEventTemplate from "../view/site-event";
-import SiteEventTitleTemplate from "../view/site-event-title";
-import SiteWaypointDestinationTemplate from "../view/site-waypoint-destination";
-import SiteEventPhotoTemplate from "../view/site-event-photo";
+import SiteEvent from "../view/site-event";
+import SiteEventTitle from "../view/site-event-title";
+import SiteWaypointDestination from "../view/site-waypoint-destination";
+import SiteEventPhoto from "../view/site-event-photo";
 import {
   getCapitalizedWord,
   getOffers,
@@ -20,7 +20,7 @@ import {
   updateWaypointImportantStatus,
   updateWaypoints,
 } from "../util/data-function";
-import SiteWaypointTemplate from "../view/site-waypoint";
+import SiteWaypoint from "../view/site-waypoint";
 import Header from "./header";
 
 export default class Waypoint {
@@ -30,7 +30,7 @@ export default class Waypoint {
     this._onDocumentKeydown = this._onDocumentKeydown.bind(this);
     this._position = position;
     this._api = api;
-    this._newWaypoint = new SiteWaypointTemplate();
+    this._newWaypoint = new SiteWaypoint();
     this._mainWrapper = document.querySelector(`.page-main`);
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._waypoints = waypointsModel;
@@ -78,7 +78,7 @@ export default class Waypoint {
 
   renderWaypointMode(dayWrapper, mode = WaypointMode.VIEW) {
     this._waypointElement = new SiteTripEvent(this._waypoint);
-    this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
+    this._waypointEdit = new SiteEditEvent(this._waypoint);
     render(dayWrapper, this._waypointElement, this._position);
 
     if (mode === WaypointMode.VIEW) {
@@ -137,7 +137,7 @@ export default class Waypoint {
     }
     if (mode === WaypointMode.EDIT) {
       this._callback.editMode();
-      this._waypointEdit = new SiteEditEventTemplate(this._waypoint);
+      this._waypointEdit = new SiteEditEvent(this._waypoint);
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
       this._renderDestinationAndPhotoEditMode();
@@ -235,15 +235,15 @@ export default class Waypoint {
     });
     const lastBonusOptionWrapper = element.getElement().querySelector(`.event__available-offers`);
     for (const bonusOption of bonusOptions) {
-      render(lastBonusOptionWrapper, new SiteEventTemplate(bonusOption));
+      render(lastBonusOptionWrapper, new SiteEvent(bonusOption));
     }
   }
 
   _renderDestinationAndPhotoEditMode(destination = this._waypoint.destination, element = this._waypointEdit) {
-    this._waypointDestination = new SiteWaypointDestinationTemplate(destination.description);
+    this._waypointDestination = new SiteWaypointDestination(destination.description);
     render(element.getElement().querySelector(`.event__details`), this._waypointDestination);
     destination.photos.forEach((item) => {
-      render(this._waypointDestination.getElement().querySelector(`.event__photos-tape`), new SiteEventPhotoTemplate(item));
+      render(this._waypointDestination.getElement().querySelector(`.event__photos-tape`), new SiteEventPhoto(item));
     });
   }
 
@@ -251,7 +251,7 @@ export default class Waypoint {
     this._waypoint.bonusOptions.forEach((item) => {
       const optionCount = this._waypointElement.getElement().querySelectorAll(`.event__offer`).length;
       if (item.used && optionCount < MAX_OFFERS_IN_VIEW_MODE) {
-        render(this._waypointElement.getElement().querySelector(`.event__selected-offers`), new SiteEventTitleTemplate(item));
+        render(this._waypointElement.getElement().querySelector(`.event__selected-offers`), new SiteEventTitle(item));
       }
     });
   }

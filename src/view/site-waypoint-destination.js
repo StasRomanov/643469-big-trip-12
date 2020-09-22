@@ -9,7 +9,7 @@ const createSiteWaypointDestinationTemplate = (description) =>
     </div>
   </section>`;
 
-export default class SiteWaypointDestinationTemplate extends Abstract {
+export default class SiteWaypointDestination extends Abstract {
   constructor(description) {
     super();
     this._description = description;

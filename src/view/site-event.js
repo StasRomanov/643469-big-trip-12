@@ -12,7 +12,7 @@ const createSiteEventTemplate = (bonusOption) => {
   </div>`;
 };
 
-export default class SiteEventTemplate extends Abstract {
+export default class SiteEvent extends Abstract {
   constructor(bonusOption) {
     super();
     this._bonusOption = bonusOption;

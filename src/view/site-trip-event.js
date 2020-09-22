@@ -1,4 +1,4 @@
-import SiteEditEventTemplate from "./site-edit-event";
+import SiteEditEvent from "./site-edit-event";
 import moment from "moment";
 import he from "he";
 import {getEventTypeLabel} from "../util/data-function";
@@ -39,7 +39,7 @@ const createSiteTripEvent = (waypoint) => {
   </li>`;
 };
 
-export default class SiteTripEvent extends SiteEditEventTemplate {
+export default class SiteTripEvent extends SiteEditEvent {
   constructor(waypoint) {
     super();
     this._waypoint = waypoint;

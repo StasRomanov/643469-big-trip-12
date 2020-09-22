@@ -4,7 +4,7 @@ const createSiteEventPhotoTemplate = (photo) => {
   return `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`;
 };
 
-export default class SiteEventPhotoTemplate extends Abstract {
+export default class SiteEventPhoto extends Abstract {
   constructor(photo) {
     super();
     this._photo = photo;
