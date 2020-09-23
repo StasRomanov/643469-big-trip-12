@@ -34,69 +34,9 @@ export default class TravelDaysList {
   _renderDay() {
     this._dayRenderWaypoints(getDefaultSortWaypoints(this._waypoints.getWaypoints()), this._waypoints);
     Header.updateFilter(this._waypoints.getWaypoints());
-    this._header.setAddWaypointButtonClickListener(() => {
-      if (this._currentSortType !== SortType.DEFAULT) {
-        this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
-        this._sortDefault(this._waypoints.getWaypoints());
-      }
-      const waypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints);
-      waypoint.renderDayWrappers = () => {
-        this._destroyNoWaypointMessage();
-        this._renderWrappers();
-        render(this._sortWrapper.querySelector(`.trip-days`), new SiteDayItem(1, defaultWaypoint));
-      };
-      this._observerViewMode.notify();
-      this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
-      this._newWaypointBtn.setAttribute(`disabled`, `true`);
-      waypoint.renderNewWaypoint();
-      waypoint.resetNewWaypointBtn = () => {
-        this._newWaypointBtn.removeAttribute(`disabled`);
-        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
-      };
-      waypoint.renderNewWaypointInViewMode = () => {
-        const newWaypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, RenderPosition.AFTERBEGIN);
-        newWaypoint.renderWaypoint();
-        this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
-        newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
-        this._newWaypointBtn.removeAttribute(`disabled`);
-        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
-        this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
-        this._sortDefault(this._waypoints.getWaypoints());
-      };
-    });
-    this._header.renderFilterWaypoints = (filterType) => {
-      this._newWaypointBtn.removeAttribute(`disabled`);
-      switch (filterType) {
-        case FilterType.DEFAULT:
-          this._currentFilterType = FilterType.DEFAULT;
-          this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
-          this._sortDefault(this._waypoints.getWaypoints());
-          return;
-        case FilterType.FUTURE:
-          this._currentFilterType = FilterType.FUTURE;
-          this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoints());
-          this._sortDefault(this._filterWaypoints);
-          this._newWaypointBtn.setAttribute(`disabled`, `true`);
-          return;
-        case FilterType.PAST:
-          this._currentFilterType = FilterType.PAST;
-          this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoints());
-          this._sortDefault(this._filterWaypoints);
-          this._newWaypointBtn.setAttribute(`disabled`, `true`);
-          return;
-      }
-    };
-    this._header.destroyWaypoints = () => {
-      this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
-      this._sortDefault(this._waypoints.getWaypoints());
-      this.destroyAll();
-    };
-    this._header.destroyStats = () => {
-      this.destroyStats();
-    };
-    this._header.renderTable = () => {
-      this.init();
-    };
+    this._createNewWaypointListener();
+    this._renderFilterWaypoints();
+    this._setHeaderCallbacks();
   }
 
   _noWaypointRender() {
@@ -266,5 +206,77 @@ export default class TravelDaysList {
       this._mainWrapper.querySelector(`.trip-events__msg`).remove();
       this._newWaypointBtn.removeAttribute(`disabled`);
     }
+  }
+
+  _setHeaderCallbacks() {
+    this._header.destroyWaypoints = () => {
+      this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
+      this._sortDefault(this._waypoints.getWaypoints());
+      this.destroyAll();
+    };
+    this._header.destroyStats = () => {
+      this.destroyStats();
+    };
+    this._header.renderTable = () => {
+      this.init();
+    };
+  }
+
+  _renderFilterWaypoints() {
+    this._header.renderFilterWaypoints = (filterType) => {
+      this._newWaypointBtn.removeAttribute(`disabled`);
+      switch (filterType) {
+        case FilterType.DEFAULT:
+          this._currentFilterType = FilterType.DEFAULT;
+          this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
+          this._sortDefault(this._waypoints.getWaypoints());
+          return;
+        case FilterType.FUTURE:
+          this._currentFilterType = FilterType.FUTURE;
+          this._filterWaypoints = getFutureWaypointsFilter(this._waypoints.getWaypoints());
+          this._sortDefault(this._filterWaypoints);
+          this._newWaypointBtn.setAttribute(`disabled`, `true`);
+          return;
+        case FilterType.PAST:
+          this._currentFilterType = FilterType.PAST;
+          this._filterWaypoints = getPastWaypointsFilter(this._waypoints.getWaypoints());
+          this._sortDefault(this._filterWaypoints);
+          this._newWaypointBtn.setAttribute(`disabled`, `true`);
+          return;
+      }
+    };
+  }
+
+  _createNewWaypointListener() {
+    this._header.setAddWaypointButtonClickListener(() => {
+      if (this._currentSortType !== SortType.DEFAULT) {
+        this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
+        this._sortDefault(this._waypoints.getWaypoints());
+      }
+      const waypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints);
+      waypoint.renderDayWrappers = () => {
+        this._destroyNoWaypointMessage();
+        this._renderWrappers();
+        render(this._sortWrapper.querySelector(`.trip-days`), new SiteDayItem(1, defaultWaypoint));
+      };
+      this._observerViewMode.notify();
+      this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.toggleAttribute(`disabled`));
+      this._newWaypointBtn.setAttribute(`disabled`, `true`);
+      waypoint.renderNewWaypoint();
+      waypoint.resetNewWaypointBtn = () => {
+        this._newWaypointBtn.removeAttribute(`disabled`);
+        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
+      };
+      waypoint.renderNewWaypointInViewMode = () => {
+        const newWaypoint = new Waypoint(this._api, this._bonusOptions.getOffers(), this._waypoints.getWaypoints()[0], this._waypoints, RenderPosition.AFTERBEGIN);
+        newWaypoint.renderWaypoint();
+        this._observerViewMode.addObserver(newWaypoint.onRollupButtonEditClickHandler);
+        newWaypoint.renderAllWaypointsInViewMode = () => this._observerViewMode.notify();
+        this._newWaypointBtn.removeAttribute(`disabled`);
+        this._mainWrapper.querySelectorAll(`.event__rollup-btn`).forEach((item) => item.removeAttribute(`disabled`));
+        this._waypoints.setWaypointAsDefaultSort(this._waypoints.getWaypoints());
+        this._sortDefault(this._waypoints.getWaypoints());
+      };
+    });
   }
 }
