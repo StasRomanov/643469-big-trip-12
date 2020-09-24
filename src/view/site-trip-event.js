@@ -48,4 +48,12 @@ export default class SiteTripEvent extends SiteEditEvent {
   getTemplate() {
     return createSiteTripEvent(this._waypoint);
   }
+
+  disableRollupButton() {
+    this.getElement().querySelector(`.event__rollup-btn`).setAttribute(`disabled`, `true`);
+  }
+
+  enableRollupButton() {
+    this.getElement().querySelector(`.event__rollup-btn`).removeAttribute(`disabled`);
+  }
 }

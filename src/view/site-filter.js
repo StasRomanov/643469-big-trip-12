@@ -1,5 +1,6 @@
 import Abstract from "./abstract";
 import {FilterType} from "../const";
+import {getFutureWaypointsFilter, getPastWaypointsFilter} from "../util/filter-data-function";
 
 const createSiteFilterTemplate = () =>
   `<form class="trip-filters" action="#" method="get">
@@ -43,6 +44,19 @@ export default class SiteFilter extends Abstract {
       }
       item.removeAttribute(`disabled`);
     });
+  }
+
+  static smartDisableFilters(waypoints) {
+    const pastFilter = document.querySelector(`#filter-past`);
+    const futureFilter = document.querySelector(`#filter-future`);
+    pastFilter.removeAttribute(`disabled`);
+    futureFilter.removeAttribute(`disabled`);
+    if (!(getFutureWaypointsFilter(waypoints).length)) {
+      futureFilter.setAttribute(`disabled`, `true`);
+    }
+    if (!(getPastWaypointsFilter(waypoints).length)) {
+      pastFilter.setAttribute(`disabled`, `true`);
+    }
   }
 
   _addFilterChangeListener(evt) {

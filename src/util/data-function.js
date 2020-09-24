@@ -68,19 +68,19 @@ export const updateWaypointImportantStatus = (oldWaypoints, importantStatus) => 
 };
 
 export const getSimilarWaypointInfo = (waypoints) => {
-  const townsList = [];
+  const towns = [];
   let townChangeCount = 0;
   let currentTown = null;
   waypoints.forEach((item) => {
     if (currentTown !== item.town) {
       currentTown = item.town;
       townChangeCount++;
-      townsList.push(item.town);
+      towns.push(item.town);
     }
   });
   return {
     status: townChangeCount <= MAX_TOWN_IN_HEADER,
-    items: townsList,
+    items: towns,
   };
 };
 

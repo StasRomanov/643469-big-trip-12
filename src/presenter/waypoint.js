@@ -5,7 +5,6 @@ import {
   KeyboardKey,
   MAX_OFFERS_IN_VIEW_MODE,
   RenderPosition,
-  TRANSFER_TYPES,
   WaypointAction,
   WaypointMode,
 } from "../const";
@@ -15,7 +14,6 @@ import SiteEventTitle from "../view/site-event-title";
 import SiteWaypointDestination from "../view/site-waypoint-destination";
 import SiteEventPhoto from "../view/site-event-photo";
 import {
-  getCapitalizedWord,
   getOffers,
   getWaypointDestination,
   updateWaypointImportantStatus,
@@ -25,7 +23,7 @@ import SiteWaypoint from "../view/site-waypoint";
 import Header from "./header";
 
 export default class Waypoint {
-  constructor(api, offers, waypoint, waypointsModel, position = RenderPosition.BEFOREEND) {
+  constructor(api, offers, waypoint, waypointsModel, place, position = RenderPosition.BEFOREEND) {
     this.onRollupButtonEditClickHandler = this.onRollupButtonEditClickHandler.bind(this);
     this._onDocumentKeydownEscHandler = this._onDocumentKeydownEscHandler.bind(this);
     this._onDocumentKeydownHandler = this._onDocumentKeydownHandler.bind(this);
@@ -33,10 +31,10 @@ export default class Waypoint {
     this._api = api;
     this._newWaypoint = new SiteWaypoint();
     this._mainWrapper = document.querySelector(`.page-main`);
-    this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._waypoints = waypointsModel;
     this._offersAll = offers;
     this._waypoint = waypoint;
+    this._wrapper = place;
     this._callback = {};
     if (this._waypoint === undefined) {
       this._waypoint = defaultWaypoint;
@@ -67,11 +65,20 @@ export default class Waypoint {
     this._callback.resetTable = callback;
   }
 
+  set findFirstOpenWaypointId(callback) {
+    this._callback.findFirstOpenWaypointId1 = callback;
+  }
+
+  disableWaypointRollupButton() {
+    this._waypointElement.disableRollupButton();
+  }
+
+  enableWaypointRollupButton() {
+    this._waypointElement.enableRollupButton();
+  }
+
   renderWaypoint(mode = WaypointMode.VIEW) {
-    const trimEventItem = this._position === RenderPosition.BEFOREEND ?
-      this._sortWrapper.querySelectorAll(`.trip-events__list`)[this._sortWrapper.querySelectorAll(`.trip-events__list`).length - 1] :
-      this._sortWrapper.querySelectorAll(`.trip-events__list`)[0];
-    this.renderWaypointMode(trimEventItem, mode);
+    this.renderWaypointMode(this._wrapper, mode);
   }
 
   renderWaypointMode(dayWrapper, mode = WaypointMode.VIEW) {
@@ -137,7 +144,9 @@ export default class Waypoint {
       id = this._mainWrapper.querySelector(`.event--edit`).getAttribute(`data-id`);
     }
     if (mode === WaypointMode.EDIT) {
-      this._callback.editMode();
+      if (this._mainWrapper.querySelector(`.event--edit`)) {
+        this._callback.editMode();
+      }
       this._waypointEdit = new SiteEditEvent(this._waypoint);
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
@@ -226,11 +235,7 @@ export default class Waypoint {
     if (defaultMode) {
       bonusOptions = getOffers(defaultWaypoint.type, this._offersAll);
     }
-    const bonusOptionsWrappers = element.getElement().querySelectorAll(`.event__available-offers`);
-    bonusOptionsWrappers.forEach((item) => {
-      item.innerHTML = ``;
-    });
-    const lastBonusOptionWrapper = element.getElement().querySelector(`.event__available-offers`);
+    const lastBonusOptionWrapper = element.getAvailableOffers();
     for (const bonusOption of bonusOptions) {
       render(lastBonusOptionWrapper, new SiteEvent(bonusOption));
     }
@@ -254,18 +259,13 @@ export default class Waypoint {
   }
 
   _replaceDestinationAndPhotoEditMode(element = this._waypointEdit) {
-    const waypointDescription = getWaypointDestination(element.getElement().querySelector(`.event__input--destination`).value);
+    const waypointDescription = getWaypointDestination(element.getCurrentDescription());
     remove(this._waypointDestination);
     this._renderDestinationAndPhotoEditMode(waypointDescription, element);
   }
 
   _updateTravelType(travelType, element = this._waypointEdit) {
-    const img = element.getElement().querySelector(`.event__type-icon`);
-    const text = element.getElement().querySelector(`.event__label`);
-    this._avatarInput = element.getElement().querySelector(`.event__type-toggle`);
-    img.setAttribute(`src`, `img/icons/${travelType}.png`);
-    text.textContent = `${getCapitalizedWord(travelType)} ${TRANSFER_TYPES.indexOf(getCapitalizedWord(travelType)) !== -1 ? `to` : `in`}`;
-    this._avatarInput.setAttribute(`data-type`, travelType);
+    element.updateDestination(travelType);
     this._updateOffers(travelType, element);
   }
 

@@ -1,10 +1,10 @@
 import Abstract from "./abstract";
-import {ERROR_STYLE, MouseKey, TOWNS} from "../const";
+import {ERROR_STYLE, MouseKey, TOWNS, TRANSFER_TYPES} from "../const";
 import moment from "moment";
 import he from "he";
 import flatpickr from "flatpickr";
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
-import {getEventTypeLabel} from "../util/data-function";
+import {getCapitalizedWord, getEventTypeLabel} from "../util/data-function";
 
 const createSiteEditEventTemplate = (waypoint) => {
   const {type, town, startTime, endTime, important, id} = waypoint;
@@ -222,6 +222,24 @@ export default class SiteEditEvent extends Abstract {
     } else {
       this._fields.forEach((item) => item.removeAttribute(`disabled`));
     }
+  }
+
+  getAvailableOffers() {
+    this.getElement().querySelector(`.event__available-offers`).innerHTML = ``;
+    return this.getElement().querySelector(`.event__available-offers`);
+  }
+
+  getCurrentDescription() {
+    return this.getElement().querySelector(`.event__input--destination`).value;
+  }
+
+  updateDestination(travelType) {
+    const img = this.getElement().querySelector(`.event__type-icon`);
+    const text = this.getElement().querySelector(`.event__label`);
+    this._avatarInput = this.getElement().querySelector(`.event__type-toggle`);
+    img.setAttribute(`src`, `img/icons/${travelType}.png`);
+    text.textContent = `${getCapitalizedWord(travelType)} ${TRANSFER_TYPES.indexOf(getCapitalizedWord(travelType)) !== -1 ? `to` : `in`}`;
+    this._avatarInput.setAttribute(`data-type`, travelType);
   }
 
   setSavingMode(toggle = true) {

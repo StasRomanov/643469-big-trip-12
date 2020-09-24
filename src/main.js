@@ -13,7 +13,7 @@ import Store from "./api/store";
 const waypointModel = new WaypointsModel();
 const offersModel = new OffersModel();
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
-const AUTHORIZATION = `Basic lhikytgthigjfhd`;
+const AUTHORIZATION = `Basic lhikytgtljkhghigjfhd`;
 const STORE_PREFIX = `big_trip_web-localstorage`;
 const DataType = {
   WAYPOINTS: `waypoints`,
@@ -31,7 +31,7 @@ const destinationStore = new Store(OFFERS_STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, waypointStore, offersStore, destinationStore);
 let currentStatus = DownloadStatus.OK;
 render(document.querySelector(`.trip-events`), new SiteLoading());
-document.querySelector(`.trip-main__event-add-btn`).setAttribute(`disabled`, `true`);
+Header.disableAddButton();
 
 apiWithProvider.getAllData()
   .then((data) => {
