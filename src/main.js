@@ -11,7 +11,7 @@ import Provider from "./api/provider";
 import Store from "./api/store";
 
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
-const AUTHORIZATION = `Basic lhikytgtlfjkhghigjfhd`;
+const AUTHORIZATION = `Basic bhfhvgghbmm`;
 const STORE_PREFIX = `big_trip_web-localstorage`;
 const DataType = {
   WAYPOINTS: `waypoints`,
