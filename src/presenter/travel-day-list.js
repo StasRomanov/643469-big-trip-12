@@ -25,7 +25,6 @@ export default class TravelDaysList {
     this._sortWrapper = this._mainWrapper.querySelector(`.trip-events`);
     this._observerViewMode = new Observer();
     this._header = headerPresenter;
-    this._newWaypointBtn = document.querySelector(`.trip-main__event-add-btn`);
     this._waypontComponents = [];
   }
 

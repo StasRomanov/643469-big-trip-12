@@ -1,5 +1,3 @@
-import {getRandomInteger} from "./util/data-function";
-
 export const MAX_OFFER_PRICE = 1000;
 export const MIN_OFFER_PRICE = 10;
 
@@ -34,30 +32,6 @@ export const defaultWaypoint = {
   town: `Chamonix`,
   startTime: new Date(),
   endTime: new Date(),
-  destination: {
-    description: `Chamonix, is a beautiful city, a true asian pearl, with crowded streets.`,
-    town: `Chamonix`,
-    photos: [
-      {
-        src: `http://picsum.photos/300/200?r=0.0762563005163317`,
-        description: `Chamonix parliament building`,
-      }
-    ]
-  },
-  bonusOptions: {
-    type: `taxi`,
-    offers: [
-      {
-        name: `Upgrade to a business class`,
-        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE),
-        used: false,
-      }, {
-        name: `Choose the radio station`,
-        price: getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE),
-        used: false,
-      }
-    ]
-  }
 };
 
 export const SortType = {

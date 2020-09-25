@@ -8,9 +8,6 @@ export default class SiteStats extends Abstract {
   constructor(waypoints) {
     super();
     this._chartData = this._createChartData(waypoints);
-    this._moneyChart = null;
-    this._transportChart = null;
-    this._timeSpendChart = null;
     this._setCharts();
   }
 
@@ -36,17 +33,9 @@ export default class SiteStats extends Abstract {
 
   removeElement() {
     super.removeElement();
-    this._removeCharts();
-  }
-
-  _removeCharts() {
-    this._moneyChart = null;
-    this._transportChart = null;
-    this._timeSpendChart = null;
   }
 
   _setCharts() {
-    this._removeCharts();
     const moneyCtx = this.getElement().querySelector(`.statistics__chart--money`);
     const transportCtx = this.getElement().querySelector(`.statistics__chart--transport`);
     const timeSpendCtx = this.getElement().querySelector(`.statistics__chart--time`);
@@ -54,17 +43,17 @@ export default class SiteStats extends Abstract {
     transportCtx.height = BAR_HEIGHT * 4;
     timeSpendCtx.height = BAR_HEIGHT * 4;
 
-    this._moneyChart = this._renderChart(
+    this._renderChart(
         moneyCtx,
         ChartType.MONEY,
         ((val) => `€ ${val}`)
     );
-    this._transportChart = this._renderChart(
+    this._renderChart(
         transportCtx,
         ChartType.TRANSPORT,
         (val) => `${val}x`
     );
-    this._timeSpendChart = this._renderChart(
+    this._renderChart(
         timeSpendCtx,
         ChartType.TIME_SPENT,
         (val) => `${getTimeDifference(new Date(0), new Date(val))}`

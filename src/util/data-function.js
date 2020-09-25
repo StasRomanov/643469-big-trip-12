@@ -1,13 +1,5 @@
 import moment from "moment";
-import {
-  DESTINATIONS_ALL,
-  HOURS_IN_DAY,
-  MAX_OFFER_PRICE,
-  MAX_TOWN_IN_HEADER,
-  MIN_IN_HOUR,
-  MIN_OFFER_PRICE,
-  TRANSFER_TYPES,
-} from "../const";
+import {DESTINATIONS_ALL, HOURS_IN_DAY, MAX_TOWN_IN_HEADER, MIN_IN_HOUR, TRANSFER_TYPES} from "../const";
 
 export const getCapitalizedWord = (str) => {
   return str[0].toUpperCase() + str.slice(1);
@@ -37,14 +29,10 @@ export const getTimeDifference = (startTime, endTime, msMode = false) => {
 
 export const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
-export const getRandomBoolean = () => Boolean(Math.round(Math.random()));
-
 export const getOffers = (waypointType, offers) => {
   const filterOffers = offers.find((item) => item.type.toLowerCase() === waypointType.toLowerCase()).offers;
   filterOffers.forEach((item) => {
     item.name = getCapitalizedWord(item.name);
-    item.used = getRandomBoolean();
-    item.price = getRandomInteger(MIN_OFFER_PRICE, MAX_OFFER_PRICE);
   });
   return filterOffers;
 };

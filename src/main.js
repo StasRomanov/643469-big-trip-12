@@ -10,8 +10,6 @@ import SiteLoading from "./view/site-loading";
 import Provider from "./api/provider";
 import Store from "./api/store";
 
-const waypointModel = new WaypointsModel();
-const offersModel = new OffersModel();
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
 const AUTHORIZATION = `Basic lhikytgtlfjkhghigjfhd`;
 const STORE_PREFIX = `big_trip_web-localstorage`;
@@ -24,13 +22,16 @@ const STORE_VER = `v12`;
 const WAYPOINTS_STORE_NAME = `${STORE_PREFIX}_(${DataType.WAYPOINTS})-${STORE_VER}`;
 const DESTINATION_STORE_NAME = `${STORE_PREFIX}_(${DataType.DESTINATION})-${STORE_VER}`;
 const OFFERS_STORE_NAME = `${STORE_PREFIX}_(${DataType.OFFERS})-${STORE_VER}`;
+const waypointModel = new WaypointsModel();
+const offersModel = new OffersModel();
+const siteLoading = new SiteLoading();
 const api = new Api(END_POINT, AUTHORIZATION);
 const waypointStore = new Store(WAYPOINTS_STORE_NAME, window.localStorage);
 const offersStore = new Store(DESTINATION_STORE_NAME, window.localStorage);
 const destinationStore = new Store(OFFERS_STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, waypointStore, offersStore, destinationStore);
 let currentStatus = DownloadStatus.OK;
-const siteLoading = new SiteLoading();
+
 render(document.querySelector(`.trip-events`), siteLoading);
 Header.disableAddButton();
 
