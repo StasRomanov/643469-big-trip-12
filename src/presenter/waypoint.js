@@ -35,6 +35,7 @@ export default class Waypoint {
     this._offersAll = offers;
     this._waypoint = waypoint;
     this._wrapper = place;
+    this._editStatus = false;
     this._callback = {};
     if (this._waypoint === undefined) {
       this._waypoint = defaultWaypoint;
@@ -63,10 +64,6 @@ export default class Waypoint {
 
   set resetTable(callback) {
     this._callback.resetTable = callback;
-  }
-
-  set findFirstOpenWaypointId(callback) {
-    this._callback.findFirstOpenWaypointId1 = callback;
   }
 
   disableWaypointRollupButton() {
@@ -139,14 +136,11 @@ export default class Waypoint {
   }
 
   _replaceWaypointMode(mode = WaypointMode.VIEW) {
-    let id = ``;
-    if (this._mainWrapper.querySelector(`.event--edit`)) {
-      id = this._mainWrapper.querySelector(`.event--edit`).getAttribute(`data-id`);
-    }
     if (mode === WaypointMode.EDIT) {
       if (this._mainWrapper.querySelector(`.event--edit`)) {
         this._callback.editMode();
       }
+      this._editStatus = true;
       this._waypointEdit = new SiteEditEvent(this._waypoint);
       replace(this._waypointEdit, this._waypointElement);
       this._renderBonusOptionEditMode(this._waypoint);
@@ -157,7 +151,8 @@ export default class Waypoint {
       this._waypointEdit._setDatepickerStart();
       this._waypointEdit._setDatepickerEnd();
     }
-    if (mode === WaypointMode.VIEW && id === this._waypoint.id) {
+    if (mode === WaypointMode.VIEW && this._editStatus) {
+      this._editStatus = false;
       this._waypointElement = new SiteTripEvent(this._waypoint);
       try {
         replace(this._waypointElement, this._waypointEdit);
