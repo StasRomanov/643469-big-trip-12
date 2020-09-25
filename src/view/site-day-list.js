@@ -9,13 +9,17 @@ export default class SiteDayList extends Abstract {
 
   getFirstEditWaypointId() {
     if (this.getElement().querySelector(`.event--edit`)) {
-      return this._find();
+      return this.getElement().querySelector(`.event--edit`);
     } else {
       return ``;
     }
   }
 
-  _find() {
-    return this.getElement().querySelector(`.event--edit`);
+  destroyAllWaypoints() {
+    this.getElement().innerHTML = ``;
+  }
+
+  destroy() {
+    this.getElement().remove();
   }
 }

@@ -13,7 +13,7 @@ import Store from "./api/store";
 const waypointModel = new WaypointsModel();
 const offersModel = new OffersModel();
 const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
-const AUTHORIZATION = `Basic lhikytgtljkhghigjfhd`;
+const AUTHORIZATION = `Basic lhikytgtlfjkhghigjfhd`;
 const STORE_PREFIX = `big_trip_web-localstorage`;
 const DataType = {
   WAYPOINTS: `waypoints`,
@@ -30,7 +30,8 @@ const offersStore = new Store(DESTINATION_STORE_NAME, window.localStorage);
 const destinationStore = new Store(OFFERS_STORE_NAME, window.localStorage);
 const apiWithProvider = new Provider(api, waypointStore, offersStore, destinationStore);
 let currentStatus = DownloadStatus.OK;
-render(document.querySelector(`.trip-events`), new SiteLoading());
+const siteLoading = new SiteLoading();
+render(document.querySelector(`.trip-events`), siteLoading);
 Header.disableAddButton();
 
 apiWithProvider.getAllData()
@@ -74,8 +75,8 @@ apiWithProvider.getAllData()
 
 const pageRender = () => {
   const stats = new Stats(waypointModel);
-  const header = new Header(waypointModel, stats, offersModel);
-  const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider);
+  const header = new Header(waypointModel, stats, offersModel, apiWithProvider);
+  const daysList = new TravelDaysList(waypointModel, header, offersModel, apiWithProvider, stats);
 
   header.init();
   daysList.init();
@@ -93,3 +94,5 @@ window.addEventListener(`online`, () => {
 window.addEventListener(`offline`, () => {
   document.title += ` [offline]`;
 });
+
+export {siteLoading};

@@ -17,7 +17,7 @@ export default class Header extends Abstract {
     this._siteMenu = new SiteMenu(waypointsModel.getWaypoints());
     this._siteFilterHeaderTemplate = new SitePages();
     this._siteFilterTemplate = new SiteFilter();
-    this._travelDayPresenter = new TravelDaysList(waypointsModel, this, offersModel, this._api);
+    this._travelDayPresenter = new TravelDaysList(this._waypointsModel, this, offersModel, this._api, this._stats);
     this._addWaypointButtonClickListener = this._addWaypointButtonClickListener.bind(this);
   }
 
@@ -86,5 +86,9 @@ export default class Header extends Abstract {
 
   static disableAddButton() {
     document.querySelector(`.trip-main__event-add-btn`).setAttribute(`disabled`, `true`);
+  }
+
+  static enableAddButton() {
+    document.querySelector(`.trip-main__event-add-btn`).removeAttribute(`disabled`);
   }
 }
