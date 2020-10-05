@@ -1,6 +1,3 @@
-export const MAX_OFFER_PRICE = 1000;
-export const MIN_OFFER_PRICE = 10;
-
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,

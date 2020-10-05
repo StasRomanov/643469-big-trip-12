@@ -5,8 +5,6 @@ export const getCapitalizedWord = (str) => {
   return str[0].toUpperCase() + str.slice(1);
 };
 
-export const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
-
 export const getTimeDifference = (startTime, endTime, msMode = false) => {
   const timeInMs = moment.utc(moment.duration(moment(endTime) - moment(startTime)).asMilliseconds()).format(`x`);
   if (msMode) {
